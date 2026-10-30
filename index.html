@@ -5,71 +5,171 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zero-Click Security Lab</title>
+
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   background: #101827;
   color: white;
-  padding: 20px;
+  padding: 16px;
+  margin: 0;
 }
+
+h1 {
+  font-size: 28px;
+}
+
 .panel {
   background: #1e293b;
   padding: 20px;
-  border-radius: 12px;
-  margin: 15px 0;
+  border-radius: 14px;
+  margin: 18px 0;
+  overflow-wrap: anywhere;
 }
+
 input {
-  box-sizing: border-box;
   width: 100%;
-  padding: 13px;
+  padding: 14px;
   margin: 12px 0;
+  border-radius: 8px;
+  border: 1px solid #64748b;
+  font-size: 16px;
 }
+
 button {
-  padding: 12px;
+  padding: 14px 18px;
   border: 0;
   border-radius: 8px;
-  margin: 4px;
+  margin: 5px 2px;
   background: #16a34a;
   color: white;
   font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
 }
-#result, #history {
+
+button:active {
+  opacity: 0.8;
+}
+
+pre, #history, #simulationResult,
+#riskDetails, #result {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
 .stat {
   font-size: 22px;
   font-weight: bold;
+  color: #4ade80;
+}
+
+.safe {
+  color: #4ade80;
+}
+
+.warning {
+  color: #facc15;
+}
+
+.danger {
+  color: #f87171;
 }
 </style>
 </head>
+
 <body>
 
 <h1>🛡️ Zero-Click Security Lab</h1>
 <p>Laboratorio didattico di sicurezza informatica</p>
 
 <div class="panel">
-<h2>Analisi automatica simulata</h2>
-<input id="message" placeholder="Inserisci un messaggio di prova">
-<button onclick="analyze()">Analizza</button>
-<p id="result">In attesa di un test...</p>
+  <h2>🔍 Analisi automatica</h2>
+  <p>Inserisci un messaggio di prova.</p>
+  <input id="message" placeholder="Scrivi un messaggio...">
+  <button onclick="analyze()">Analizza messaggio</button>
+  <p id="result">In attesa di un test...</p>
 </div>
 
 <div class="panel">
-<h2>Statistiche</h2>
-<p>Analisi effettuate: <span class="stat" id="total">0</span></p>
-<p>Input sospetti: <span class="stat" id="suspicious">0</span></p>
+  <h2>📊 Statistiche</h2>
+  <p>Analisi effettuate: <span class="stat" id="total">0</span></p>
+  <p>Input sospetti: <span class="stat" id="suspicious">0</span></p>
 </div>
 
 <div class="panel">
-<h2>Registro eventi</h2>
-<div id="history">Nessun evento registrato.</div>
-<button onclick="clearHistory()">Cancella registro</button>
+  <h2>📋 Registro eventi</h2>
+  <div id="history">Nessun evento registrato.</div>
+  <button onclick="clearHistory()">Cancella registro</button>
 </div>
 
+<div class="panel">
+  <h2>🧪 Simulazione Zero-Click</h2>
+  <p>Ambiente didattico isolato. Nessun exploit reale viene eseguito.</p>
+  <button onclick="runSimulation()">Avvia simulazione</button>
+  <div id="simulationResult"></div>
+</div>
+
+<div class="panel">
+  <h2>📊 Registro permanente</h2>
+  <button onclick="showEvents()">Aggiorna registro</button>
+  <button onclick="clearEvents()">Cancella registro</button>
+  <pre id="eventLog">Nessun evento registrato.</pre>
+</div>
+
+<div class="panel">
+  <h2>🛡️ Centro di sicurezza</h2>
+
+  <p>Eventi registrati:
+    <strong class="stat" id="statTotal">0</strong>
+  </p>
+
+  <p>Contenuti bloccati:
+    <strong class="stat" id="statBlocked">0</strong>
+  </p>
+
+  <p>Ultima attività:
+    <strong id="lastActivity">Nessuna</strong>
+  </p>
+
+  <button onclick="refreshStats()">Aggiorna statistiche</button>
+</div>
+
+<div class="panel">
+  <h2>🔎 Analisi del rischio</h2>
+
+  <input id="riskInput" placeholder="Inserisci un messaggio di prova">
+
+  <button onclick="checkRisk()">Analizza rischio</button>
+
+  <h3 id="riskLevel">In attesa di analisi</h3>
+  <p id="riskDetails"></p>
+</div>
+
+<div class="panel">
+  <h2>🧪 Test automatici</h2>
+
+  <p>Verifica il funzionamento del sistema con quattro prove didattiche.</p>
+
+  <button onclick="runSecurityTests()">Esegui tutti i test</button>
+
+  <pre id="testResults">Test non ancora eseguiti.</pre>
+</div>
+
+<!-- CARICAMENTO DEI MODULI -->
 <script src="security.js"></script>
+<script src="dashboard.js"></script>
+<script src="simulation.js"></script>
+<script src="risk-analyzer.js"></script>
+<script src="security-tests.js"></script>
 
 <script>
+
+// ANALISI AUTOMATICA
 function analyze() {
   const message = document.getElementById("message").value;
 
@@ -83,12 +183,13 @@ function analyze() {
 
   document.getElementById("result").textContent =
     event.status === "SOSPESO"
-    ? "⚠️ Input sospetto bloccato dalla simulazione."
-    : "✅ Nessun indicatore sospetto rilevato.";
+      ? "⚠️ Input sospetto rilevato dalla simulazione."
+      : "✅ Nessun indicatore sospetto rilevato.";
 
   updateDashboard();
 }
 
+// AGGIORNAMENTO REGISTRO
 function updateDashboard() {
   const report = SecurityLab.report();
 
@@ -104,26 +205,13 @@ function updateDashboard() {
     ).join("\n") || "Nessun evento registrato.";
 }
 
+// CANCELLA REGISTRO
 function clearHistory() {
   SecurityLab.clear();
   updateDashboard();
 }
-</script>
 
-<div class="panel">
-  <h2>🧪 Simulazione Zero-Click</h2>
-  <p>Ambiente didattico isolato.</p>
-
-  <button onclick="runSimulation()">
-    Avvia simulazione
-  </button>
-
-  <div id="simulationResult"></div>
-</div>
-
-<script src="simulation.js"></script>
-
-<script>
+// SIMULAZIONE DIDATTICA
 function runSimulation() {
   const stages = ZeroClickSimulation.run();
 
@@ -133,61 +221,34 @@ function runSimulation() {
       stage.detail + "\n" +
       "Stato: " + stage.status
     ).join("\n\n");
+
+  refreshStats();
+  showEvents();
 }
-</script>
-</body>
 
-<script src="dashboard.js"></script>
-
-<div class="panel">
-  <h2>📊 Registro permanente</h2>
-  <button onclick="showEvents()">Aggiorna registro</button>
-  <button onclick="clearEvents()">Cancella registro</button>
-  <pre id="eventLog">Nessun evento registrato.</pre>
-</div>
-
-<script>
+// REGISTRO PERMANENTE
 function showEvents() {
   const events = SecurityDashboard.getEvents();
 
   document.getElementById("eventLog").textContent =
     events.length
       ? events.map(e =>
-          `${e.date} | ${e.type} | ${e.status}\n${e.detail}`
+          e.date + " | " + e.type + " | " + e.status +
+          "\n" + e.detail
         ).join("\n\n")
       : "Nessun evento registrato.";
 }
 
+// CANCELLA REGISTRO PERMANENTE
 function clearEvents() {
   if (confirm("Vuoi cancellare lo storico?")) {
     SecurityDashboard.clear();
     showEvents();
+    refreshStats();
   }
 }
-</script>
-</body>
 
-<div class="panel">
-  <h2>📊 Centro di sicurezza</h2>
-
-  <p>Simulazioni effettuate:
-    <strong id="statTotal">0</strong>
-  </p>
-
-  <p>Contenuti bloccati:
-    <strong id="statBlocked">0</strong>
-  </p>
-
-  <p>Ultima attività:
-    <strong id="lastActivity">Nessuna</strong>
-  </p>
-
-  <button onclick="refreshStats()">
-    Aggiorna statistiche
-  </button>
-</div>
-
-<script>
+// CENTRO DI SICUREZZA
 function refreshStats() {
   const events = SecurityDashboard.getEvents();
 
@@ -201,29 +262,14 @@ function refreshStats() {
     events.length ? events[0].date : "Nessuna";
 }
 
-refreshStats();
-</script>
-
-<script src="risk-analyzer.js"></script>
-
-<div class="panel">
-  <h2>🔍 Analisi del rischio</h2>
-  <input id="riskInput"
-         placeholder="Inserisci un messaggio di prova">
-
-  <button onclick="checkRisk()">Analizza rischio</button>
-
-  <h3 id="riskLevel">In attesa di analisi</h3>
-  <p id="riskDetails"></p>
-</div>
-
-<script>
+// ANALISI DEL RISCHIO
 function checkRisk() {
   const message = document.getElementById("riskInput").value;
 
   if (!message.trim()) {
     document.getElementById("riskLevel").textContent =
       "Inserisci un messaggio.";
+    document.getElementById("riskDetails").textContent = "";
     return;
   }
 
@@ -237,19 +283,8 @@ function checkRisk() {
       f.level + " - " + f.reason
     ).join("\n") || "Nessun indicatore rilevato.";
 }
-</script>
 
-<script src="security-tests.js"></script>
-
-<div class="panel">
-  <h2>🧪 Test automatici</h2>
-  <button onclick="runSecurityTests()">
-    Esegui tutti i test
-  </button>
-  <pre id="testResults">Test non ancora eseguiti.</pre>
-</div>
-
-<script>
+// TEST AUTOMATICI
 function runSecurityTests() {
   const results = SecurityTests.run();
 
@@ -261,6 +296,13 @@ function runSecurityTests() {
       " | Ottenuto: " + test.actual
     ).join("\n\n");
 }
+
+// AGGIORNAMENTO INIZIALE
+updateDashboard();
+showEvents();
+refreshStats();
+
 </script>
+
 </body>
 </html>

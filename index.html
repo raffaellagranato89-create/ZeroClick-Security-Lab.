@@ -4,326 +4,411 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
 <title>Zero-Click Security Lab</title>
-
 <style>
-* { box-sizing: border-box; }
-
-body {
-  font-family: Arial, sans-serif;
-  background: #101827;
-  color: white;
-  padding: 16px;
-  margin: 0;
+:root {
+  --bg:#0b1220; --panel:#151f30; --panel2:#1c2a40;
+  --text:#edf3fc; --muted:#aab8cc; --blue:#55aaff;
+  --green:#31c48d; --yellow:#f5bd4f; --red:#ff6577;
+  --border:#30415b;
 }
-
-h1 { font-size: 27px; }
-
-.panel {
-  background: #1e293b;
-  padding: 18px;
-  border-radius: 14px;
-  margin: 17px 0;
-  overflow-wrap: anywhere;
-}
-
-input {
-  width: 100%;
-  padding: 14px;
-  margin: 12px 0;
-  border-radius: 8px;
-  border: 1px solid #64748b;
-  font-size: 16px;
-}
-
-button {
-  padding: 13px 17px;
-  border: 0;
-  border-radius: 8px;
-  margin: 5px 2px;
-  background: #16a34a;
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.stat {
-  font-size: 23px;
-  font-weight: bold;
-  color: #4ade80;
-}
-
-.metric {
-  background: #334155;
-  border-radius: 10px;
-  padding: 14px;
-  margin: 9px 0;
-}
-
-.bar-track {
-  background: #475569;
-  height: 13px;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 8px 0 14px;
-}
-
-.bar {
-  height: 100%;
-  width: 0%;
-  border-radius: 10px;
-  transition: width .3s;
-}
-
-.green { background: #22c55e; }
-.yellow { background: #eab308; }
-.red { background: #ef4444; }
-.blue { background: #38bdf8; }
-
-.chart-row {
-  margin: 12px 0;
-}
-
-.chart-label {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 13px;
-}
-
-pre, #history, #simulationResult,
-#riskDetails, #result {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.small {
-  color: #cbd5e1;
-  font-size: 13px;
-}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;line-height:1.5}
+header{padding:25px 16px;text-align:center;background:#101b2d;
+  border-bottom:1px solid var(--border)}
+header h1{margin:0;color:var(--blue);font-size:25px}
+header p{color:var(--muted);margin:7px 0 0}
+main{max-width:1100px;margin:auto;padding:16px}
+.panel{background:var(--panel);border:1px solid var(--border);
+  border-radius:13px;padding:17px;margin:15px 0}
+h2{font-size:19px;margin:0 0 13px;color:var(--blue)}
+h3{font-size:15px;margin:17px 0 8px}
+p,.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+.metric{background:var(--panel2);border-radius:10px;padding:14px}
+.metric strong{display:block;font-size:26px;margin-top:5px}
+.metric span{font-size:13px;color:var(--muted)}
+button{background:#2476c5;color:white;border:0;border-radius:8px;
+  padding:11px 14px;margin:5px 4px 5px 0;font-weight:bold;cursor:pointer}
+button.secondary{background:#40516b}
+button.danger{background:#a83245}
+button:disabled{opacity:.5}
+input[type=text],textarea{width:100%;padding:12px;border-radius:8px;
+  border:1px solid var(--border);background:#0d1727;color:white;margin:7px 0}
+textarea{min-height:90px;resize:vertical}
+label{display:block;margin:8px 0;color:var(--muted)}
+.result{padding:12px;border-radius:8px;background:#0d1727;
+  margin-top:10px;overflow-wrap:anywhere}
+.low{color:var(--green)} .medium{color:var(--yellow)}
+.high{color:var(--red)} .blocked{color:var(--blue)}
+.bar-row{display:grid;grid-template-columns:75px 1fr 35px;gap:8px;
+  align-items:center;margin:10px 0;font-size:13px}
+.bar{height:12px;background:#0b1422;border-radius:10px;overflow:hidden}
+.fill{height:100%;width:0%;border-radius:10px}
+.low-fill{background:var(--green)} .medium-fill{background:var(--yellow)}
+.high-fill{background:var(--red)} .blocked-fill{background:var(--blue)}
+.chart{height:150px;display:flex;align-items:end;gap:8px;
+  border-bottom:1px solid var(--border);padding:10px 0}
+.day{flex:1;display:flex;flex-direction:column;justify-content:end;
+  align-items:center;height:100%;gap:5px;font-size:11px;color:var(--muted)}
+.day-bar{width:75%;min-height:2px;background:var(--blue);border-radius:5px 5px 0 0}
+.event{border-bottom:1px solid var(--border);padding:10px 0;
+  overflow-wrap:anywhere}
+.event:last-child{border:0}
+.pill{display:inline-block;padding:3px 8px;border-radius:20px;
+  background:#293950;font-size:11px;margin-right:5px}
+.alert{border-left:4px solid var(--red);padding:10px;
+  background:#321c2a;border-radius:5px;margin:8px 0}
+.good{border-left-color:var(--green);background:#123126}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted);
+  background:#0d1727;padding:10px;border-radius:8px;max-height:250px;overflow:auto}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
+.small{font-size:12px;color:var(--muted)}
+.hidden{display:none}
 </style>
 </head>
-
 <body>
 
-<h1>🛡️ Zero-Click Security Lab</h1>
-<p>Laboratorio didattico di sicurezza informatica</p>
+<header>
+  <h1>🛡️ Zero-Click Security Lab</h1>
+  <p>Laboratorio didattico di simulazione e analisi dei rischi</p>
+</header>
 
-<div class="panel">
+<main>
+
+<section class="panel">
   <h2>📊 Dashboard generale</h2>
-
-  <div class="metric">
-    Eventi registrati:
-    <div class="stat" id="statTotal">0</div>
+  <div class="grid">
+    <div class="metric"><span>Eventi registrati</span><strong id="total">0</strong></div>
+    <div class="metric"><span>Rischi alti</span><strong id="highCount">0</strong></div>
+    <div class="metric"><span>Percentuale rischi alti</span><strong id="highPercent">0%</strong></div>
+    <div class="metric"><span>Allarmi attivi</span><strong id="alertCount">0</strong></div>
   </div>
+  <p id="lastActivity">Ultima attività: nessuna</p>
+  <button onclick="refreshAll()">🔄 Aggiorna dashboard</button>
+</section>
 
-  <div class="metric">
-    Analisi ad alto rischio:
-    <div class="stat" id="statHigh">0</div>
-  </div>
+<section class="panel">
+  <h2>📈 Distribuzione dei rischi</h2>
+  <div class="bar-row"><span>Basso</span><div class="bar"><div id="barLow" class="fill low-fill"></div></div><span id="numLow">0</span></div>
+  <div class="bar-row"><span>Medio</span><div class="bar"><div id="barMedium" class="fill medium-fill"></div></div><span id="numMedium">0</span></div>
+  <div class="bar-row"><span>Alto</span><div class="bar"><div id="barHigh" class="fill high-fill"></div></div><span id="numHigh">0</span></div>
+  <div class="bar-row"><span>Bloccato</span><div class="bar"><div id="barBlocked" class="fill blocked-fill"></div></div><span id="numBlocked">0</span></div>
+</section>
 
-  <div class="metric">
-    Percentuale alto rischio:
-    <div class="stat" id="statPercentage">0%</div>
-  </div>
+<section class="panel">
+  <h2>📅 Attività degli ultimi 7 giorni</h2>
+  <div id="weeklyChart" class="chart"></div>
+</section>
 
-  <div class="metric">
-    Ultima attività:
-    <strong id="lastActivity">Nessuna</strong>
-  </div>
+<section class="panel">
+  <h2>🔎 Analizzatore didattico</h2>
+  <p>Inserisci un testo o un indirizzo web per una valutazione basata su semplici regole.</p>
+  <textarea id="analysisInput" placeholder="Inserisci qui un testo da analizzare..."></textarea>
+  <button onclick="analyzeInput()">Analizza contenuto</button>
+  <div id="analysisResult" class="result">In attesa di un'analisi.</div>
+</section>
 
-  <button onclick="refreshDashboard()">
-    🔄 Aggiorna dashboard
-  </button>
-</div>
+<section class="panel">
+  <h2>🚨 Centro allarmi</h2>
+  <div id="alertStatus" class="result">Nessun allarme registrato.</div>
+  <label><input type="checkbox" id="soundEnabled"> Attiva suono di allerta</label>
+  <button onclick="testAlertSound()">🔊 Prova suono</button>
+  <button class="secondary" onclick="clearAlerts()">Cancella storico allarmi</button>
+  <h3>Storico degli allarmi</h3>
+  <div id="alertHistory"></div>
+</section>
 
-<div class="panel">
-  <h2>📈 Eventi ultimi 7 giorni</h2>
-  <p class="small">Numero di eventi registrati per giornata.</p>
-  <div id="weeklyChart"></div>
-</div>
+<section class="panel">
+  <h2>🧪 Simulazione concettuale Zero-Click</h2>
+  <p>Questa simulazione illustra le fasi teoriche di un possibile attacco. Non esegue codice, non invia messaggi e non accede a dispositivi.</p>
+  <button onclick="runSimulation()">Avvia simulazione didattica</button>
+  <div id="simulationResult" class="result">Simulazione non ancora avviata.</div>
+</section>
 
-<div class="panel">
-  <h2>🚦 Distribuzione dei rischi</h2>
+<section class="panel">
+  <h2>🧰 Test automatici</h2>
+  <p>Verifica il funzionamento delle regole di classificazione locali.</p>
+  <button onclick="runTests()">Esegui tutti i test</button>
+  <div id="testResult" class="result">Test non ancora eseguiti.</div>
+</section>
 
-  <div class="chart-row">
-    <div class="chart-label">
-      <span>🟢 Basso</span>
-      <strong id="lowCount">0</strong>
-    </div>
-    <div class="bar-track">
-      <div id="lowBar" class="bar green"></div>
-    </div>
-  </div>
+<section class="panel">
+  <h2>📋 Registro permanente</h2>
+  <p class="small">Gli eventi sono salvati nel browser di questo dispositivo.</p>
+  <button onclick="exportCSV()">📥 Esporta CSV</button>
+  <button class="danger" onclick="clearEvents()">Cancella registro</button>
+  <div id="eventList"></div>
+</section>
 
-  <div class="chart-row">
-    <div class="chart-label">
-      <span>🟡 Medio</span>
-      <strong id="mediumCount">0</strong>
-    </div>
-    <div class="bar-track">
-      <div id="mediumBar" class="bar yellow"></div>
-    </div>
-  </div>
+<section class="panel">
+  <h2>ℹ️ Informazioni e limiti</h2>
+  <p>Questo laboratorio è uno strumento dimostrativo basato su regole semplici. Non è un antivirus, non monitora WhatsApp, non controlla iOS e non rileva realmente attacchi zero-click.</p>
+  <p>Non carica i contenuti inseriti su un server: le analisi vengono effettuate localmente nel browser.</p>
+</section>
 
-  <div class="chart-row">
-    <div class="chart-label">
-      <span>🔴 Alto</span>
-      <strong id="highCount">0</strong>
-    </div>
-    <div class="bar-track">
-      <div id="highBar" class="bar red"></div>
-    </div>
-  </div>
+</main>
 
-  <div class="chart-row">
-    <div class="chart-label">
-      <span>🛑 Bloccato</span>
-      <strong id="blockedCount">0</strong>
-    </div>
-    <div class="bar-track">
-      <div id="blockedBar" class="bar blue"></div>
-    </div>
-  </div>
-</div>
-
-<div class="panel">
-  <h2>🕒 Ultime 10 attività</h2>
-  <pre id="recentEvents">Nessuna attività registrata.</pre>
-</div>
-
-<div class="panel">
-  <h2>🔍 Analisi automatica</h2>
-  <input id="message" placeholder="Scrivi un messaggio di prova">
-  <button onclick="analyze()">Analizza messaggio</button>
-  <p id="result">In attesa di un test...</p>
-</div>
-
-<div class="panel">
-  <h2>📋 Registro analisi</h2>
-  <p>Analisi effettuate: <strong class="stat" id="total">0</strong></p>
-  <p>Input sospetti: <strong class="stat" id="suspicious">0</strong></p>
-  <div id="history">Nessun evento registrato.</div>
-  <button onclick="clearHistory()">Cancella registro analisi</button>
-</div>
-
-<div class="panel">
-  <h2>🧪 Simulazione Zero-Click</h2>
-  <p>Ambiente didattico isolato. Nessun exploit reale viene eseguito.</p>
-  <button onclick="runSimulation()">Avvia simulazione</button>
-  <div id="simulationResult"></div>
-</div>
-
-<div class="panel">
-  <h2>📁 Registro permanente</h2>
-  <button onclick="showEvents()">Aggiorna registro</button>
-  <button onclick="exportEvents()">📥 Esporta CSV</button>
-  <button onclick="clearEvents()">Cancella registro</button>
-  <pre id="eventLog">Nessun evento registrato.</pre>
-</div>
-
-<div class="panel">
-  <h2>🔎 Analisi del rischio</h2>
-  <input id="riskInput" placeholder="Inserisci un messaggio di prova">
-  <button onclick="checkRisk()">Analizza rischio</button>
-  <h3 id="riskLevel">In attesa di analisi</h3>
-  <p id="riskDetails"></p>
-</div>
-
-<div class="panel">
-  <h2>🧪 Test automatici</h2>
-  <p>Quattro prove didattiche per verificare il classificatore.</p>
-  <button onclick="runSecurityTests()">Esegui tutti i test</button>
-  <pre id="testResults">Test non ancora eseguiti.</pre>
-</div>
-
-<!-- MODULI ESISTENTI -->
-<script src="security.js"></script>
-<script src="dashboard.js"></script>
-<script src="simulation.js"></script>
-<script src="risk-analyzer.js"></script>
-<script src="security-tests.js"></script>
+<footer>Zero-Click Security Lab · Versione didattica</footer>
 
 <script>
+"use strict";
 
-// ANALISI AUTOMATICA
-function analyze() {
-  const message = document.getElementById("message").value;
+const STORAGE_EVENTS = "zeroClickLabEvents";
+const STORAGE_ALERTS = "zeroClickLabAlerts";
+const STORAGE_SOUND = "zeroClickLabSound";
 
-  if (!message.trim()) {
-    document.getElementById("result").textContent =
-      "Inserisci un messaggio.";
+function readStorage(key) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function getEvents() {
+  return readStorage(STORAGE_EVENTS);
+}
+
+function getAlerts() {
+  return readStorage(STORAGE_ALERTS);
+}
+
+function addEvent(type, status, detail) {
+  const events = getEvents();
+  events.unshift({
+    date: new Date().toISOString(),
+    type,
+    status,
+    detail: String(detail).slice(0, 500)
+  });
+  writeStorage(STORAGE_EVENTS, events.slice(0, 300));
+
+  if (status === "ALTO") {
+    addAlert(type, detail);
+  }
+}
+
+function addAlert(type, detail) {
+  const alerts = getAlerts();
+  alerts.unshift({
+    date: new Date().toISOString(),
+    type,
+    detail: String(detail).slice(0, 500)
+  });
+  writeStorage(STORAGE_ALERTS, alerts.slice(0, 100));
+
+  document.getElementById("alertStatus").innerHTML =
+    '<span class="high"><strong>⚠️ Rischio alto rilevato!</strong></span>';
+
+  if (document.getElementById("soundEnabled").checked) {
+    playAlertSound();
+  }
+}
+
+function analyzeText(message) {
+  const findings = [];
+  const text = String(message || "");
+
+  if (/<script\b/i.test(text)) findings.push("Presenza di un tag script");
+  if (/javascript\s*:/i.test(text)) findings.push("Schema javascript rilevato");
+  if (/onerror\s*=/i.test(text)) findings.push("Attributo onerror rilevato");
+  if (/https?:\/\//i.test(text)) findings.push("Presenza di un indirizzo web");
+
+  let risk = "BASSO";
+  if (findings.some(x =>
+    x.includes("script") ||
+    x.includes("javascript") ||
+    x.includes("onerror")
+  )) {
+    risk = "ALTO";
+  } else if (findings.length) {
+    risk = "MEDIO";
+  }
+
+  return {risk, findings};
+}
+
+function analyzeInput() {
+  const input = document.getElementById("analysisInput").value.trim();
+  const output = document.getElementById("analysisResult");
+
+  if (!input) {
+    output.textContent = "Inserisci prima un contenuto.";
     return;
   }
 
-  const event = SecurityLab.analyze(message);
+  const result = analyzeText(input);
+  const findings = result.findings.length
+    ? result.findings.join("; ")
+    : "Nessun indicatore previsto dalle regole semplici.";
 
-  document.getElementById("result").textContent =
-    event.status === "SOSPESO"
-      ? "⚠️ Input sospetto rilevato dalla simulazione."
-      : "✅ Nessun indicatore sospetto rilevato.";
-
-  updateDashboard();
+  output.textContent = "Risultato: " + result.risk + ". " + findings;
+  addEvent("Analisi contenuto", result.risk, findings);
+  refreshAll();
 }
 
-// REGISTRO ANALISI
-function updateDashboard() {
-  const report = SecurityLab.report();
-
-  document.getElementById("total").textContent = report.total;
-  document.getElementById("suspicious").textContent = report.suspicious;
-
-  document.getElementById("history").textContent =
-    report.history.map(e =>
-      e.time + " | " + e.status + " | " + e.message
-    ).join("\n") || "Nessun evento registrato.";
-}
-
-function clearHistory() {
-  SecurityLab.clear();
-  updateDashboard();
-}
-
-// SIMULAZIONE
 function runSimulation() {
-  const stages = ZeroClickSimulation.run();
+  const stages = [
+    "1. Ricezione ipotetica di un contenuto.",
+    "2. Valutazione teorica del contenuto.",
+    "3. Individuazione di possibili indicatori.",
+    "4. Simulazione di una misura di contenimento.",
+    "5. Registrazione del risultato didattico."
+  ];
 
   document.getElementById("simulationResult").textContent =
-    stages.map(stage =>
-      stage.name + "\n" +
-      stage.detail + "\n" +
-      "Stato: " + stage.status
-    ).join("\n\n");
+    stages.join("\n") + "\n\nSimulazione completata: nessun attacco reale eseguito.";
 
-  refreshDashboard();
-  showEvents();
+  addEvent("Simulazione Zero-Click", "BLOCCATO",
+    "Simulazione teorica completata.");
+  refreshAll();
 }
 
-// REGISTRO PERMANENTE
-function showEvents() {
-  const events = SecurityDashboard.getEvents();
+function runTests() {
+  const cases = [
+    {name:"Test testo normale", input:"Ciao, come stai?", expected:"BASSO"},
+    {name:"Test indirizzo web", input:"https://example.com", expected:"MEDIO"},
+    {name:"Test tag script", input:"<script>test</script>", expected:"ALTO"},
+    {name:"Test attributo", input:"onerror=alert(1)", expected:"ALTO"}
+  ];
 
-  document.getElementById("eventLog").textContent =
-    events.length
-      ? events.map(e =>
-          e.date + " | " + e.type + " | " + e.status +
-          "\n" + e.detail
-        ).join("\n\n")
-      : "Nessun evento registrato.";
+  const results = cases.map(test => {
+    const actual = analyzeText(test.input).risk;
+    return {
+      name:test.name,
+      passed:actual === test.expected,
+      actual,
+      expected:test.expected
+    };
+  });
+
+  const passed = results.filter(x => x.passed).length;
+  document.getElementById("testResult").textContent =
+    results.map(x =>
+      (x.passed ? "✅ " : "❌ ") + x.name +
+      " — atteso: " + x.expected + ", ottenuto: " + x.actual
+    ).join("\n") +
+    "\n\nRisultato: " + passed + " test superati su " + results.length + ".";
+
+  addEvent("Test automatici", passed === results.length ? "BASSO" : "MEDIO",
+    passed + " test superati su " + results.length);
+  refreshAll();
 }
 
-function clearEvents() {
-  if (confirm("Vuoi cancellare lo storico permanente?")) {
-    SecurityDashboard.clear();
-    showEvents();
-    refreshDashboard();
+function playAlertSound() {
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+
+    const context = new AudioContextClass();
+    [660, 880].forEach((frequency, index) => {
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      oscillator.frequency.value = frequency;
+      oscillator.connect(gain);
+      gain.connect(context.destination);
+      gain.gain.setValueAtTime(0.12, context.currentTime + index * 0.2);
+      oscillator.start(context.currentTime + index * 0.2);
+      oscillator.stop(context.currentTime + index * 0.2 + 0.15);
+    });
+    setTimeout(() => context.close(), 800);
+  } catch (error) {
+    console.warn("Audio non disponibile", error);
   }
 }
 
-// ESPORTAZIONE CSV
-function exportEvents() {
-  const events = SecurityDashboard.getEvents();
+function testAlertSound() {
+  playAlertSound();
+}
 
+function renderAlerts() {
+  const alerts = getAlerts();
+  const box = document.getElementById("alertHistory");
+  document.getElementById("alertCount").textContent = alerts.length;
+
+  if (!alerts.length) {
+    box.textContent = "Nessun allarme registrato.";
+    document.getElementById("alertStatus").textContent =
+      "Nessun allarme attivo.";
+    return;
+  }
+
+  document.getElementById("alertStatus").textContent =
+    "Storico disponibile: " + alerts.length + " allarmi.";
+
+  box.replaceChildren();
+  alerts.slice(0, 20).forEach(alert => {
+    const item = document.createElement("div");
+    item.className = "alert";
+    const title = document.createElement("strong");
+    title.textContent = "⚠️ " + alert.type;
+    const detail = document.createElement("div");
+    detail.textContent = alert.detail;
+    const date = document.createElement("div");
+    date.className = "small";
+    date.textContent = new Date(alert.date).toLocaleString("it-IT");
+    item.append(title, detail, date);
+    box.appendChild(item);
+  });
+}
+
+function clearAlerts() {
+  if (!confirm("Vuoi cancellare lo storico degli allarmi?")) return;
+  writeStorage(STORAGE_ALERTS, []);
+  renderAlerts();
+  refreshAll();
+}
+
+function renderEvents() {
+  const events = getEvents();
+  const box = document.getElementById("eventList");
+  box.replaceChildren();
+
+  if (!events.length) {
+    box.textContent = "Nessun evento registrato.";
+    return;
+  }
+
+  events.slice(0, 30).forEach(event => {
+    const item = document.createElement("div");
+    item.className = "event";
+
+    const title = document.createElement("strong");
+    title.textContent = event.type + " — " + event.status;
+
+    const detail = document.createElement("div");
+    detail.textContent = event.detail;
+
+    const date = document.createElement("div");
+    date.className = "small";
+    date.textContent = new Date(event.date).toLocaleString("it-IT");
+
+    item.append(title, detail, date);
+    box.appendChild(item);
+  });
+}
+
+function clearEvents() {
+  if (!confirm("Vuoi cancellare tutto il registro eventi?")) return;
+  writeStorage(STORAGE_EVENTS, []);
+  refreshAll();
+}
+
+function exportCSV() {
+  const events = getEvents();
   if (!events.length) {
     alert("Non ci sono eventi da esportare.");
     return;
@@ -337,215 +422,99 @@ function exportEvents() {
     ...events.map(e => [e.date, e.type, e.status, e.detail])
   ];
 
-  const csv = "\uFEFF" +
-    rows.map(row => row.map(escapeCSV).join(";")).join("\r\n");
+  const csv = "\uFEFF" + rows.map(row =>
+    row.map(escapeCSV).join(";")
+  ).join("\n");
 
-  const blob = new Blob([csv], {
-    type: "text/csv;charset=utf-8;"
-  });
-
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
-
   link.href = url;
-  link.download = "registro-security-lab.csv";
-
-  document.body.appendChild(link);
+  link.download = "zero-click-security-log.csv";
   link.click();
-  link.remove();
-
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  URL.revokeObjectURL(url);
 }
 
-// ANALISI DEL RISCHIO
-function checkRisk() {
-  const message = document.getElementById("riskInput").value;
-
-  if (!message.trim()) {
-    document.getElementById("riskLevel").textContent =
-      "Inserisci un messaggio.";
-    document.getElementById("riskDetails").textContent = "";
-    return;
-  }
-
-  const result = RiskAnalyzer.analyze(message);
-
-  document.getElementById("riskLevel").textContent =
-    "Livello di rischio: " + result.risk;
-
-  document.getElementById("riskDetails").textContent =
-    result.findings.map(f =>
-      f.level + " - " + f.reason
-    ).join("\n") || "Nessun indicatore rilevato.";
-
-  // Registra anche l'analisi del rischio
-  SecurityDashboard.addEvent(
-    "Analisi rischio",
-    result.risk,
-    "Messaggio analizzato: " + message +
-    " | Rilevamenti: " +
-    (result.findings.map(f => f.reason).join(", ") || "Nessuno")
-  );
-
-  refreshDashboard();
-  showEvents();
+function setBar(id, count, total) {
+  document.getElementById(id).style.width =
+    total ? (count / total * 100) + "%" : "0%";
 }
 
-// TEST AUTOMATICI
-function runSecurityTests() {
-  const results = SecurityTests.run();
-
-  document.getElementById("testResults").textContent =
-    results.map(test =>
-      (test.passed ? "✅ " : "❌ ") +
-      test.name +
-      "\nAtteso: " + test.expected +
-      " | Ottenuto: " + test.actual
-    ).join("\n\n");
-}
-
-// DASHBOARD AVANZATA
-function refreshDashboard() {
-  const events = SecurityDashboard.getEvents();
-
-  const risks = {
-    BASSO: 0,
-    MEDIO: 0,
-    ALTO: 0,
-    BLOCCATO: 0
-  };
-
-  events.forEach(event => {
-    const status = String(event.status || "").toUpperCase();
-
-    if (status.includes("BASSO")) risks.BASSO++;
-    if (status.includes("MEDIO")) risks.MEDIO++;
-    if (status.includes("ALTO")) risks.ALTO++;
-    if (status.includes("BLOCCATO")) risks.BLOCCATO++;
-  });
-
-  const total = events.length;
-  const riskTotal = risks.BASSO + risks.MEDIO + risks.ALTO;
-  const percentage = riskTotal
-    ? Math.round((risks.ALTO / riskTotal) * 100)
-    : 0;
-
-  document.getElementById("statTotal").textContent = total;
-  document.getElementById("statHigh").textContent = risks.ALTO;
-  document.getElementById("statPercentage").textContent =
-    percentage + "%";
-
-  document.getElementById("lastActivity").textContent =
-    events.length ? events[0].date : "Nessuna";
-
-  document.getElementById("lowCount").textContent = risks.BASSO;
-  document.getElementById("mediumCount").textContent = risks.MEDIO;
-  document.getElementById("highCount").textContent = risks.ALTO;
-  document.getElementById("blockedCount").textContent = risks.BLOCCATO;
-
-  const max = Math.max(
-    risks.BASSO, risks.MEDIO, risks.ALTO, risks.BLOCCATO, 1
-  );
-
-  document.getElementById("lowBar").style.width =
-    (risks.BASSO / max * 100) + "%";
-
-  document.getElementById("mediumBar").style.width =
-    (risks.MEDIO / max * 100) + "%";
-
-  document.getElementById("highBar").style.width =
-    (risks.ALTO / max * 100) + "%";
-
-  document.getElementById("blockedBar").style.width =
-    (risks.BLOCCATO / max * 100) + "%";
-
-  // Attività recenti
-  document.getElementById("recentEvents").textContent =
-    events.length
-      ? events.slice(0, 10).map(e =>
-          e.date + " | " + e.type + " | " + e.status +
-          "\n" + e.detail
-        ).join("\n\n")
-      : "Nessuna attività registrata.";
-
-  // Grafico degli ultimi sette giorni
-  drawWeeklyChart(events);
-}
-
-// GRAFICO SETTIMANALE
 function drawWeeklyChart(events) {
-  const container = document.getElementById("weeklyChart");
-  container.textContent = "";
+  const chart = document.getElementById("weeklyChart");
+  chart.replaceChildren();
 
-  const days = [];
-
-  for (let i = 6; i >= 0; i--) {
+  for (let offset = 6; offset >= 0; offset--) {
     const date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() - i);
+    date.setHours(0,0,0,0);
+    date.setDate(date.getDate() - offset);
 
-    const key = date.getFullYear() + "-" +
-      String(date.getMonth() + 1).padStart(2, "0") + "-" +
-      String(date.getDate()).padStart(2, "0");
+    const count = events.filter(event => {
+      const eventDate = new Date(event.date);
+      return !isNaN(eventDate) &&
+        eventDate.toDateString() === date.toDateString();
+    }).length;
 
-    days.push({
-      key,
-      label: date.toLocaleDateString("it-IT", {
-        weekday: "short",
-        day: "2-digit"
-      }),
-      count: 0
-    });
-  }
+    const day = document.createElement("div");
+    day.className = "day";
 
-  events.forEach(event => {
-    const date = new Date(event.date);
-
-    if (isNaN(date.getTime())) return;
-
-    const key = date.getFullYear() + "-" +
-      String(date.getMonth() + 1).padStart(2, "0") + "-" +
-      String(date.getDate()).padStart(2, "0");
-
-    const day = days.find(item => item.key === key);
-    if (day) day.count++;
-  });
-
-  const max = Math.max(...days.map(day => day.count), 1);
-
-  days.forEach(day => {
-    const row = document.createElement("div");
-    row.className = "chart-row";
-
-    const label = document.createElement("div");
-    label.className = "chart-label";
-
-    const name = document.createElement("span");
-    name.textContent = day.label;
-
-    const value = document.createElement("strong");
-    value.textContent = day.count;
-
-    label.append(name, value);
-
-    const track = document.createElement("div");
-    track.className = "bar-track";
+    const number = document.createElement("span");
+    number.textContent = count;
 
     const bar = document.createElement("div");
-    bar.className = "bar blue";
-    bar.style.width = (day.count / max * 100) + "%";
+    bar.className = "day-bar";
+    bar.style.height = Math.max(2, count * 16) + "px";
 
-    track.appendChild(bar);
-    row.append(label, track);
-    container.appendChild(row);
-  });
+    const label = document.createElement("span");
+    label.textContent = date.toLocaleDateString("it-IT", {weekday:"short"});
+
+    day.append(number, bar, label);
+    chart.appendChild(day);
+  }
 }
 
-// AVVIO INIZIALE
-updateDashboard();
-showEvents();
-refreshDashboard();
+function refreshAll() {
+  const events = getEvents();
+  const total = events.length;
+  const count = status => events.filter(e => e.status === status).length;
+  const low = count("BASSO");
+  const medium = count("MEDIO");
+  const high = count("ALTO");
+  const blocked = count("BLOCCATO");
 
+  document.getElementById("total").textContent = total;
+  document.getElementById("highCount").textContent = high;
+  document.getElementById("highPercent").textContent =
+    (total ? Math.round(high / total * 100) : 0) + "%";
+
+  const latest = events[0];
+  document.getElementById("lastActivity").textContent = latest
+    ? "Ultima attività: " + new Date(latest.date).toLocaleString("it-IT")
+    : "Ultima attività: nessuna";
+
+  const values = [
+    ["Low", low], ["Medium", medium],
+    ["High", high], ["Blocked", blocked]
+  ];
+
+  values.forEach(([name, value]) => {
+    document.getElementById("num" + name).textContent = value;
+    setBar("bar" + name, value, total);
+  });
+
+  drawWeeklyChart(events);
+  renderEvents();
+  renderAlerts();
+}
+
+document.getElementById("soundEnabled").checked =
+  localStorage.getItem(STORAGE_SOUND) === "true";
+
+document.getElementById("soundEnabled").addEventListener("change", event => {
+  localStorage.setItem(STORAGE_SOUND, String(event.target.checked));
+});
+
+refreshAll();
 </script>
 
 </body>

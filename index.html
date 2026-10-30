@@ -137,5 +137,35 @@ function runSimulation() {
 </script>
 </body>
 
+<script src="dashboard.js"></script>
+
+<div class="panel">
+  <h2>📊 Registro permanente</h2>
+  <button onclick="showEvents()">Aggiorna registro</button>
+  <button onclick="clearEvents()">Cancella registro</button>
+  <pre id="eventLog">Nessun evento registrato.</pre>
+</div>
+
+<script>
+function showEvents() {
+  const events = SecurityDashboard.getEvents();
+
+  document.getElementById("eventLog").textContent =
+    events.length
+      ? events.map(e =>
+          `${e.date} | ${e.type} | ${e.status}\n${e.detail}`
+        ).join("\n\n")
+      : "Nessun evento registrato.";
+}
+
+function clearEvents() {
+  if (confirm("Vuoi cancellare lo storico?")) {
+    SecurityDashboard.clear();
+    showEvents();
+  }
+}
+</script>
+</body>
+
 </body>
 </html>

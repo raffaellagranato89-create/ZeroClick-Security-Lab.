@@ -17,13 +17,13 @@ body {
   margin: 0;
 }
 
-h1 { font-size: 28px; }
+h1 { font-size: 27px; }
 
 .panel {
   background: #1e293b;
-  padding: 20px;
+  padding: 18px;
   border-radius: 14px;
-  margin: 18px 0;
+  margin: 17px 0;
   overflow-wrap: anywhere;
 }
 
@@ -37,15 +37,58 @@ input {
 }
 
 button {
-  padding: 14px 18px;
+  padding: 13px 17px;
   border: 0;
   border-radius: 8px;
   margin: 5px 2px;
   background: #16a34a;
   color: white;
   font-weight: bold;
-  font-size: 15px;
-  cursor: pointer;
+  font-size: 14px;
+}
+
+.stat {
+  font-size: 23px;
+  font-weight: bold;
+  color: #4ade80;
+}
+
+.metric {
+  background: #334155;
+  border-radius: 10px;
+  padding: 14px;
+  margin: 9px 0;
+}
+
+.bar-track {
+  background: #475569;
+  height: 13px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 8px 0 14px;
+}
+
+.bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+  transition: width .3s;
+}
+
+.green { background: #22c55e; }
+.yellow { background: #eab308; }
+.red { background: #ef4444; }
+.blue { background: #38bdf8; }
+
+.chart-row {
+  margin: 12px 0;
+}
+
+.chart-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
 }
 
 pre, #history, #simulationResult,
@@ -54,10 +97,9 @@ pre, #history, #simulationResult,
   overflow-wrap: anywhere;
 }
 
-.stat {
-  font-size: 22px;
-  font-weight: bold;
-  color: #4ade80;
+.small {
+  color: #cbd5e1;
+  font-size: 13px;
 }
 </style>
 </head>
@@ -68,23 +110,101 @@ pre, #history, #simulationResult,
 <p>Laboratorio didattico di sicurezza informatica</p>
 
 <div class="panel">
+  <h2>📊 Dashboard generale</h2>
+
+  <div class="metric">
+    Eventi registrati:
+    <div class="stat" id="statTotal">0</div>
+  </div>
+
+  <div class="metric">
+    Analisi ad alto rischio:
+    <div class="stat" id="statHigh">0</div>
+  </div>
+
+  <div class="metric">
+    Percentuale alto rischio:
+    <div class="stat" id="statPercentage">0%</div>
+  </div>
+
+  <div class="metric">
+    Ultima attività:
+    <strong id="lastActivity">Nessuna</strong>
+  </div>
+
+  <button onclick="refreshDashboard()">
+    🔄 Aggiorna dashboard
+  </button>
+</div>
+
+<div class="panel">
+  <h2>📈 Eventi ultimi 7 giorni</h2>
+  <p class="small">Numero di eventi registrati per giornata.</p>
+  <div id="weeklyChart"></div>
+</div>
+
+<div class="panel">
+  <h2>🚦 Distribuzione dei rischi</h2>
+
+  <div class="chart-row">
+    <div class="chart-label">
+      <span>🟢 Basso</span>
+      <strong id="lowCount">0</strong>
+    </div>
+    <div class="bar-track">
+      <div id="lowBar" class="bar green"></div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-label">
+      <span>🟡 Medio</span>
+      <strong id="mediumCount">0</strong>
+    </div>
+    <div class="bar-track">
+      <div id="mediumBar" class="bar yellow"></div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-label">
+      <span>🔴 Alto</span>
+      <strong id="highCount">0</strong>
+    </div>
+    <div class="bar-track">
+      <div id="highBar" class="bar red"></div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-label">
+      <span>🛑 Bloccato</span>
+      <strong id="blockedCount">0</strong>
+    </div>
+    <div class="bar-track">
+      <div id="blockedBar" class="bar blue"></div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>🕒 Ultime 10 attività</h2>
+  <pre id="recentEvents">Nessuna attività registrata.</pre>
+</div>
+
+<div class="panel">
   <h2>🔍 Analisi automatica</h2>
-  <p>Inserisci un messaggio di prova.</p>
-  <input id="message" placeholder="Scrivi un messaggio...">
+  <input id="message" placeholder="Scrivi un messaggio di prova">
   <button onclick="analyze()">Analizza messaggio</button>
   <p id="result">In attesa di un test...</p>
 </div>
 
 <div class="panel">
-  <h2>📊 Statistiche</h2>
-  <p>Analisi effettuate: <span class="stat" id="total">0</span></p>
-  <p>Input sospetti: <span class="stat" id="suspicious">0</span></p>
-</div>
-
-<div class="panel">
-  <h2>📋 Registro eventi</h2>
+  <h2>📋 Registro analisi</h2>
+  <p>Analisi effettuate: <strong class="stat" id="total">0</strong></p>
+  <p>Input sospetti: <strong class="stat" id="suspicious">0</strong></p>
   <div id="history">Nessun evento registrato.</div>
-  <button onclick="clearHistory()">Cancella registro</button>
+  <button onclick="clearHistory()">Cancella registro analisi</button>
 </div>
 
 <div class="panel">
@@ -95,25 +215,11 @@ pre, #history, #simulationResult,
 </div>
 
 <div class="panel">
-  <h2>📊 Registro permanente</h2>
+  <h2>📁 Registro permanente</h2>
   <button onclick="showEvents()">Aggiorna registro</button>
+  <button onclick="exportEvents()">📥 Esporta CSV</button>
   <button onclick="clearEvents()">Cancella registro</button>
-  <button onclick="exportEvents()">📥 Esporta registro CSV</button>
   <pre id="eventLog">Nessun evento registrato.</pre>
-</div>
-
-<div class="panel">
-  <h2>🛡️ Centro di sicurezza</h2>
-  <p>Eventi registrati:
-    <strong class="stat" id="statTotal">0</strong>
-  </p>
-  <p>Contenuti bloccati:
-    <strong class="stat" id="statBlocked">0</strong>
-  </p>
-  <p>Ultima attività:
-    <strong id="lastActivity">Nessuna</strong>
-  </p>
-  <button onclick="refreshStats()">Aggiorna statistiche</button>
 </div>
 
 <div class="panel">
@@ -126,12 +232,12 @@ pre, #history, #simulationResult,
 
 <div class="panel">
   <h2>🧪 Test automatici</h2>
-  <p>Verifica il funzionamento del sistema con quattro prove didattiche.</p>
+  <p>Quattro prove didattiche per verificare il classificatore.</p>
   <button onclick="runSecurityTests()">Esegui tutti i test</button>
   <pre id="testResults">Test non ancora eseguiti.</pre>
 </div>
 
-<!-- MODULI JAVASCRIPT -->
+<!-- MODULI ESISTENTI -->
 <script src="security.js"></script>
 <script src="dashboard.js"></script>
 <script src="simulation.js"></script>
@@ -160,15 +266,12 @@ function analyze() {
   updateDashboard();
 }
 
-// AGGIORNAMENTO REGISTRO
+// REGISTRO ANALISI
 function updateDashboard() {
   const report = SecurityLab.report();
 
-  document.getElementById("total").textContent =
-    report.total;
-
-  document.getElementById("suspicious").textContent =
-    report.suspicious;
+  document.getElementById("total").textContent = report.total;
+  document.getElementById("suspicious").textContent = report.suspicious;
 
   document.getElementById("history").textContent =
     report.history.map(e =>
@@ -176,13 +279,12 @@ function updateDashboard() {
     ).join("\n") || "Nessun evento registrato.";
 }
 
-// CANCELLA REGISTRO ANALISI
 function clearHistory() {
   SecurityLab.clear();
   updateDashboard();
 }
 
-// SIMULAZIONE DIDATTICA
+// SIMULAZIONE
 function runSimulation() {
   const stages = ZeroClickSimulation.run();
 
@@ -193,7 +295,7 @@ function runSimulation() {
       "Stato: " + stage.status
     ).join("\n\n");
 
-  refreshStats();
+  refreshDashboard();
   showEvents();
 }
 
@@ -210,16 +312,15 @@ function showEvents() {
       : "Nessun evento registrato.";
 }
 
-// CANCELLA REGISTRO PERMANENTE
 function clearEvents() {
-  if (confirm("Vuoi cancellare lo storico?")) {
+  if (confirm("Vuoi cancellare lo storico permanente?")) {
     SecurityDashboard.clear();
     showEvents();
-    refreshStats();
+    refreshDashboard();
   }
 }
 
-// ESPORTAZIONE REGISTRO CSV
+// ESPORTAZIONE CSV
 function exportEvents() {
   const events = SecurityDashboard.getEvents();
 
@@ -233,18 +334,11 @@ function exportEvents() {
 
   const rows = [
     ["Data", "Tipo", "Stato", "Dettaglio"],
-    ...events.map(e => [
-      e.date,
-      e.type,
-      e.status,
-      e.detail
-    ])
+    ...events.map(e => [e.date, e.type, e.status, e.detail])
   ];
 
   const csv = "\uFEFF" +
-    rows.map(row =>
-      row.map(escapeCSV).join(";")
-    ).join("\r\n");
+    rows.map(row => row.map(escapeCSV).join(";")).join("\r\n");
 
   const blob = new Blob([csv], {
     type: "text/csv;charset=utf-8;"
@@ -261,20 +355,6 @@ function exportEvents() {
   link.remove();
 
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-// CENTRO DI SICUREZZA
-function refreshStats() {
-  const events = SecurityDashboard.getEvents();
-
-  document.getElementById("statTotal").textContent =
-    events.length;
-
-  document.getElementById("statBlocked").textContent =
-    events.filter(e => e.status === "BLOCCATO").length;
-
-  document.getElementById("lastActivity").textContent =
-    events.length ? events[0].date : "Nessuna";
 }
 
 // ANALISI DEL RISCHIO
@@ -297,6 +377,18 @@ function checkRisk() {
     result.findings.map(f =>
       f.level + " - " + f.reason
     ).join("\n") || "Nessun indicatore rilevato.";
+
+  // Registra anche l'analisi del rischio
+  SecurityDashboard.addEvent(
+    "Analisi rischio",
+    result.risk,
+    "Messaggio analizzato: " + message +
+    " | Rilevamenti: " +
+    (result.findings.map(f => f.reason).join(", ") || "Nessuno")
+  );
+
+  refreshDashboard();
+  showEvents();
 }
 
 // TEST AUTOMATICI
@@ -312,10 +404,147 @@ function runSecurityTests() {
     ).join("\n\n");
 }
 
-// AGGIORNAMENTO INIZIALE
+// DASHBOARD AVANZATA
+function refreshDashboard() {
+  const events = SecurityDashboard.getEvents();
+
+  const risks = {
+    BASSO: 0,
+    MEDIO: 0,
+    ALTO: 0,
+    BLOCCATO: 0
+  };
+
+  events.forEach(event => {
+    const status = String(event.status || "").toUpperCase();
+
+    if (status.includes("BASSO")) risks.BASSO++;
+    if (status.includes("MEDIO")) risks.MEDIO++;
+    if (status.includes("ALTO")) risks.ALTO++;
+    if (status.includes("BLOCCATO")) risks.BLOCCATO++;
+  });
+
+  const total = events.length;
+  const riskTotal = risks.BASSO + risks.MEDIO + risks.ALTO;
+  const percentage = riskTotal
+    ? Math.round((risks.ALTO / riskTotal) * 100)
+    : 0;
+
+  document.getElementById("statTotal").textContent = total;
+  document.getElementById("statHigh").textContent = risks.ALTO;
+  document.getElementById("statPercentage").textContent =
+    percentage + "%";
+
+  document.getElementById("lastActivity").textContent =
+    events.length ? events[0].date : "Nessuna";
+
+  document.getElementById("lowCount").textContent = risks.BASSO;
+  document.getElementById("mediumCount").textContent = risks.MEDIO;
+  document.getElementById("highCount").textContent = risks.ALTO;
+  document.getElementById("blockedCount").textContent = risks.BLOCCATO;
+
+  const max = Math.max(
+    risks.BASSO, risks.MEDIO, risks.ALTO, risks.BLOCCATO, 1
+  );
+
+  document.getElementById("lowBar").style.width =
+    (risks.BASSO / max * 100) + "%";
+
+  document.getElementById("mediumBar").style.width =
+    (risks.MEDIO / max * 100) + "%";
+
+  document.getElementById("highBar").style.width =
+    (risks.ALTO / max * 100) + "%";
+
+  document.getElementById("blockedBar").style.width =
+    (risks.BLOCCATO / max * 100) + "%";
+
+  // Attività recenti
+  document.getElementById("recentEvents").textContent =
+    events.length
+      ? events.slice(0, 10).map(e =>
+          e.date + " | " + e.type + " | " + e.status +
+          "\n" + e.detail
+        ).join("\n\n")
+      : "Nessuna attività registrata.";
+
+  // Grafico degli ultimi sette giorni
+  drawWeeklyChart(events);
+}
+
+// GRAFICO SETTIMANALE
+function drawWeeklyChart(events) {
+  const container = document.getElementById("weeklyChart");
+  container.textContent = "";
+
+  const days = [];
+
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() - i);
+
+    const key = date.getFullYear() + "-" +
+      String(date.getMonth() + 1).padStart(2, "0") + "-" +
+      String(date.getDate()).padStart(2, "0");
+
+    days.push({
+      key,
+      label: date.toLocaleDateString("it-IT", {
+        weekday: "short",
+        day: "2-digit"
+      }),
+      count: 0
+    });
+  }
+
+  events.forEach(event => {
+    const date = new Date(event.date);
+
+    if (isNaN(date.getTime())) return;
+
+    const key = date.getFullYear() + "-" +
+      String(date.getMonth() + 1).padStart(2, "0") + "-" +
+      String(date.getDate()).padStart(2, "0");
+
+    const day = days.find(item => item.key === key);
+    if (day) day.count++;
+  });
+
+  const max = Math.max(...days.map(day => day.count), 1);
+
+  days.forEach(day => {
+    const row = document.createElement("div");
+    row.className = "chart-row";
+
+    const label = document.createElement("div");
+    label.className = "chart-label";
+
+    const name = document.createElement("span");
+    name.textContent = day.label;
+
+    const value = document.createElement("strong");
+    value.textContent = day.count;
+
+    label.append(name, value);
+
+    const track = document.createElement("div");
+    track.className = "bar-track";
+
+    const bar = document.createElement("div");
+    bar.className = "bar blue";
+    bar.style.width = (day.count / max * 100) + "%";
+
+    track.appendChild(bar);
+    row.append(label, track);
+    container.appendChild(row);
+  });
+}
+
+// AVVIO INIZIALE
 updateDashboard();
 showEvents();
-refreshStats();
+refreshDashboard();
 
 </script>
 

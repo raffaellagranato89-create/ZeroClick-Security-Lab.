@@ -238,8 +238,29 @@ function checkRisk() {
     ).join("\n") || "Nessun indicatore rilevato.";
 }
 </script>
-</body>
 
+<script src="security-tests.js"></script>
 
+<div class="panel">
+  <h2>🧪 Test automatici</h2>
+  <button onclick="runSecurityTests()">
+    Esegui tutti i test
+  </button>
+  <pre id="testResults">Test non ancora eseguiti.</pre>
+</div>
+
+<script>
+function runSecurityTests() {
+  const results = SecurityTests.run();
+
+  document.getElementById("testResults").textContent =
+    results.map(test =>
+      (test.passed ? "✅ " : "❌ ") +
+      test.name +
+      "\nAtteso: " + test.expected +
+      " | Ottenuto: " + test.actual
+    ).join("\n\n");
+}
+</script>
 </body>
 </html>

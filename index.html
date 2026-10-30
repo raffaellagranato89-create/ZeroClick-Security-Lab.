@@ -203,7 +203,43 @@ function refreshStats() {
 
 refreshStats();
 </script>
+
+<script src="risk-analyzer.js"></script>
+
+<div class="panel">
+  <h2>🔍 Analisi del rischio</h2>
+  <input id="riskInput"
+         placeholder="Inserisci un messaggio di prova">
+
+  <button onclick="checkRisk()">Analizza rischio</button>
+
+  <h3 id="riskLevel">In attesa di analisi</h3>
+  <p id="riskDetails"></p>
+</div>
+
+<script>
+function checkRisk() {
+  const message = document.getElementById("riskInput").value;
+
+  if (!message.trim()) {
+    document.getElementById("riskLevel").textContent =
+      "Inserisci un messaggio.";
+    return;
+  }
+
+  const result = RiskAnalyzer.analyze(message);
+
+  document.getElementById("riskLevel").textContent =
+    "Livello di rischio: " + result.risk;
+
+  document.getElementById("riskDetails").textContent =
+    result.findings.map(f =>
+      f.level + " - " + f.reason
+    ).join("\n") || "Nessun indicatore rilevato.";
+}
+</script>
 </body>
+
 
 </body>
 </html>

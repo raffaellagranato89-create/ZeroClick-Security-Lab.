@@ -14,6 +14,7 @@ targets:
       - path: ios
     settings:
       base:
+        GENERATE_INFOPLIST_FILE: YES
         PRODUCT_BUNDLE_IDENTIFIER: com.zeroclicksecurity.personal
         PRODUCT_NAME: ZeroClickSecurity
         SWIFT_VERSION: "5.0"

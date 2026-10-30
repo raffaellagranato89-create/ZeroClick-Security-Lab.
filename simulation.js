@@ -6,42 +6,32 @@ const ZeroClickSimulation = {
     this.stages = [];
 
     const add = (name, detail, status) => {
-      this.stages.push({
-        name,
-        detail,
-        status
-      });
+      this.stages.push({ name, detail, status });
     };
 
-    add(
-      "1. Ricezione automatica",
-      "Il dispositivo riceve un messaggio di prova.",
-      "OK"
-    );
+    add("1. Ricezione automatica",
+        "Messaggio di prova ricevuto.", "OK");
 
-    add(
-      "2. Elaborazione automatica",
-      "Un componente software analizza i dati ricevuti senza intervento dell'utente.",
-      "OK"
-    );
+    add("2. Elaborazione automatica",
+        "Analisi dei dati senza intervento dell'utente.", "OK");
 
-    add(
-      "3. Vulnerabilità simulata",
-      "Il laboratorio simula un errore nella validazione dei dati. Nessun codice viene eseguito.",
-      "SIMULAZIONE"
-    );
+    add("3. Vulnerabilità simulata",
+        "Errore di validazione simulato. Nessun codice eseguito.",
+        "SIMULAZIONE");
 
-    add(
-      "4. Controllo di sicurezza",
-      "Il sistema verifica il contenuto prima di elaborarlo.",
-      "CONTROLLO"
-    );
+    add("4. Controllo di sicurezza",
+        "Verifica dei dati prima dell'elaborazione.", "CONTROLLO");
 
-    add(
-      "5. Protezione attivata",
-      "Il contenuto non valido viene isolato e non viene eseguito.",
-      "BLOCCATO"
-    );
+    add("5. Protezione attivata",
+        "Contenuto isolato e non eseguito.", "BLOCCATO");
+
+    if (window.SecurityDashboard) {
+      SecurityDashboard.addEvent(
+        "Simulazione Zero-Click",
+        "BLOCCATO",
+        "Simulazione completata: contenuto di prova isolato."
+      );
+    }
 
     return this.stages;
   }

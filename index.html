@@ -167,5 +167,43 @@ function clearEvents() {
 </script>
 </body>
 
+<div class="panel">
+  <h2>📊 Centro di sicurezza</h2>
+
+  <p>Simulazioni effettuate:
+    <strong id="statTotal">0</strong>
+  </p>
+
+  <p>Contenuti bloccati:
+    <strong id="statBlocked">0</strong>
+  </p>
+
+  <p>Ultima attività:
+    <strong id="lastActivity">Nessuna</strong>
+  </p>
+
+  <button onclick="refreshStats()">
+    Aggiorna statistiche
+  </button>
+</div>
+
+<script>
+function refreshStats() {
+  const events = SecurityDashboard.getEvents();
+
+  document.getElementById("statTotal").textContent =
+    events.length;
+
+  document.getElementById("statBlocked").textContent =
+    events.filter(e => e.status === "BLOCCATO").length;
+
+  document.getElementById("lastActivity").textContent =
+    events.length ? events[0].date : "Nessuna";
+}
+
+refreshStats();
+</script>
+</body>
+
 </body>
 </html>

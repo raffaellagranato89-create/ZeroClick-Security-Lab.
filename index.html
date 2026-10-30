@@ -10,64 +10,105 @@ body {
   font-family: Arial, sans-serif;
   background: #101827;
   color: white;
-  padding: 25px;
+  padding: 20px;
 }
 .panel {
   background: #1e293b;
   padding: 20px;
   border-radius: 12px;
-  margin-top: 20px;
+  margin: 15px 0;
+}
+input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 13px;
+  margin: 12px 0;
 }
 button {
   padding: 12px;
   border: 0;
   border-radius: 8px;
+  margin: 4px;
   background: #16a34a;
   color: white;
   font-weight: bold;
 }
-input {
-  width: 95%;
-  padding: 12px;
-  margin: 12px 0;
+#result, #history {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
-#result { white-space: pre-wrap; }
+.stat {
+  font-size: 22px;
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
+
 <h1>🛡️ Zero-Click Security Lab</h1>
-<p>Simulatore didattico di sicurezza informatica</p>
+<p>Laboratorio didattico di sicurezza informatica</p>
 
 <div class="panel">
-  <h2>Simulazione ricezione automatica</h2>
-  <input id="message" placeholder="Inserisci un messaggio di prova">
-  <button onclick="analyze()">Analizza messaggio</button>
-  <h3>Risultato analisi</h3>
-  <p id="result">In attesa di un messaggio...</p>
+<h2>Analisi automatica simulata</h2>
+<input id="message" placeholder="Inserisci un messaggio di prova">
+<button onclick="analyze()">Analizza</button>
+<p id="result">In attesa di un test...</p>
 </div>
+
+<div class="panel">
+<h2>Statistiche</h2>
+<p>Analisi effettuate: <span class="stat" id="total">0</span></p>
+<p>Input sospetti: <span class="stat" id="suspicious">0</span></p>
+</div>
+
+<div class="panel">
+<h2>Registro eventi</h2>
+<div id="history">Nessun evento registrato.</div>
+<button onclick="clearHistory()">Cancella registro</button>
+</div>
+
+<script src="security.js"></script>
 
 <script>
 function analyze() {
   const message = document.getElementById("message").value;
-  const result = document.getElementById("result");
 
   if (!message.trim()) {
-    result.textContent = "Inserisci un messaggio.";
+    document.getElementById("result").textContent =
+      "Inserisci un messaggio.";
     return;
   }
 
-  const suspicious = /<script|javascript:|onerror\s*=/i.test(message);
+  const event = SecurityLab.analyze(message);
 
-  if (suspicious) {
-    result.textContent =
-      "⚠️ Input sospetto rilevato.\n" +
-      "Il contenuto è stato bloccato dalla simulazione.";
-  } else {
-    result.textContent =
-      "✅ Nessun indicatore sospetto rilevato.\n" +
-      "Messaggio elaborato come testo semplice.";
-  }
+  document.getElementById("result").textContent =
+    event.status === "SOSPESO"
+    ? "⚠️ Input sospetto bloccato dalla simulazione."
+    : "✅ Nessun indicatore sospetto rilevato.";
+
+  updateDashboard();
+}
+
+function updateDashboard() {
+  const report = SecurityLab.report();
+
+  document.getElementById("total").textContent =
+    report.total;
+
+  document.getElementById("suspicious").textContent =
+    report.suspicious;
+
+  document.getElementById("history").textContent =
+    report.history.map(e =>
+      e.time + " | " + e.status + " | " + e.message
+    ).join("\n") || "Nessun evento registrato.";
+}
+
+function clearHistory() {
+  SecurityLab.clear();
+  updateDashboard();
 }
 </script>
+
 </body>
 </html>

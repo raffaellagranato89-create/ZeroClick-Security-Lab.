@@ -3,372 +3,949 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#101827">
 <title>Zero-Click Security Lab</title>
+
 <style>
-:root{--bg:#0b1220;--panel:#151f30;--panel2:#1c2a40;--text:#edf3fc;--muted:#aab8cc;--blue:#55aaff;--green:#31c48d;--yellow:#f5bd4f;--red:#ff6577;--border:#30415b}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;line-height:1.5}
-header{text-align:center;padding:24px 14px;background:#101b2d;border-bottom:1px solid var(--border)}
-header h1{color:var(--blue);margin:0;font-size:25px}
-header p{color:var(--muted)}
-main{max-width:1100px;margin:auto;padding:14px}
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:16px;margin:14px 0}
-h2{font-size:19px;color:var(--blue);margin:0 0 12px}
-h3{font-size:15px;margin-top:17px}
-p,.muted{color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-.metric{background:var(--panel2);padding:13px;border-radius:9px}
-.metric span{font-size:12px;color:var(--muted)}
-.metric strong{display:block;font-size:25px}
-button,.linkbtn{display:inline-block;background:#2476c5;color:white;border:0;border-radius:8px;padding:11px 13px;margin:5px 4px 5px 0;font-weight:bold;text-decoration:none;cursor:pointer}
-.secondary{background:#40516b}
-.danger{background:#a83245}
-input[type=text],textarea{width:100%;padding:12px;border-radius:8px;border:1px solid var(--border);background:#0d1727;color:white;margin:7px 0}
-textarea{min-height:90px}
-label{display:block;color:var(--muted);margin:9px 0}
-.result,pre{padding:12px;border-radius:8px;background:#0d1727;margin-top:10px;white-space:pre-wrap;overflow-wrap:anywhere}
-.low{color:var(--green)}.medium{color:var(--yellow)}.high{color:var(--red)}.blocked{color:var(--blue)}
-.bar-row{display:grid;grid-template-columns:75px 1fr 30px;gap:8px;align-items:center;margin:10px 0;font-size:13px}
-.bar{height:12px;background:#0b1422;border-radius:10px;overflow:hidden}
-.fill{height:100%;width:0%;border-radius:10px}
-.low-fill{background:var(--green)}.medium-fill{background:var(--yellow)}.high-fill{background:var(--red)}.blocked-fill{background:var(--blue)}
-.chart{height:145px;display:flex;align-items:end;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)}
-.day{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
-.day-bar{width:75%;min-height:2px;background:var(--blue);border-radius:5px 5px 0 0}
-.event{border-bottom:1px solid var(--border);padding:10px 0;overflow-wrap:anywhere}
-.alert{border-left:4px solid var(--red);background:#321c2a;padding:10px;border-radius:5px;margin:8px 0}
-.good{border-left-color:var(--green);background:#123126}
-.small{font-size:12px;color:var(--muted)}
-footer{text-align:center;padding:24px;color:var(--muted);font-size:12px}
-a{color:#78bdff}
+:root {
+  --bg:#0b1220;
+  --panel:#151f31;
+  --panel2:#1c2940;
+  --text:#edf3ff;
+  --muted:#9aabc5;
+  --blue:#4da3ff;
+  --green:#35cf91;
+  --yellow:#f5bd4f;
+  --red:#ff6878;
+  --border:#2b3b56;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header {
+  padding:24px 18px;
+  background:linear-gradient(135deg,#152b49,#101827);
+  border-bottom:1px solid var(--border);
+}
+header h1 {margin:0 0 8px;font-size:25px}
+header p {margin:0;color:var(--muted);line-height:1.5}
+main {max-width:1100px;margin:auto;padding:18px}
+nav {
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:12px 0;
+  position:sticky;
+  top:0;
+  background:var(--bg);
+  z-index:5;
+}
+nav button {
+  white-space:nowrap;
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--text);
+  padding:11px 14px;
+  border-radius:10px;
+  cursor:pointer;
+}
+nav button.active {background:var(--blue);color:#071426}
+section {display:none}
+section.active {display:block}
+.card {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:17px;
+  margin:12px 0;
+}
+.card h2,.card h3 {margin-top:0}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:12px;
+}
+.metric {
+  background:var(--panel2);
+  padding:17px;
+  border-radius:12px;
+}
+.metric strong {display:block;font-size:28px;margin-top:8px}
+.muted {color:var(--muted);line-height:1.5}
+button.primary {
+  background:var(--blue);
+  color:#061426;
+  border:0;
+  border-radius:9px;
+  padding:12px 16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button.danger {
+  background:#7d2938;
+  color:white;
+  border:0;
+  border-radius:9px;
+  padding:11px 14px;
+  cursor:pointer;
+}
+button.secondary {
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:11px 14px;
+  cursor:pointer;
+}
+button:disabled {opacity:.5;cursor:not-allowed}
+input,textarea,select {
+  width:100%;
+  padding:12px;
+  margin:8px 0 12px;
+  border-radius:9px;
+  border:1px solid var(--border);
+  background:#0d1728;
+  color:var(--text);
+  font:inherit;
+}
+textarea {min-height:120px;resize:vertical}
+label {display:block;line-height:1.5}
+.progress {
+  height:12px;
+  background:#26364e;
+  border-radius:20px;
+  overflow:hidden;
+  margin:12px 0;
+}
+.progress div {
+  height:100%;
+  width:0;
+  background:var(--green);
+  transition:width .2s;
+}
+.bar-row {margin:12px 0}
+.bar-label {display:flex;justify-content:space-between;gap:10px}
+.bar {height:9px;background:#26364e;border-radius:20px;overflow:hidden;margin-top:6px}
+.bar span {display:block;height:100%;background:var(--blue)}
+.result {
+  padding:13px;
+  border-radius:10px;
+  margin-top:12px;
+  background:var(--panel2);
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.good {border-left:4px solid var(--green)}
+.warn {border-left:4px solid var(--yellow)}
+.bad {border-left:4px solid var(--red)}
+.event {
+  border-bottom:1px solid var(--border);
+  padding:12px 0;
+  overflow-wrap:anywhere;
+}
+.event:last-child {border-bottom:0}
+.tag {
+  display:inline-block;
+  font-size:12px;
+  padding:4px 8px;
+  border-radius:20px;
+  background:#26364e;
+  margin-right:6px;
+}
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:25px 15px;
+  font-size:13px;
+}
+canvas {width:100%;max-height:220px}
+.small {font-size:13px}
 </style>
 </head>
+
 <body>
+
 <header>
-<h1>🛡️ Zero-Click Security Lab</h1>
-<p>Laboratorio didattico di sicurezza digitale e WhatsApp</p>
+  <h1>🛡️ Zero-Click Security Lab</h1>
+  <p>Laboratorio didattico per imparare a riconoscere rischi digitali, messaggi sospetti e problemi di sicurezza.</p>
 </header>
+
 <main>
 
-<section class="panel">
-<h2>📊 Dashboard generale</h2>
-<div class="grid">
-<div class="metric"><span>Eventi registrati</span><strong id="total">0</strong></div>
-<div class="metric"><span>Rischi alti</span><strong id="highCount">0</strong></div>
-<div class="metric"><span>Percentuale rischi alti</span><strong id="highPercent">0%</strong></div>
-<div class="metric"><span>Allarmi registrati</span><strong id="alertCount">0</strong></div>
-</div>
-<p id="lastActivity">Ultima attività: nessuna</p>
-<button onclick="refreshAll()">🔄 Aggiorna</button>
+<nav id="navigation">
+  <button class="active" data-tab="dashboard">Dashboard</button>
+  <button data-tab="whatsapp">WhatsApp</button>
+  <button data-tab="analyzer">Analisi messaggi</button>
+  <button data-tab="simulation">Simulazione</button>
+  <button data-tab="incidents">Incidenti</button>
+  <button data-tab="tests">Test</button>
+  <button data-tab="settings">Impostazioni</button>
+</nav>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="active">
+  <div class="card">
+    <h2>Dashboard di sicurezza</h2>
+    <p class="muted">Riepilogo delle attività registrate in questo laboratorio sul dispositivo.</p>
+    <div class="grid">
+      <div class="metric">Eventi registrati<strong id="metricEvents">0</strong></div>
+      <div class="metric">Messaggi analizzati<strong id="metricMessages">0</strong></div>
+      <div class="metric">Incidenti segnalati<strong id="metricIncidents">0</strong></div>
+      <div class="metric">Controlli completati<strong id="metricChecks">0</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Distribuzione delle valutazioni</h3>
+    <div id="riskBars"></div>
+  </div>
+
+  <div class="card">
+    <h3>Attività recente</h3>
+    <canvas id="weeklyChart" width="700" height="220"></canvas>
+    <p class="muted small">Grafico basato sugli eventi salvati nel laboratorio, non su rilevazioni reali del telefono.</p>
+  </div>
+
+  <div class="card">
+    <h3>Stato del laboratorio</h3>
+    <p id="labStatus" class="muted">Laboratorio pronto.</p>
+    <button class="primary" onclick="refreshAll()">Aggiorna dashboard</button>
+  </div>
 </section>
 
-<section class="panel">
-<h2>📈 Distribuzione dei rischi</h2>
-<div class="bar-row"><span>Basso</span><div class="bar"><div id="barLow" class="fill low-fill"></div></div><span id="numLow">0</span></div>
-<div class="bar-row"><span>Medio</span><div class="bar"><div id="barMedium" class="fill medium-fill"></div></div><span id="numMedium">0</span></div>
-<div class="bar-row"><span>Alto</span><div class="bar"><div id="barHigh" class="fill high-fill"></div></div><span id="numHigh">0</span></div>
-<div class="bar-row"><span>Bloccato</span><div class="bar"><div id="barBlocked" class="fill blocked-fill"></div></div><span id="numBlocked">0</span></div>
+<!-- WHATSAPP -->
+<section id="whatsapp">
+  <div class="card">
+    <h2>Centro sicurezza WhatsApp</h2>
+    <p class="muted">Esegui manualmente questi controlli direttamente nell'app ufficiale WhatsApp.</p>
+
+    <h3>Checklist di sicurezza</h3>
+    <div id="checklist">
+      <label><input type="checkbox" data-check="devices"> Ho controllato i dispositivi collegati.</label>
+      <label><input type="checkbox" data-check="twoStep"> Ho attivato la verifica in due passaggi.</label>
+      <label><input type="checkbox" data-check="email"> Ho verificato l'eventuale email di recupero.</label>
+      <label><input type="checkbox" data-check="pin"> Non condivido il PIN con nessuno.</label>
+      <label><input type="checkbox" data-check="sms"> Non condivido i codici ricevuti via SMS.</label>
+      <label><input type="checkbox" data-check="updates"> WhatsApp è aggiornato.</label>
+      <label><input type="checkbox" data-check="privacy"> Ho controllato le impostazioni di privacy.</label>
+    </div>
+
+    <div class="progress"><div id="checkProgress"></div></div>
+    <p id="checkText" class="muted">0 controlli completati su 7.</p>
+    <button class="primary" onclick="saveChecklist()">Registra controlli</button>
+  </div>
+
+  <div class="card">
+    <h3>Come controllare i dispositivi collegati</h3>
+    <ol class="muted">
+      <li>Apri WhatsApp.</li>
+      <li>Entra nelle Impostazioni.</li>
+      <li>Apri Dispositivi collegati.</li>
+      <li>Controlla l'elenco dei dispositivi.</li>
+      <li>Se trovi una sessione che non riconosci, selezionala e disconnettila.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>Se sospetti un accesso non autorizzato</h3>
+    <ol class="muted">
+      <li>Controlla i dispositivi collegati.</li>
+      <li>Attiva la verifica in due passaggi.</li>
+      <li>Non comunicare codici o PIN.</li>
+      <li>Avvisa i tuoi contatti se sono stati inviati messaggi sospetti.</li>
+      <li>Contatta l'assistenza ufficiale WhatsApp se necessario.</li>
+    </ol>
+    <a href="https://faq.whatsapp.com/" target="_blank" rel="noopener noreferrer">Centro assistenza WhatsApp ufficiale</a>
+  </div>
 </section>
 
-<section class="panel">
-<h2>📅 Attività degli ultimi 7 giorni</h2>
-<div id="weeklyChart" class="chart"></div>
+<!-- ANALIZZATORE -->
+<section id="analyzer">
+  <div class="card">
+    <h2>Analizzatore di messaggi sospetti</h2>
+    <p class="muted">Inserisci un messaggio per cercare indicatori comuni di truffa, phishing o tentativi di impersonificazione.</p>
+    <textarea id="messageInput" placeholder="Incolla qui il messaggio da analizzare..."></textarea>
+    <button class="primary" onclick="analyzeMessage()">Analizza messaggio</button>
+    <div id="analysisResult" class="result" hidden></div>
+  </div>
+
+  <div class="card">
+    <h3>Indicatori controllati</h3>
+    <ul class="muted">
+      <li>Richieste urgenti di denaro.</li>
+      <li>Richieste di password, PIN o codici.</li>
+      <li>Minacce o pressioni psicologiche.</li>
+      <li>Link sospetti.</li>
+      <li>Possibile impersonificazione di conoscenti o servizi.</li>
+    </ul>
+    <p class="muted small">L'analisi è automatica e indicativa: non garantisce che un messaggio sia sicuro o pericoloso.</p>
+  </div>
 </section>
 
-<section class="panel">
-<h2>🔎 Analizzatore di contenuti</h2>
-<p>Analizza un testo o un indirizzo web con semplici regole locali.</p>
-<textarea id="analysisInput" placeholder="Inserisci un testo da analizzare..."></textarea>
-<button onclick="analyzeInput()">Analizza</button>
-<div id="analysisResult" class="result">In attesa di analisi.</div>
+<!-- SIMULAZIONE -->
+<section id="simulation">
+  <div class="card">
+    <h2>Simulazione didattica Zero-Click</h2>
+    <p class="muted">Questa simulazione illustra il concetto generale di vulnerabilità e prevenzione. Non esegue exploit, non invia pacchetti e non interagisce con dispositivi reali.</p>
+
+    <div class="metric">
+      <span class="tag">AMBIENTE DIDATTICO</span>
+      <h3 id="simulationStatus">In attesa di avvio</h3>
+      <p id="simulationDescription" class="muted">Avvia la simulazione per visualizzare le fasi di un esempio teorico.</p>
+    </div>
+
+    <div class="progress"><div id="simulationProgress"></div></div>
+    <button class="primary" onclick="startSimulation()">Avvia simulazione</button>
+    <button class="secondary" onclick="resetSimulation()">Ripristina</button>
+  </div>
+
+  <div class="card">
+    <h3>Come ridurre i rischi</h3>
+    <ul class="muted">
+      <li>Mantieni aggiornati sistema operativo e applicazioni.</li>
+      <li>Installa applicazioni solo da fonti ufficiali.</li>
+      <li>Non condividere codici di verifica.</li>
+      <li>Attiva le protezioni di sicurezza disponibili.</li>
+      <li>Segnala comportamenti sospetti ai canali ufficiali.</li>
+    </ul>
+  </div>
 </section>
 
-<section class="panel">
-<h2>📱 Centro sicurezza WhatsApp</h2>
-<p>Controllo guidato del tuo account. Le verifiche vengono effettuate direttamente da te nell'app WhatsApp.</p>
+<!-- INCIDENTI -->
+<section id="incidents">
+  <div class="card">
+    <h2>Registro incidenti</h2>
+    <p class="muted">Annota manualmente eventuali episodi sospetti. Non vengono raccolti dati da WhatsApp o da altre applicazioni.</p>
 
-<h3>1. Verifica i dispositivi collegati</h3>
-<p>Apri WhatsApp sul telefono e controlla l'elenco dei dispositivi associati.</p>
-<a class="linkbtn" href="https://faq.whatsapp.com/" target="_blank" rel="noopener">Apri assistenza ufficiale WhatsApp</a>
-<label><input type="checkbox" class="wa-check" data-label="Ho controllato i dispositivi collegati"> Ho controllato i dispositivi collegati.</label>
-<label><input type="checkbox" class="wa-check" data-label="Riconosco tutti i dispositivi"> Riconosco tutti i dispositivi presenti.</label>
-<label><input type="checkbox" class="wa-check" data-label="Ho scollegato dispositivi sconosciuti"> Ho scollegato eventuali dispositivi sconosciuti.</label>
+    <label for="incidentType">Tipo di incidente</label>
+    <select id="incidentType">
+      <option value="Messaggio sospetto">Messaggio sospetto</option>
+      <option value="Dispositivo sconosciuto">Dispositivo sconosciuto</option>
+      <option value="Richiesta di codice">Richiesta di codice</option>
+      <option value="Possibile impersonificazione">Possibile impersonificazione</option>
+      <option value="Altro">Altro</option>
+    </select>
 
-<h3>2. Protezione dell'account</h3>
-<label><input type="checkbox" class="wa-check" data-label="Verifica in due passaggi attiva"> Ho attivato la verifica in due passaggi.</label>
-<label><input type="checkbox" class="wa-check" data-label="PIN riservato"> Il mio PIN è riservato e non lo condivido.</label>
-<label><input type="checkbox" class="wa-check" data-label="Email di recupero verificata"> Ho verificato l'eventuale email di recupero.</label>
-<label><input type="checkbox" class="wa-check" data-label="App aggiornata"> WhatsApp e iOS sono aggiornati.</label>
-<label><input type="checkbox" class="wa-check" data-label="Codici mai condivisi"> Non condivido codici di verifica ricevuti via SMS.</label>
+    <label for="incidentDescription">Descrizione</label>
+    <textarea id="incidentDescription" placeholder="Descrivi cosa è successo..."></textarea>
+    <button class="primary" onclick="addIncident()">Registra incidente</button>
+  </div>
 
-<div class="result">
-<strong>Completamento controllo</strong>
-<div id="waProgress">0 controlli completati su 7.</div>
-<div class="bar"><div id="waBar" class="fill low-fill"></div></div>
-</div>
-<button onclick="saveWhatsAppCheck()">Salva controllo</button>
-<button class="secondary" onclick="resetWhatsAppCheck()">Azzera checklist</button>
-<p id="waSaved" class="small"></p>
-
-<h3>3. Segnala un'anomalia</h3>
-<p>Annota un comportamento insolito, per esempio richieste di denaro inviate ai contatti o accessi non riconosciuti.</p>
-<textarea id="waIncident" placeholder="Descrivi l'anomalia senza inserire PIN, password o codici..."></textarea>
-<button onclick="reportWhatsAppIncident()">Registra anomalia</button>
-<div id="waIncidentResult" class="result">Nessuna anomalia inserita.</div>
-
-<h3>4. Se sospetti che l'account sia compromesso</h3>
-<ol>
-<li>Apri WhatsApp e controlla i dispositivi collegati.</li>
-<li>Scollega quelli che non riconosci.</li>
-<li>Richiedi la verifica del tuo numero tramite l'app ufficiale.</li>
-<li>Attiva o aggiorna la verifica in due passaggi.</li>
-<li>Avvisa i contatti se hanno ricevuto richieste sospette a tuo nome.</li>
-<li>Non comunicare a nessuno codici SMS o PIN.</li>
-<li>Se non riesci ad accedere, usa esclusivamente l'assistenza ufficiale WhatsApp.</li>
-</ol>
-<a class="linkbtn" href="https://faq.whatsapp.com/" target="_blank" rel="noopener">Assistenza WhatsApp</a>
+  <div class="card">
+    <h3>Storico eventi</h3>
+    <div id="eventList"></div>
+    <button class="secondary" onclick="exportCSV()">Esporta CSV</button>
+    <button class="danger" onclick="clearEvents()">Cancella registro</button>
+  </div>
 </section>
 
-<section class="panel">
-<h2>🕵️ Analisi di un messaggio sospetto</h2>
-<p>Puoi incollare il testo di un messaggio ricevuto. Non inserire dati personali, numeri di telefono, codici o conversazioni private non necessarie.</p>
-<textarea id="scamInput" placeholder="Incolla qui il testo sospetto..."></textarea>
-<button onclick="analyzeScam()">Analizza possibile truffa</button>
-<div id="scamResult" class="result">Nessuna analisi effettuata.</div>
+<!-- TEST -->
+<section id="tests">
+  <div class="card">
+    <h2>Test automatici</h2>
+    <p class="muted">Verifica alcune funzioni dell'analizzatore con esempi innocui.</p>
+    <button class="primary" onclick="runTests()">Esegui tutti i test</button>
+    <div id="testResults" class="result" hidden></div>
+  </div>
 </section>
 
-<section class="panel">
-<h2>🚨 Centro allarmi</h2>
-<div id="alertStatus" class="result">Nessun allarme registrato.</div>
-<label><input type="checkbox" id="soundEnabled"> Attiva suono di allerta</label>
-<button onclick="testAlertSound()">🔊 Prova suono</button>
-<button class="secondary" onclick="clearAlerts()">Cancella allarmi</button>
-<div id="alertHistory"></div>
+<!-- IMPOSTAZIONI -->
+<section id="settings">
+  <div class="card">
+    <h2>Impostazioni</h2>
+    <label><input type="checkbox" id="soundToggle"> Attiva avviso sonoro per i risultati ad alto rischio.</label>
+    <button class="primary" onclick="saveSettings()">Salva impostazioni</button>
+  </div>
+
+  <div class="card">
+    <h3>Privacy e dati</h3>
+    <p class="muted">Questo laboratorio salva i dati nel localStorage del browser. I dati non vengono inviati a un server da questo file.</p>
+    <button class="danger" onclick="clearAllData()">Cancella tutti i dati locali</button>
+  </div>
+
+  <div class="card">
+    <h3>Limiti tecnici</h3>
+    <p class="muted">Il laboratorio non può verificare l'integrità dell'iPhone, leggere messaggi WhatsApp, controllare sessioni attive, rilevare malware in tempo reale o individuare attacchi zero-click reali.</p>
+  </div>
 </section>
 
-<section class="panel">
-<h2>🧪 Simulazione didattica Zero-Click</h2>
-<p>Simulazione teorica: non esegue codice, non invia messaggi e non accede ai dispositivi.</p>
-<button onclick="runSimulation()">Avvia simulazione</button>
-<div id="simulationResult" class="result">Non ancora avviata.</div>
-</section>
-
-<section class="panel">
-<h2>🧰 Test automatici</h2>
-<button onclick="runTests()">Esegui tutti i test</button>
-<div id="testResult" class="result">Test non ancora eseguiti.</div>
-</section>
-
-<section class="panel">
-<h2>📋 Registro permanente</h2>
-<p class="small">I dati vengono conservati localmente nel browser.</p>
-<button onclick="exportCSV()">📥 Esporta CSV</button>
-<button class="danger" onclick="clearEvents()">Cancella registro</button>
-<div id="eventList"></div>
-</section>
-
-<section class="panel">
-<h2>🔐 Privacy e limiti</h2>
-<p>Questa applicazione non si collega a WhatsApp, non legge le chat, non intercetta messaggi e non controlla il telefono in background. Non è un antivirus e non rileva attacchi zero-click reali.</p>
-<p>Le analisi sono basate su regole semplici e non sostituiscono i controlli di sicurezza ufficiali. I dati del laboratorio sono conservati nel browser tramite memoria locale e possono essere cancellati dal dispositivo.</p>
-</section>
 </main>
-<footer>Zero-Click Security Lab · Strumento didattico</footer>
+
+<footer>
+  Zero-Click Security Lab · Laboratorio educativo · Versione 1.0
+</footer>
 
 <script>
 "use strict";
 
-const KE="zeroClickLabEvents", KA="zeroClickLabAlerts";
-const read=(key)=>{try{const x=JSON.parse(localStorage.getItem(key)||"[]");return Array.isArray(x)?x:[]}catch{return[]}};
-const write=(key,data)=>{try{localStorage.setItem(key,JSON.stringify(data));return true}catch{return false}};
-const events=()=>read(KE), alerts=()=>read(KA);
+/* ARCHIVIO LOCALE */
 
-function addEvent(type,status,detail){
- const list=events();
- list.unshift({date:new Date().toISOString(),type,status,detail:String(detail).slice(0,500)});
- write(KE,list.slice(0,300));
- if(status==="ALTO") addAlert(type,detail);
+const KEYS = {
+  events:"zeroClickLabEvents",
+  alerts:"zeroClickLabAlerts",
+  checks:"zeroClickLabChecks",
+  messages:"zeroClickLabMessages",
+  sound:"zeroClickLabSound"
+};
+
+function readData(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return value === null ? fallback : value;
+  } catch {
+    return fallback;
+  }
 }
-function addAlert(type,detail){
- const list=alerts();
- list.unshift({date:new Date().toISOString(),type,detail:String(detail).slice(0,500)});
- write(KA,list.slice(0,100));
- if(document.getElementById("soundEnabled").checked) playSound();
+
+function saveData(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
-function analyzeText(message){
- const findings=[],s=String(message||"");
- if(/<script\b/i.test(s))findings.push("Tag script rilevato");
- if(/javascript\s*:/i.test(s))findings.push("Schema javascript rilevato");
- if(/onerror\s*=/i.test(s))findings.push("Attributo onerror rilevato");
- if(/https?:\/\//i.test(s))findings.push("Indirizzo web presente");
- let risk="BASSO";
- if(findings.some(x=>/script|javascript|onerror/i.test(x)))risk="ALTO";
- else if(findings.length)risk="MEDIO";
- return{risk,findings};
+
+function getEvents() {
+  return readData(KEYS.events, []);
 }
-function analyzeInput(){
- const s=document.getElementById("analysisInput").value.trim();
- if(!s){document.getElementById("analysisResult").textContent="Inserisci un contenuto.";return}
- const r=analyzeText(s);
- document.getElementById("analysisResult").textContent="Rischio "+r.risk+". "+(r.findings.join("; ")||"Nessun indicatore previsto dalle regole.");
- addEvent("Analisi contenuto",r.risk,r.findings.join("; ")||"Nessun indicatore");
- refreshAll();
+
+function addEvent(type, description, risk="INFO") {
+  const events = getEvents();
+  events.unshift({
+    date:new Date().toISOString(),
+    type,
+    description,
+    risk
+  });
+  saveData(KEYS.events, events.slice(0,300));
+  renderEvents();
+  refreshAll();
 }
-function analyzeScam(){
- const s=document.getElementById("scamInput").value.trim();
- const out=document.getElementById("scamResult");
- if(!s){out.textContent="Inserisci un messaggio.";return}
- const checks=[
-  ["richiesta di denaro",/soldi|denaro|bonifico|pagamento|ricarica|iban/i],
-  ["urgenza o pressione",/urgente|subito|immediatamente|entro pochi minuti|fretta/i],
-  ["richiesta di codici o credenziali",/codice|pin|password|otp|verifica account/i],
-  ["link o indirizzi web",/https?:\/\/|www\./i],
-  ["finta assistenza o impersonificazione",/assistenza|account bloccato|sono io|nuovo numero|whatsapp/i]
- ];
- const found=checks.filter(x=>x[1].test(s)).map(x=>x[0]);
- const risk=found.length>=3?"ALTO":found.length>=1?"MEDIO":"BASSO";
- out.textContent="Indicatori individuati: "+(found.join(", ")||"nessuno tra quelli previsti")+". Valutazione: "+risk+". Questa è una stima automatica, non una verifica certa della truffa.";
- addEvent("Analisi messaggio WhatsApp",risk,found.join(", ")||"Nessun indicatore");
- refreshAll();
+
+/* NAVIGAZIONE */
+
+document.querySelectorAll("#navigation button").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("#navigation button").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll("main section").forEach(s => s.classList.remove("active"));
+    button.classList.add("active");
+    document.getElementById(button.dataset.tab).classList.add("active");
+    if (button.dataset.tab === "dashboard") refreshAll();
+  });
+});
+
+/* CHECKLIST */
+
+function updateChecklist() {
+  const boxes = [...document.querySelectorAll("[data-check]")];
+  const checked = boxes.filter(box => box.checked).length;
+  const percentage = Math.round(checked / boxes.length * 100);
+
+  document.getElementById("checkProgress").style.width = percentage + "%";
+  document.getElementById("checkText").textContent =
+    checked + " controlli completati su " + boxes.length + ".";
+  document.getElementById("metricChecks").textContent = checked;
 }
-function updateChecklist(){
- const checks=[...document.querySelectorAll(".wa-check")];
- const done=checks.filter(x=>x.checked).length;
- document.getElementById("waProgress").textContent=done+" controlli completati su "+checks.length+".";
- document.getElementById("waBar").style.width=(done/checks.length*100)+"%";
+
+document.querySelectorAll("[data-check]").forEach(box => {
+  box.addEventListener("change", updateChecklist);
+});
+
+function saveChecklist() {
+  const checks = {};
+  document.querySelectorAll("[data-check]").forEach(box => {
+    checks[box.dataset.check] = box.checked;
+  });
+  saveData(KEYS.checks, checks);
+  addEvent("Checklist", "Aggiornata checklist di sicurezza WhatsApp.");
+  alert("Checklist salvata sul dispositivo.");
 }
-document.querySelectorAll(".wa-check").forEach(x=>x.addEventListener("change",updateChecklist));
-function saveWhatsAppCheck(){
- const done=[...document.querySelectorAll(".wa-check")].filter(x=>x.checked).length;
- addEvent("Controllo sicurezza WhatsApp","BASSO",done+" controlli completati su 7");
- document.getElementById("waSaved").textContent="Controllo registrato il "+new Date().toLocaleString("it-IT")+".";
- refreshAll();
+
+function loadChecklist() {
+  const checks = readData(KEYS.checks, {});
+  document.querySelectorAll("[data-check]").forEach(box => {
+    box.checked = checks[box.dataset.check] === true;
+  });
+  updateChecklist();
 }
-function resetWhatsAppCheck(){
- document.querySelectorAll(".wa-check").forEach(x=>x.checked=false);
- updateChecklist();
- document.getElementById("waSaved").textContent="";
+
+/* ANALISI MESSAGGI */
+
+function inspectText(input) {
+  const text = String(input || "");
+  const lower = text.toLowerCase();
+  const findings = [];
+  let score = 0;
+
+  const rules = [
+    {
+      pattern:/password|pin|codice di verifica|codice sms|otp|credenziali/i,
+      points:4,
+      label:"Richiesta di codici o credenziali"
+    },
+    {
+      pattern:/urgente|subito|immediatamente|entro pochi minuti|ultima possibilità/i,
+      points:2,
+      label:"Linguaggio che crea urgenza"
+    },
+    {
+      pattern:/bonifico|ricarica|invia denaro|mandami soldi|pagamento immediato/i,
+      points:3,
+      label:"Richiesta di denaro o pagamento"
+    },
+    {
+      pattern:/account bloccato|account sospeso|verifica il tuo account/i,
+      points:3,
+      label:"Possibile falsa comunicazione di servizio"
+    },
+    {
+      pattern:/clicca qui|apri questo link|conferma adesso/i,
+      points:2,
+      label:"Invito a cliccare o confermare"
+    },
+    {
+      pattern:/sono tuo figlio|sono tuo padre|sono un tuo familiare|ho cambiato numero/i,
+      points:3,
+      label:"Possibile impersonificazione"
+    },
+    {
+      pattern:/https?:\/\/|www\./i,
+      points:2,
+      label:"Presenza di un collegamento web"
+    }
+  ];
+
+  for (const rule of rules) {
+    if (rule.pattern.test(text)) {
+      score += rule.points;
+      findings.push(rule.label);
+    }
+  }
+
+  if (text.length < 5) {
+    findings.push("Testo troppo breve per una valutazione significativa");
+  }
+
+  let level = "BASSO";
+  if (score >= 7) level = "ALTO";
+  else if (score >= 3) level = "MEDIO";
+
+  return {score,level,findings};
 }
-function reportWhatsAppIncident(){
- const s=document.getElementById("waIncident").value.trim();
- if(!s){document.getElementById("waIncidentResult").textContent="Descrivi prima l'anomalia.";return}
- addEvent("Anomalia WhatsApp segnalata","MEDIO",s);
- document.getElementById("waIncidentResult").textContent="Anomalia annotata nel registro locale.";
- document.getElementById("waIncident").value="";
- refreshAll();
+
+function analyzeMessage() {
+  const text = document.getElementById("messageInput").value.trim();
+  const result = document.getElementById("analysisResult");
+
+  if (!text) {
+    alert("Inserisci prima un messaggio.");
+    return;
+  }
+
+  const analysis = inspectText(text);
+  const messages = readData(KEYS.messages, []);
+  messages.unshift({date:new Date().toISOString(),level:analysis.level});
+  saveData(KEYS.messages,messages.slice(0,300));
+
+  result.hidden = false;
+  result.className = "result " +
+    (analysis.level === "ALTO" ? "bad" :
+     analysis.level === "MEDIO" ? "warn" : "good");
+
+  result.textContent =
+    "RISCHIO INDICATIVO: " + analysis.level +
+    "\nPunteggio: " + analysis.score +
+    "\n\nIndicatori individuati:\n" +
+    (analysis.findings.length ? analysis.findings.map(x=>"• "+x).join("\n") : "Nessun indicatore riconosciuto.") +
+    "\n\nAttenzione: questa valutazione non certifica la sicurezza del messaggio.";
+
+  addEvent("Analisi messaggio",
+    "Messaggio analizzato: rischio " + analysis.level,
+    analysis.level);
+
+  if (analysis.level === "ALTO") playAlertSound();
 }
-function runSimulation(){
- document.getElementById("simulationResult").textContent=[
- "1. Ricezione ipotetica di un contenuto.",
- "2. Valutazione teorica.",
- "3. Ricerca di indicatori.",
- "4. Simulazione di contenimento.",
- "5. Registrazione didattica.",
- "Simulazione completata: nessun attacco reale eseguito."
- ].join("\n");
- addEvent("Simulazione Zero-Click","BLOCCATO","Simulazione teorica completata");
- refreshAll();
+
+/* AVVISI SONORI */
+
+function playAlertSound() {
+  if (localStorage.getItem(KEYS.sound) !== "true") return;
+
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+
+    const context = new AudioContextClass();
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.frequency.value = 700;
+    gain.gain.value = 0.08;
+    oscillator.start();
+    oscillator.stop(context.currentTime + 0.2);
+    oscillator.onended = () => context.close();
+  } catch(error) {
+    console.warn("Audio non disponibile", error);
+  }
 }
-function runTests(){
- const cases=[
- ["Test normale","Ciao, come stai?","BASSO"],
- ["Test URL","https://example.com","MEDIO"],
- ["Test script","<script>test</script>","ALTO"],
- ["Test onerror","onerror=alert(1)","ALTO"]
- ];
- const results=cases.map(c=>({name:c[0],expected:c[2],actual:analyzeText(c[1]).risk}));
- const passed=results.filter(x=>x.expected===x.actual).length;
- document.getElementById("testResult").textContent=results.map(x=>(x.expected===x.actual?"✅ ":"❌ ")+x.name+" — "+x.actual).join("\n")+"\n\n"+passed+" test superati su 4.";
- addEvent("Test automatici",passed===4?"BASSO":"MEDIO",passed+" test superati su 4");
- refreshAll();
+
+function saveSettings() {
+  const enabled = document.getElementById("soundToggle").checked;
+  localStorage.setItem(KEYS.sound, String(enabled));
+  alert("Impostazioni salvate.");
 }
-function playSound(){
- try{
-  const C=window.AudioContext||window.webkitAudioContext;
-  if(!C)return;
-  const c=new C(),o=c.createOscillator(),g=c.createGain();
-  o.frequency.value=800;g.gain.value=.12;o.connect(g);g.connect(c.destination);
-  o.start();o.stop(c.currentTime+.25);
-  setTimeout(()=>c.close(),500);
- }catch(e){}
+
+/* SIMULAZIONE DIDATTICA */
+
+const simulationSteps = [
+  {
+    title:"Fase 1 - Scenario teorico",
+    description:"Viene presentato un esempio astratto di rischio informatico. Nessun dispositivo reale viene contattato."
+  },
+  {
+    title:"Fase 2 - Possibile vulnerabilità",
+    description:"Un software potrebbe contenere un difetto. Gli aggiornamenti servono anche a correggere vulnerabilità."
+  },
+  {
+    title:"Fase 3 - Analisi e prevenzione",
+    description:"In un laboratorio reale si studiano log e comportamenti in un ambiente autorizzato."
+  },
+  {
+    title:"Fase 4 - Protezione",
+    description:"Aggiornamenti, impostazioni sicure e segnalazioni aiutano a ridurre il rischio."
+  },
+  {
+    title:"Simulazione completata",
+    description:"Hai completato l'esempio didattico. Non è stato eseguito alcun attacco."
+  }
+];
+
+let simulationIndex = 0;
+
+function startSimulation() {
+  if (simulationIndex >= simulationSteps.length) simulationIndex = 0;
+
+  const step = simulationSteps[simulationIndex];
+  document.getElementById("simulationStatus").textContent = step.title;
+  document.getElementById("simulationDescription").textContent = step.description;
+  document.getElementById("simulationProgress").style.width =
+    ((simulationIndex + 1) / simulationSteps.length * 100) + "%";
+
+  simulationIndex++;
+  addEvent("Simulazione", step.title);
 }
-function testAlertSound(){playSound()}
-function clearAlerts(){
- if(!confirm("Cancellare lo storico degli allarmi?"))return;
- write(KA,[]);refreshAll();
+
+function resetSimulation() {
+  simulationIndex = 0;
+  document.getElementById("simulationStatus").textContent = "In attesa di avvio";
+  document.getElementById("simulationDescription").textContent =
+    "Avvia la simulazione per visualizzare le fasi di un esempio teorico.";
+  document.getElementById("simulationProgress").style.width = "0%";
 }
-function clearEvents(){
- if(!confirm("Cancellare tutto il registro?"))return;
- write(KE,[]);refreshAll();
+
+/* INCIDENTI */
+
+function addIncident() {
+  const type = document.getElementById("incidentType").value;
+  const description = document.getElementById("incidentDescription").value.trim();
+
+  if (!description) {
+    alert("Inserisci una descrizione dell'incidente.");
+    return;
+  }
+
+  addEvent("Incidente: " + type, description, "ATTENZIONE");
+  document.getElementById("incidentDescription").value = "";
+  alert("Incidente registrato.");
 }
-function exportCSV(){
- const list=events();
- if(!list.length){alert("Nessun evento da esportare.");return}
- const esc=x=>'"'+String(x??"").replace(/"/g,'""')+'"';
- const rows=[["Data","Tipo","Stato","Dettaglio"],...list.map(e=>[e.date,e.type,e.status,e.detail])];
- const blob=new Blob(["\uFEFF"+rows.map(r=>r.map(esc).join(";")).join("\n")],{type:"text/csv;charset=utf-8"});
- const url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download="zero-click-security-log.csv";a.click();
- URL.revokeObjectURL(url);
+
+function renderEvents() {
+  const list = document.getElementById("eventList");
+  const events = getEvents();
+
+  if (!events.length) {
+    list.innerHTML = '<p class="muted">Nessun evento registrato.</p>';
+    return;
+  }
+
+  list.replaceChildren();
+
+  events.forEach(event => {
+    const item = document.createElement("div");
+    item.className = "event";
+
+    const title = document.createElement("strong");
+    title.textContent = event.type;
+
+    const details = document.createElement("p");
+    details.className = "muted";
+    details.textContent = event.description;
+
+    const date = document.createElement("div");
+    date.className = "small muted";
+    date.textContent = new Date(event.date).toLocaleString("it-IT");
+
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = event.risk || "INFO";
+
+    item.append(tag,title,details,date);
+    list.appendChild(item);
+  });
 }
-function renderEvents(){
- const box=document.getElementById("eventList");box.replaceChildren();
- const list=events();
- if(!list.length){box.textContent="Nessun evento registrato.";return}
- list.slice(0,30).forEach(e=>{
-  const d=document.createElement("div");d.className="event";
-  const b=document.createElement("strong");b.textContent=e.type+" — "+e.status;
-  const t=document.createElement("div");t.textContent=e.detail;
-  const date=document.createElement("div");date.className="small";date.textContent=new Date(e.date).toLocaleString("it-IT");
-  d.append(b,t,date);box.appendChild(d);
- });
+
+function clearEvents() {
+  if (!confirm("Vuoi cancellare tutto il registro eventi?")) return;
+  saveData(KEYS.events,[]);
+  renderEvents();
+  refreshAll();
 }
-function renderAlerts(){
- const box=document.getElementById("alertHistory");box.replaceChildren();
- const list=alerts();
- document.getElementById("alertCount").textContent=list.length;
- document.getElementById("alertStatus").textContent=list.length?list.length+" allarmi registrati.":"Nessun allarme registrato.";
- if(!list.length){box.textContent="Nessun allarme.";return}
- list.slice(0,20).forEach(e=>{
-  const d=document.createElement("div");d.className="alert";
-  const b=document.createElement("strong");b.textContent="⚠️ "+e.type;
-  const t=document.createElement("div");t.textContent=e.detail;
-  const date=document.createElement("div");date.className="small";date.textContent=new Date(e.date).toLocaleString("it-IT");
-  d.append(b,t,date);box.appendChild(d);
- });
+
+/* ESPORTAZIONE CSV */
+
+function exportCSV() {
+  const events = getEvents();
+
+  if (!events.length) {
+    alert("Non ci sono eventi da esportare.");
+    return;
+  }
+
+  const rows = [
+    ["Data","Tipo","Descrizione","Rischio"],
+    ...events.map(e => [e.date,e.type,e.description,e.risk || "INFO"])
+  ];
+
+  const escapeCSV = value =>
+    '"' + String(value ?? "").replace(/"/g,'""') + '"';
+
+  const csv = "\uFEFF" + rows.map(row =>
+    row.map(escapeCSV).join(";")
+  ).join("\r\n");
+
+  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "zero-click-security-events.csv";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(url);
 }
-function setBar(name,value,total){
- document.getElementById("num"+name).textContent=value;
- document.getElementById("bar"+name).style.width=(total?value/total*100:0)+"%";
+
+/* TEST AUTOMATICI */
+
+function runTests() {
+  const cases = [
+    {
+      name:"Messaggio normale",
+      input:"Ciao, ci vediamo domani alle 18.",
+      expected:"BASSO"
+    },
+    {
+      name:"Richiesta di codice",
+      input:"Mandami il codice SMS e il PIN subito",
+      expected:"ALTO"
+    },
+    {
+      name:"Richiesta di denaro urgente",
+      input:"Fammi un bonifico urgente immediatamente",
+      expected:"MEDIO"
+    },
+    {
+      name:"Possibile falso account",
+      input:"Account bloccato, clicca qui per verificare",
+      expected:"MEDIO"
+    },
+    {
+      name:"Messaggio con più indicatori",
+      input:"Sono tuo figlio, ho cambiato numero, mandami soldi subito e non chiamarmi",
+      expected:"ALTO"
+    },
+    {
+      name:"Messaggio vuoto",
+      input:"",
+      expected:"BASSO"
+    }
+  ];
+
+  const results = cases.map(test => {
+    const actual = inspectText(test.input).level;
+    return {
+      name:test.name,
+      passed:actual === test.expected,
+      expected:test.expected,
+      actual
+    };
+  });
+
+  const passed = results.filter(r=>r.passed).length;
+  const output = document.getElementById("testResults");
+
+  output.hidden = false;
+  output.className = "result " +
+    (passed === results.length ? "good" : "warn");
+
+  output.textContent =
+    "TEST SUPERATI: " + passed + " / " + results.length + "\n\n" +
+    results.map(r =>
+      (r.passed ? "✓ " : "✗ ") + r.name +
+      " | Atteso: " + r.expected +
+      " | Ottenuto: " + r.actual
+    ).join("\n");
+
+  addEvent("Test automatici",
+    passed + " test superati su " + results.length);
 }
-function drawWeeklyChart(list){
- const box=document.getElementById("weeklyChart");box.replaceChildren();
- for(let i=6;i>=0;i--){
-  const date=new Date();date.setHours(0,0,0,0);date.setDate(date.getDate()-i);
-  const n=list.filter(e=>new Date(e.date).toDateString()===date.toDateString()).length;
-  const day=document.createElement("div");day.className="day";
-  const num=document.createElement("span");num.textContent=n;
-  const bar=document.createElement("div");bar.className="day-bar";bar.style.height=Math.max(2,n*16)+"px";
-  const label=document.createElement("span");label.textContent=date.toLocaleDateString("it-IT",{weekday:"short"});
-  day.append(num,bar,label);box.appendChild(day);
- }
+
+/* DASHBOARD */
+
+function refreshAll() {
+  const events = getEvents();
+  const messages = readData(KEYS.messages,[]);
+  const incidents = events.filter(e=>e.type.startsWith("Incidente:"));
+
+  document.getElementById("metricEvents").textContent = events.length;
+  document.getElementById("metricMessages").textContent = messages.length;
+  document.getElementById("metricIncidents").textContent = incidents.length;
+
+  updateChecklist();
+  renderRiskBars(messages);
+  drawWeeklyChart(events);
+
+  document.getElementById("labStatus").textContent =
+    "Laboratorio operativo. Ultimo aggiornamento: " +
+    new Date().toLocaleString("it-IT");
 }
-function refreshAll(){
- const list=events(),n=list.length;
- const count=s=>list.filter(e=>e.status===s).length;
- const low=count("BASSO"),medium=count("MEDIO"),high=count("ALTO"),blocked=count("BLOCCATO");
- document.getElementById("total").textContent=n;
- document.getElementById("highCount").textContent=high;
- document.getElementById("highPercent").textContent=(n?Math.round(high/n*100):0)+"%";
- document.getElementById("lastActivity").textContent=list.length?"Ultima attività: "+new Date(list[0].date).toLocaleString("it-IT"):"Ultima attività: nessuna";
- setBar("Low",low,n);setBar("Medium",medium,n);setBar("High",high,n);setBar("Blocked",blocked,n);
- drawWeeklyChart(list);renderEvents();renderAlerts();
+
+function renderRiskBars(messages) {
+  const counts = {
+    BASSO:0,
+    MEDIO:0,
+    ALTO:0
+  };
+
+  messages.forEach(m=>{
+    if (counts[m.level] !== undefined) counts[m.level]++;
+  });
+
+  const total = messages.length || 1;
+  const container = document.getElementById("riskBars");
+  container.replaceChildren();
+
+  Object.entries(counts).forEach(([level,count])=>{
+    const row = document.createElement("div");
+    row.className = "bar-row";
+
+    const label = document.createElement("div");
+    label.className = "bar-label";
+    label.textContent = level + " · " + count;
+
+    const bar = document.createElement("div");
+    bar.className = "bar";
+
+    const fill = document.createElement("span");
+    fill.style.width = (count / total * 100) + "%";
+
+    bar.appendChild(fill);
+    row.append(label,bar);
+    container.appendChild(row);
+  });
 }
-document.getElementById("soundEnabled").checked=localStorage.getItem("zeroClickLabSound")==="true";
-document.getElementById("soundEnabled").addEventListener("change",e=>localStorage.setItem("zeroClickLabSound",String(e.target.checked)));
-refreshAll();updateChecklist();
+
+function drawWeeklyChart(events) {
+  const canvas = document.getElementById("weeklyChart");
+  const ctx = canvas.getContext("2d");
+  const width = canvas.width;
+  const height = canvas.height;
+
+  ctx.clearRect(0,0,width,height);
+
+  const days = [];
+  for (let i=6;i>=0;i--) {
+    const date = new Date();
+    date.setDate(date.getDate()-i);
+    days.push(date);
+  }
+
+  const values = days.map(day=>{
+    const key = day.toDateString();
+    return events.filter(e=>
+      new Date(e.date).toDateString() === key
+    ).length;
+  });
+
+  const max = Math.max(1,...values);
+
+  ctx.strokeStyle = "#40516c";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(35,15);
+  ctx.lineTo(35,height-30);
+  ctx.lineTo(width-10,height-30);
+  ctx.stroke();
+
+  const slot = (width-60)/7;
+
+  values.forEach((value,index)=>{
+    const barHeight = value/max*(height-65);
+    const x = 45 + index*slot;
+    const y = height-30-barHeight;
+
+    ctx.fillStyle = "#4da3ff";
+    ctx.fillRect(x,y,slot*0.55,barHeight);
+
+    ctx.fillStyle = "#edf3ff";
+    ctx.font = "12px Arial";
+    ctx.fillText(String(value),x,y-5);
+
+    ctx.fillStyle = "#9aabc5";
+    ctx.fillText(
+      days[index].toLocaleDateString("it-IT",{weekday:"short"}),
+      x-2,
+      height-10
+    );
+  });
+}
+
+/* CANCELLAZIONE COMPLETA */
+
+function clearAllData() {
+  if (!confirm("Attenzione: vuoi cancellare tutti i dati locali del laboratorio?")) return;
+
+  Object.values(KEYS).forEach(key=>localStorage.removeItem(key));
+
+  document.querySelectorAll("[data-check]").forEach(box=>box.checked=false);
+  document.getElementById("soundToggle").checked=false;
+
+  resetSimulation();
+  loadChecklist();
+  renderEvents();
+  refreshAll();
+
+  alert("Dati locali cancellati.");
+}
+
+/* AVVIO */
+
+function initialize() {
+  loadChecklist();
+  renderEvents();
+
+  document.getElementById("soundToggle").checked =
+    localStorage.getItem(KEYS.sound) === "true";
+
+  refreshAll();
+}
+
+initialize();
+
 </script>
 </body>
 </html>

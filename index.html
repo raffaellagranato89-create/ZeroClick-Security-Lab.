@@ -110,5 +110,32 @@ function clearHistory() {
 }
 </script>
 
+<div class="panel">
+  <h2>🧪 Simulazione Zero-Click</h2>
+  <p>Ambiente didattico isolato.</p>
+
+  <button onclick="runSimulation()">
+    Avvia simulazione
+  </button>
+
+  <div id="simulationResult"></div>
+</div>
+
+<script src="simulation.js"></script>
+
+<script>
+function runSimulation() {
+  const stages = ZeroClickSimulation.run();
+
+  document.getElementById("simulationResult").textContent =
+    stages.map(stage =>
+      stage.name + "\n" +
+      stage.detail + "\n" +
+      "Stato: " + stage.status
+    ).join("\n\n");
+}
+</script>
+</body>
+
 </body>
 </html>

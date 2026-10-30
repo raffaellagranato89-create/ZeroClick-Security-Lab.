@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zero-Click Security Lab</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #101827;
+  color: white;
+  padding: 25px;
+}
+.panel {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+button {
+  padding: 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #16a34a;
+  color: white;
+  font-weight: bold;
+}
+input {
+  width: 95%;
+  padding: 12px;
+  margin: 12px 0;
+}
+#result { white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<h1>🛡️ Zero-Click Security Lab</h1>
+<p>Simulatore didattico di sicurezza informatica</p>
+
+<div class="panel">
+  <h2>Simulazione ricezione automatica</h2>
+  <input id="message" placeholder="Inserisci un messaggio di prova">
+  <button onclick="analyze()">Analizza messaggio</button>
+  <h3>Risultato analisi</h3>
+  <p id="result">In attesa di un messaggio...</p>
+</div>
+
+<script>
+function analyze() {
+  const message = document.getElementById("message").value;
+  const result = document.getElementById("result");
+
+  if (!message.trim()) {
+    result.textContent = "Inserisci un messaggio.";
+    return;
+  }
+
+  const suspicious = /<script|javascript:|onerror\s*=/i.test(message);
+
+  if (suspicious) {
+    result.textContent =
+      "⚠️ Input sospetto rilevato.\n" +
+      "Il contenuto è stato bloccato dalla simulazione.";
+  } else {
+    result.textContent =
+      "✅ Nessun indicatore sospetto rilevato.\n" +
+      "Messaggio elaborato come testo semplice.";
+  }
+}
+</script>
+</body>
+</html>

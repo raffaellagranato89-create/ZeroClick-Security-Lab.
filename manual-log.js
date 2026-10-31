@@ -1,6 +1,7 @@
 
 (() => {
   const KEY = "zeroClickManualEvents";
+
   const read = () => {
     try {
       return JSON.parse(localStorage.getItem(KEY) || "[]");
@@ -8,29 +9,38 @@
       return [];
     }
   };
+
   const panel = document.createElement("div");
   panel.className = "card";
+
   panel.innerHTML = `
     <h2>📝 Registro manuale di sicurezza</h2>
+
     <label>Tipo di evento</label>
-    <input id="manualType" maxlength="80" placeholder="Es. Messaggio sospetto">
+    <input id="manualType" maxlength="80"
+      placeholder="Es. Messaggio sospetto">
+
     <label>Livello di rischio</label>
     <select id="manualRisk">
       <option>BASSO</option>
       <option>MEDIO</option>
       <option>ALTO</option>
     </select>
+
     <label>Descrizione</label>
     <textarea id="manualDetail" maxlength="1000"
       placeholder="Descrivi cosa è successo..."
-      style="width:100%;min-height:100px;padding:12px;border-radius:8px"></textarea>
+      style="width:100%;min-height:100px;padding:12px"></textarea>
+
     <button id="manualSave">Salva evento</button>
     <button id="manualExport">Esporta report CSV</button>
     <button id="manualPDF">Genera report PDF</button>
+
     <h3>Storico degli eventi</h3>
-    <div id="manualHistory">Nessun evento registrato.</div>
+    <div id="manualHistory"></div>
+
     <button id="manualClear">Cancella eventi manuali</button>
-    <p class="small">Gli eventi sono salvati localmente in questo browser.</p>
+    <p>Gli eventi sono salvati localmente sul dispositivo.</p>
   `;
 
   document.body.appendChild(panel);
@@ -39,7 +49,7 @@
 
   function render() {
     const events = read();
-    history.textContent = "";
+    history.replaceChildren();
 
     if (!events.length) {
       history.textContent = "Nessun evento registrato.";
@@ -51,7 +61,8 @@
       item.className = "metric";
 
       const title = document.createElement("strong");
-      title.textContent = `${event.date} | ${event.type} | ${event.risk}`;
+      title.textContent =
+        `${event.date} | ${event.type} | ${event.risk}`;
 
       const detail = document.createElement("p");
       detail.textContent = event.detail;
@@ -72,6 +83,7 @@
     }
 
     const events = read();
+
     events.unshift({
       date: new Date().toLocaleString("it-IT"),
       type,
@@ -86,12 +98,13 @@
       render();
       alert("Evento salvato.");
     } catch {
-      alert("Impossibile salvare: spazio locale non disponibile.");
+      alert("Impossibile salvare l'evento.");
     }
   });
 
   panel.querySelector("#manualExport").addEventListener("click", () => {
     const events = read();
+
     if (!events.length) {
       alert("Non ci sono eventi da esportare.");
       return;
@@ -114,80 +127,111 @@
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = "registro-manuale-security.csv";
+    link.download = "registro-security.csv";
     link.click();
-    URL.revokeObjectURL(url);
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  panel.querySelector("#manualPDF").addEventListener("click", () => {
+    const events = read();
+
+    if (!events.length) {
+      alert("Non ci sono eventi da inserire nel report.");
+      return;
+    }
+
+    // Apriamo la finestra direttamente durante il tocco dell'utente.
+    const report = window.open("", "_blank");
+
+    if (!report) {
+      alert("Safari ha bloccato la finestra. Consenti i popup per questo sito e riprova.");
+      return;
+    }
+
+    const safe = value =>
+      String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+
+    const rows = events.map(event => `
+      <tr>
+        <td>${safe(event.date)}</td>
+        <td>${safe(event.type)}</td>
+        <td>${safe(event.risk)}</td>
+        <td>${safe(event.detail)}</td>
+      </tr>
+    `).join("");
+
+    report.document.open();
+    report.document.write(`
+      <!DOCTYPE html>
+      <html lang="it">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Report sicurezza</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            color: #222;
+          }
+          h1 { color: #087e8b; }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+          }
+          th, td {
+            border: 1px solid #bbb;
+            padding: 7px;
+            text-align: left;
+            overflow-wrap: anywhere;
+          }
+          th { background: #e8f3f5; }
+          button {
+            padding: 14px;
+            margin: 15px 0;
+            background: #087e8b;
+            color: white;
+            border: 0;
+            border-radius: 8px;
+          }
+          @media print {
+            button { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Zero-Click Security Lab</h1>
+        <h2>Report eventi di sicurezza</h2>
+        <p>Generato: ${safe(new Date().toLocaleString("it-IT"))}</p>
+        <p>Totale eventi: ${events.length}</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Rischio</th>
+              <th>Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <p>Report basato sugli eventi inseriti manualmente.</p>
+        <button onclick="window.print()">Stampa / Salva PDF</button>
+      </body>
+      </html>
+    `);
+    report.document.close();
   });
 
   panel.querySelector("#manualClear").addEventListener("click", () => {
-    panel.querySelector("#manualPDF").addEventListener("click", () => {
-  const events = read();
-
-  if (!events.length) {
-    alert("Non ci sono eventi da inserire nel report.");
-    return;
-  }
-
-  const safe = value => String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
-
-  const rows = events.map(event => `
-    <tr>
-      <td>${safe(event.date)}</td>
-      <td>${safe(event.type)}</td>
-      <td>${safe(event.risk)}</td>
-      <td>${safe(event.detail)}</td>
-    </tr>
-  `).join("");
-
-  const report = window.open("", "_blank");
-
-  if (!report) {
-    alert("Consenti l'apertura della nuova finestra per creare il PDF.");
-    return;
-  }
-
-  report.document.write(`
-    <!DOCTYPE html>
-    <html lang="it">
-    <head>
-      <meta charset="UTF-8">
-      <title>Report sicurezza</title>
-      <style>
-        body { font-family: Arial; padding: 24px; color: #222; }
-        h1 { color: #087e8b; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #e8f3f5; }
-        @media print { button { display: none; } }
-      </style>
-    </head>
-    <body>
-      <h1>Zero-Click Security Lab</h1>
-      <h2>Report eventi di sicurezza</h2>
-      <p>Generato il: ${safe(new Date().toLocaleString("it-IT"))}</p>
-      <p>Totale eventi: ${events.length}</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Data</th><th>Tipo</th><th>Rischio</th><th>Descrizione</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-      <p>Report basato sugli eventi inseriti manualmente dall'utente.</p>
-      <button onclick="window.print()">Stampa / Salva PDF</button>
-    </body>
-    </html>
-  `);
-
-  report.document.close();
-});
     if (confirm("Vuoi cancellare tutti gli eventi manuali?")) {
       localStorage.removeItem(KEY);
       render();

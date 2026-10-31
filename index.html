@@ -9,70 +9,42 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>SENTINEL SECURITY SOC</title>
 <style>
-:root{
---bg:#080f1e;--panel:#111e32;--panel2:#0b1729;
---line:#263d5d;--blue:#398cff;--cyan:#54d7ff;
---text:#edf4ff;--muted:#91a5c2;
---green:#4cdda0;--yellow:#ffc45c;--red:#ff687c
-}
+:root{--bg:#080f1e;--panel:#111e32;--line:#263d5d;--blue:#398cff;--cyan:#54d7ff;--text:#edf4ff;--muted:#91a5c2;--green:#4cdda0;--yellow:#ffc45c;--red:#ff687c}
 *{box-sizing:border-box}
-body{
-margin:0;padding:env(safe-area-inset-top) 15px env(safe-area-inset-bottom);
-background:radial-gradient(ellipse at 50% -20%,#17345b,var(--bg) 60%);
-color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
-}
+body{margin:0;padding:env(safe-area-inset-top) 15px env(safe-area-inset-bottom);background:radial-gradient(ellipse at 50% -20%,#17345b,var(--bg) 60%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 .app{max-width:760px;margin:auto;padding-bottom:30px}
 header{display:flex;align-items:center;justify-content:space-between;padding:20px 2px}
 .brand{display:flex;align-items:center;gap:11px}
-.logo{
-width:44px;height:44px;border:1px solid var(--blue);border-radius:13px;
-display:grid;place-items:center;color:var(--cyan);font-size:24px;
-background:#142b49
-}
+.logo{width:44px;height:44px;border:1px solid var(--blue);border-radius:13px;display:grid;place-items:center;color:var(--cyan);font-size:24px;background:#142b49}
 .brand strong{display:block;letter-spacing:1.5px}
 .brand small{font-size:9px;color:var(--muted);letter-spacing:2px}
 .live{font-size:10px;color:var(--green)}
 .live:before{content:"●";margin-right:6px}
 .hero{padding:16px 3px}
 .eyebrow{color:var(--cyan);font-size:10px;letter-spacing:2px;font-weight:bold}
-h1{font-size:27px;margin:9px 0}
-h2{font-size:14px;margin:0}
+h1{font-size:27px;margin:9px 0}h2{font-size:14px;margin:0}
 p{line-height:1.5}
 .muted,.note{color:var(--muted);font-size:11px;line-height:1.55}
-.panel{
-background:linear-gradient(145deg,#14243b,#0e192b);
-border:1px solid var(--line);border-radius:16px;
-padding:16px;margin:13px 0
-}
+.panel{background:linear-gradient(145deg,#14243b,#0e192b);border:1px solid var(--line);border-radius:16px;padding:16px;margin:13px 0}
 .panelhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .tag{font-size:9px;color:var(--cyan);background:#1b3b60;padding:6px 8px;border-radius:7px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.metric{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:12px}
+.metric{background:#0b1729;border:1px solid var(--line);border-radius:11px;padding:12px}
 .metric small{display:block;color:var(--muted);font-size:10px}
 .metric strong{display:block;font-size:19px;margin-top:7px}
 .metric span{font-size:10px;color:var(--muted)}
 button{font:inherit;cursor:pointer;touch-action:manipulation}
-.primary{
-width:100%;border:0;border-radius:11px;padding:15px;margin:7px 0;
-color:white;font-weight:800;letter-spacing:.5px;
-background:linear-gradient(100deg,#1769dc,#338fff)
-}
-.secondary{
-width:100%;border:1px solid #2a4568;border-radius:10px;
-padding:12px;margin:5px 0;color:#dceaff;background:#142943;font-size:12px
-}
-button:disabled{opacity:.5}
-input[type="tel"]{
-width:100%;background:#091525;color:white;border:1px solid #2a4263;
-border-radius:9px;padding:12px;margin:8px 0
-}
+.primary{width:100%;border:0;border-radius:11px;padding:15px;margin:7px 0;color:white;font-weight:800;letter-spacing:.5px;background:linear-gradient(100deg,#1769dc,#338fff)}
+.secondary{width:100%;border:1px solid #2a4568;border-radius:10px;padding:12px;margin:5px 0;color:#dceaff;background:#142943;font-size:12px}
+button:disabled{opacity:.4;cursor:not-allowed}
+input[type="tel"],input[type="text"]{width:100%;background:#091525;color:white;border:1px solid #2a4263;border-radius:9px;padding:12px;margin:8px 0}
 input[type="file"]{width:100%;margin:12px 0;color:var(--muted);font-size:12px}
+input[type="checkbox"],input[type="radio"]{accent-color:#398cff}
+.choice{display:flex;gap:9px;align-items:flex-start;padding:10px;background:#0b1729;border:1px solid var(--line);border-radius:9px;margin:8px 0;font-size:12px;line-height:1.5}
 .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}
-.nav button{background:#101e32;border:1px solid #263c59;color:#a8bdd8;
-padding:12px 2px;border-radius:9px;font-size:10px}
+.nav button{background:#101e32;border:1px solid #263c59;color:#a8bdd8;padding:12px 2px;border-radius:9px;font-size:10px}
 .nav button.active{border-color:var(--blue);color:white;background:#17345a}
-.section{display:none}
-.section.active{display:block}
+.section{display:none}.section.active{display:block}
 .result{padding:12px 0;border-bottom:1px solid #21344e}
 .result:last-child{border:0}
 .resulthead{display:flex;justify-content:space-between;gap:8px}
@@ -83,12 +55,12 @@ padding:12px 2px;border-radius:9px;font-size:10px}
 .progress{height:5px;background:#091525;border-radius:8px;overflow:hidden;margin:12px 0}
 .progress div{height:100%;width:0;background:var(--cyan);transition:width .2s}
 footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1.6}
+.notice{border:1px solid #66512a;background:#302817;border-radius:10px;padding:11px;color:#ffda91;font-size:11px;line-height:1.5;margin:10px 0}
 @media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
 <div class="app">
-
 <header>
  <div class="brand">
   <div class="logo">⬡</div>
@@ -120,33 +92,58 @@ footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1
    <div class="metric"><small>Ultima attività</small><strong id="metricTime">—</strong><span>Ora locale</span></div>
   </div>
  </div>
-
  <div class="panel">
   <div class="panelhead"><h2>QUICK SECURITY CHECK</h2><span class="tag">LOCAL TEST</span></div>
-  <p class="note">Test effettivi delle funzioni disponibili nel browser. Non è una scansione completa di iOS.</p>
+  <p class="note">Test delle funzioni disponibili nel browser. Non è una scansione completa di iOS.</p>
   <button class="primary" id="runScan">▶ AVVIA DIAGNOSTICA</button>
   <div class="progress"><div id="progressBar"></div></div>
   <div id="scanStatus" class="note">In attesa di avvio.</div>
   <div id="quickResults"></div>
  </div>
-
  <div class="panel">
   <div class="panelhead"><h2>PRIVACY DEL DISPOSITIVO</h2><span class="tag">LOCAL STORAGE</span></div>
   <label class="note" for="phone">Numero personale facoltativo</label>
   <input id="phone" type="tel" placeholder="+39 ..." autocomplete="tel">
   <button class="secondary" id="savePhone">SALVA NUMERO IN LOCALE</button>
-  <p class="note">Il numero non viene inviato a servizi esterni.</p>
+  <p class="note">Il numero non viene inserito nei rapporti e non viene inviato.</p>
  </div>
 </section>
 
 <section class="section" id="scanner">
  <div class="panel">
-  <div class="panelhead"><h2>FILE FORENSIC ANALYSIS</h2><span class="tag">USER CONSENT</span></div>
-  <p class="note">Seleziona i file che autorizzi ad analizzare. Il file viene elaborato nel browser.</p>
+  <div class="panelhead"><h2>FILE FORENSIC ANALYSIS</h2><span class="tag">LOCAL SCAN</span></div>
+  <p class="note">Seleziona i file che autorizzi ad analizzare. L'elaborazione avviene nel browser.</p>
   <input id="fileInput" type="file" multiple>
   <button class="primary" id="analyzeFiles">ANALIZZA FILE SELEZIONATI</button>
   <div id="fileResults"></div>
-  <p class="note">SHA-256 identifica un file, ma non certifica che sia sicuro. Gli archivi ZIP vengono riconosciuti ma non estratti. Gli indicatori possono produrre falsi positivi.</p>
+  <p class="note">SHA-256 identifica un file ma non certifica che sia sicuro. Gli archivi ZIP vengono riconosciuti ma non estratti. Gli indicatori possono produrre falsi positivi.</p>
+ </div>
+ <div class="panel">
+  <div class="panelhead"><h2>CONDIVISIONE CON CHATGPT</h2><span class="tag">CONSENSO</span></div>
+  <p class="note">Scegli come procedere con il rapporto prodotto da SENTINEL.</p>
+
+  <label class="choice">
+   <input type="radio" name="shareMode" value="manual" checked>
+   <span><b>Modalità manuale</b><br>Prepara un rapporto scaricabile da allegare manualmente a questa chat.</span>
+  </label>
+
+  <label class="choice">
+   <input type="radio" name="shareMode" value="automatic">
+   <span><b>Modalità automatica</b><br>Predisposta per un futuro collegamento a un server protetto OpenAI.</span>
+  </label>
+
+  <div class="notice">
+   La modalità automatica non è ancora collegata: per usare le API OpenAI servono un servizio compatibile e una chiave API. Non è incluso nell'abbonamento ChatGPT e può comportare costi.
+  </div>
+
+  <label class="choice">
+   <input type="checkbox" id="chatgptConsent">
+   <span><b>Acconsento</b> alla condivisione con OpenAI del rapporto che sto preparando, per l'analisi tramite ChatGPT. Ho verificato che non contenga informazioni che non desidero condividere.</span>
+  </label>
+
+  <button class="primary" id="prepareReport">PREPARA RAPPORTO PER CHATGPT</button>
+  <div id="shareStatus" class="note" aria-live="polite">Nessun rapporto condiviso.</div>
+  <p class="note">La spunta viene azzerata dopo ogni operazione. I file originali non vengono caricati automaticamente: il rapporto contiene i risultati tecnici e non il contenuto dei file.</p>
  </div>
 </section>
 
@@ -176,73 +173,62 @@ footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1
 </section>
 
 <footer>
-SENTINEL SECURITY · PERSONAL SOC<br>
-Analisi locale · Nessun invio automatico di dati<br>
-Strumento diagnostico, non sostituisce le verifiche Apple.
+ SENTINEL SECURITY · PERSONAL SOC<br>
+ Analisi locale · Nessun invio automatico di dati<br>
+ Strumento diagnostico, non sostituisce le verifiche Apple.
 </footer>
 </div>
 
 <script>
 (function(){
 "use strict";
+const $=id=>document.getElementById(id);
+const LOG_KEY="sentinelSOCLog";
+const PHONE_KEY="sentinelPrivatePhone";
+let log=[];
+let fileFindings=[];
 
-const $ = function(id){return document.getElementById(id);};
-const LOG_KEY = "sentinelSOCLog";
-const PHONE_KEY = "sentinelPrivatePhone";
-let log = [];
-
-try {
- const old = JSON.parse(localStorage.getItem(LOG_KEY) || "[]");
- if(Array.isArray(old)) log = old;
-} catch(error) { log = []; }
+try{
+ const old=JSON.parse(localStorage.getItem(LOG_KEY)||"[]");
+ if(Array.isArray(old))log=old;
+}catch(e){log=[];}
 
 function updateMetrics(){
- $("metricChecks").textContent = log.filter(x=>x.category==="Diagnostica").length;
- $("metricFiles").textContent = log.filter(x=>x.category==="File").length;
- $("metricFlags").textContent = log.filter(x=>x.status==="DA VERIFICARE").length;
- $("metricTime").textContent = log.length ?
-  new Date(log[log.length-1].date).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}) : "—";
+ $("metricChecks").textContent=log.filter(x=>x.category==="Diagnostica").length;
+ $("metricFiles").textContent=log.filter(x=>x.category==="File").length;
+ $("metricFlags").textContent=log.filter(x=>x.status==="DA VERIFICARE").length;
+ $("metricTime").textContent=log.length?new Date(log[log.length-1].date).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}):"—";
 }
-
 function saveLog(){
- try { localStorage.setItem(LOG_KEY,JSON.stringify(log)); }
- catch(error) { alert("Memoria locale non disponibile. Esporta il rapporto."); }
+ try{localStorage.setItem(LOG_KEY,JSON.stringify(log));}
+ catch(e){alert("Memoria locale non disponibile. Esporta il rapporto.");}
  updateMetrics();
 }
-
 function record(category,status,detail){
- log.push({date:new Date().toISOString(),category:category,status:status,detail:detail});
- saveLog();
- renderReports();
+ log.push({date:new Date().toISOString(),category,status,detail});
+ saveLog();renderReports();
 }
-
 function renderReports(){
- const box=$("reportList");
- box.replaceChildren();
+ const box=$("reportList");box.replaceChildren();
  if(!log.length){box.textContent="Nessuna attività registrata.";return;}
- log.slice().reverse().forEach(function(item){
-  const div=document.createElement("div");
-  div.className="result";
-  const head=document.createElement("div");
-  head.className="resulthead";
-  const title=document.createElement("strong");
-  title.textContent=item.category;
+ log.slice().reverse().forEach(item=>{
+  const div=document.createElement("div");div.className="result";
+  const head=document.createElement("div");head.className="resulthead";
+  const title=document.createElement("strong");title.textContent=item.category;
   const state=document.createElement("span");
   state.className="state "+(item.status==="DA VERIFICARE"?"yellow":"green");
   state.textContent=item.status;
   const p=document.createElement("p");
   p.textContent=new Date(item.date).toLocaleString("it-IT")+" · "+item.detail;
-  head.append(title,state);
-  div.append(head,p);
-  box.append(div);
+  head.append(title,state);div.append(head,p);box.append(div);
  });
 }
 
 /* NAVIGAZIONE */
-document.querySelectorAll("[data-page]").forEach(function(button){
- button.addEventListener("click",function(){
-  document.querySelectorAll("[data-page]").forEach(function(b){b.classList.remove("active");});
-  document.querySelectorAll(".section").forEach(function(s){s.classList.remove("active");});
+document.querySelectorAll("[data-page]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  document.querySelectorAll("[data-page]").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   button.classList.add("active");
   $(button.dataset.page).classList.add("active");
  });
@@ -250,80 +236,59 @@ document.querySelectorAll("[data-page]").forEach(function(button){
 
 /* NUMERO PRIVATO */
 $("phone").value=localStorage.getItem(PHONE_KEY)||"";
-$("savePhone").addEventListener("click",function(){
+$("savePhone").addEventListener("click",()=>{
  try{
   localStorage.setItem(PHONE_KEY,$("phone").value.trim());
   alert("Numero salvato localmente.");
- }catch(error){alert("Impossibile salvare il numero.");}
+ }catch(e){alert("Impossibile salvare il numero.");}
 });
 
 /* DIAGNOSTICA */
 function addResult(name,status,detail){
- const div=document.createElement("div");
- div.className="result";
- const head=document.createElement("div");
- head.className="resulthead";
- const title=document.createElement("strong");
- title.textContent=name;
+ const div=document.createElement("div");div.className="result";
+ const head=document.createElement("div");head.className="resulthead";
+ const title=document.createElement("strong");title.textContent=name;
  const state=document.createElement("span");
  state.className="state "+(status==="DA VERIFICARE"?"yellow":"green");
  state.textContent=status;
- const p=document.createElement("p");
- p.textContent=detail;
- head.append(title,state);
- div.append(head,p);
+ const p=document.createElement("p");p.textContent=detail;
+ head.append(title,state);div.append(head,p);
  $("quickResults").append(div);
  record("Diagnostica",status,name+": "+detail);
 }
-
-$("runScan").addEventListener("click",async function(){
- const button=$("runScan");
- button.disabled=true;
- $("quickResults").replaceChildren();
- $("progressBar").style.width="0%";
+$("runScan").addEventListener("click",async()=>{
+ const button=$("runScan");button.disabled=true;
+ $("quickResults").replaceChildren();$("progressBar").style.width="0%";
  $("scanStatus").textContent="Esecuzione dei test locali...";
-
  const tests=[
-  ["Connessione HTTPS",function(){
+  ["Connessione HTTPS",()=>{
    const ok=location.protocol==="https:"||location.hostname==="localhost";
-   return [ok?"VERIFICATO":"DA VERIFICARE",
-   ok?"Pagina caricata tramite HTTPS.":"La pagina non usa HTTPS."];
+   return [ok?"VERIFICATO":"DA VERIFICARE",ok?"Pagina caricata tramite HTTPS.":"La pagina non usa HTTPS."];
   }],
-  ["Memoria browser",function(){
+  ["Memoria browser",()=>{
    try{
-    const key="sentinel-test-"+Date.now();
-    localStorage.setItem(key,"ok");
-    const ok=localStorage.getItem(key)==="ok";
-    localStorage.removeItem(key);
-    return [ok?"VERIFICATO":"DA VERIFICARE",
-    ok?"Scrittura e lettura locale riuscite.":"Test memoria non riuscito."];
-   }catch(error){return ["DA VERIFICARE","Accesso alla memoria negato."];}
+    const k="sentinel-test-"+Date.now();localStorage.setItem(k,"ok");
+    const ok=localStorage.getItem(k)==="ok";localStorage.removeItem(k);
+    return [ok?"VERIFICATO":"DA VERIFICARE",ok?"Scrittura e lettura locale riuscite.":"Test memoria non riuscito."];
+   }catch(e){return ["DA VERIFICARE","Accesso alla memoria negato."];}
   }],
-  ["API crittografiche",function(){
+  ["API crittografiche",()=>{
    const ok=!!(window.crypto&&crypto.subtle&&crypto.subtle.digest);
-   return [ok?"VERIFICATO":"DA VERIFICARE",
-   ok?"SHA-256 disponibile nel browser.":"SHA-256 non disponibile."];
+   return [ok?"VERIFICATO":"DA VERIFICARE",ok?"SHA-256 disponibile nel browser.":"SHA-256 non disponibile."];
   }],
-  ["API analisi file",function(){
+  ["API analisi file",()=>{
    const ok=!!(window.File&&window.Blob&&window.FileReader);
-   return [ok?"VERIFICATO":"DA VERIFICARE",
-   ok?"API per file disponibili, con selezione autorizzata.":"API file non disponibili."];
+   return [ok?"VERIFICATO":"DA VERIFICARE",ok?"API per file disponibili.":"API file non disponibili."];
   }],
-  ["Processi interni iOS",function(){
-   return ["DA VERIFICARE","Non accessibili a una web app."];
-  }],
-  ["Memoria privata iPhone",function(){
-   return ["DA VERIFICARE","Non accessibile integralmente a una web app."];
-  }]
+  ["Processi interni iOS",()=>["DA VERIFICARE","Non accessibili a una web app."]],
+  ["Memoria privata iPhone",()=>["DA VERIFICARE","Non accessibile integralmente a una web app."]]
  ];
-
  for(let i=0;i<tests.length;i++){
   let result;
-  try{result=tests[i][1]();}
-  catch(error){result=["DA VERIFICARE","Test non completato: "+error.message];}
+  try{result=tests[i][1]();}catch(e){result=["DA VERIFICARE","Test non completato: "+e.message];}
   addResult(tests[i][0],result[0],result[1]);
   $("progressBar").style.width=((i+1)/tests.length*100)+"%";
-  await new Promise(function(resolve){setTimeout(resolve,100);});
+  await new Promise(resolve=>setTimeout(resolve,100));
  }
  $("scanStatus").textContent="Test terminati. Leggi ogni risultato singolarmente.";
  button.disabled=false;
@@ -331,13 +296,10 @@ $("runScan").addEventListener("click",async function(){
 
 /* ANALISI FILE */
 function sha256(buffer){
- return crypto.subtle.digest("SHA-256",buffer).then(function(hash){
-  return Array.from(new Uint8Array(hash)).map(function(b){
-   return b.toString(16).padStart(2,"0");
-  }).join("");
- });
+ return crypto.subtle.digest("SHA-256",buffer).then(hash=>
+  Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("")
+ );
 }
-
 function findIndicators(text){
  const patterns=[
   {label:"Uso di eval()",re:/\beval\s*\(/i},
@@ -346,73 +308,87 @@ function findIndicators(text){
   {label:"Possibile JavaScript offuscato",re:/\\x[0-9a-f]{2}\\x[0-9a-f]{2}/i},
   {label:"URL HTTP non cifrato",re:/http:\/\/[^\s"'<>]+/i}
  ];
- return patterns.filter(function(pattern){return pattern.re.test(text);})
-  .map(function(pattern){return pattern.label;});
+ return patterns.filter(p=>p.re.test(text)).map(p=>p.label);
 }
-
-$("analyzeFiles").addEventListener("click",async function(){
+$("analyzeFiles").addEventListener("click",async()=>{
  const files=Array.from($("fileInput").files);
  if(!files.length){alert("Seleziona prima uno o più file.");return;}
- const box=$("fileResults");
- box.replaceChildren();
-
+ const button=$("analyzeFiles");button.disabled=true;
+ const box=$("fileResults");box.replaceChildren();fileFindings=[];
  for(const file of files){
-  const card=document.createElement("div");
-  card.className="result";
-  const title=document.createElement("strong");
-  title.textContent=file.name;
+  const card=document.createElement("div");card.className="result";
+  const title=document.createElement("strong");title.textContent=file.name;
   const info=document.createElement("p");
   info.textContent="Dimensione: "+file.size+" byte · Tipo: "+(file.type||"non dichiarato");
-  card.append(title,info);
-  box.append(card);
-
-  let kind="Formato non riconosciuto";
-  let hash="Non calcolato";
-  let indicators=[];
-
+  card.append(title,info);box.append(card);
+  let kind="Formato non riconosciuto",hash="Non calcolato",indicators=[];
   try{
    const head=new Uint8Array(await file.slice(0,16).arrayBuffer());
-   if(head[0]===0x50&&head[1]===0x4b)kind="Archivio ZIP (contenuto non estratto)";
+   if(head[0]===0x50&&head[1]===0x4b)kind="Archivio ZIP (non estratto)";
    else if(head[0]===0x25&&head[1]===0x50&&head[2]===0x44&&head[3]===0x46)kind="Documento PDF";
    else if(head[0]===0x89&&head[1]===0x50&&head[2]===0x4e&&head[3]===0x47)kind="Immagine PNG";
    else if(head[0]===0xff&&head[1]===0xd8&&head[2]===0xff)kind="Immagine JPEG";
    else if(head[0]===0x4d&&head[1]===0x5a)kind="Eseguibile Windows PE";
    else if(head[0]===0x7f&&head[1]===0x45&&head[2]===0x4c&&head[3]===0x46)kind="Eseguibile ELF";
-
-   if(crypto.subtle&&file.size<=50*1024*1024){
-    hash=await sha256(await file.arrayBuffer());
-   }else if(file.size>50*1024*1024){
-    hash="File oltre 50 MB: impronta non calcolata";
-   }
-
+   if(crypto.subtle&&file.size<=50*1024*1024)hash=await sha256(await file.arrayBuffer());
+   else if(file.size>50*1024*1024)hash="Oltre 50 MB: non calcolato";
    const ext=(file.name.split(".").pop()||"").toLowerCase();
-   if(["exe","dll","bat","cmd","ps1","vbs","scr","apk","sh"].includes(ext)){
-    indicators.push("Estensione eseguibile o script");
-   }
+   if(["exe","dll","bat","cmd","ps1","vbs","scr","apk","sh"].includes(ext))indicators.push("Estensione eseguibile o script");
    if(kind.includes("Eseguibile"))indicators.push("Firma di formato eseguibile");
-
    if(["txt","html","htm","js","xml","svg","json","csv","md","css"].includes(ext)&&file.size<=2*1024*1024){
     indicators=indicators.concat(findIndicators(await file.text()));
    }
-  }catch(error){
-   indicators.push("Analisi incompleta: "+error.message);
-  }
-
+  }catch(e){indicators.push("Analisi incompleta: "+e.message);}
   indicators=[...new Set(indicators)];
   const status=indicators.length?"DA VERIFICARE":"NESSUN INDICATORE RILEVATO";
   const detail=document.createElement("p");
-  detail.textContent="Formato: "+kind+"\nSHA-256: "+hash+
-   "\nIndicatori: "+(indicators.join("; ")||"Nessuno rilevato dai controlli eseguiti.");
+  detail.textContent="Formato: "+kind+"\nSHA-256: "+hash+"\nIndicatori: "+(indicators.join("; ")||"Nessuno rilevato dai controlli eseguiti.");
   card.append(detail);
-
-  const note=document.createElement("p");
-  note.className="note";
+  const note=document.createElement("p");note.className="note";
   note.textContent="Esito: "+status+". Un indicatore non prova che il file sia malevolo.";
   card.append(note);
-
+  const finding={name:file.name,size:file.size,type:file.type||"non dichiarato",format:kind,sha256:hash,indicators,status};
+  fileFindings.push(finding);
   record("File",indicators.length?"DA VERIFICARE":"ANALISI ESEGUITA",
    file.name+" · "+kind+" · "+(indicators.join("; ")||"Nessun indicatore euristico rilevato")+" · SHA-256: "+hash);
  }
+ button.disabled=false;
+});
+
+/* CONSENSO E PREPARAZIONE RAPPORTO */
+$("prepareReport").addEventListener("click",()=>{
+ const consent=$("chatgptConsent");
+ const mode=document.querySelector('input[name="shareMode"]:checked').value;
+ const status=$("shareStatus");
+ if(!consent.checked){
+  status.textContent="Operazione bloccata: devi selezionare la casella di consenso.";
+  alert("Per procedere devi prima autorizzare esplicitamente la condivisione.");
+  return;
+ }
+ if(mode==="automatic"){
+  status.textContent="Modalità automatica non attiva: manca un server protetto e una configurazione API. Nessun dato è stato inviato.";
+  consent.checked=false;
+  alert("Nessun invio effettuato. La modalità automatica richiede un server e una API OpenAI, che può avere costi.");
+  return;
+ }
+ const report={
+  product:"SENTINEL SECURITY SOC",
+  generatedAt:new Date().toISOString(),
+  sharingMode:"manuale",
+  consent:"Concesso dall'utente per la preparazione di questo rapporto",
+  disclaimer:"Rapporto diagnostico indicativo. Non certifica l'assenza di malware o spyware.",
+  fileAnalysis:fileFindings,
+  activityLog:log
+ };
+ const blob=new Blob([JSON.stringify(report,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download="sentinel-security-report.json";
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),2000);
+ consent.checked=false;
+ status.textContent="Rapporto preparato sul dispositivo. Nessun invio automatico effettuato. Puoi allegare il file scaricato a questa chat.";
+ record("Condivisione","RAPPORTO PREPARATO","Rapporto JSON generato localmente; nessun file caricato online.");
 });
 
 /* GUIDE */
@@ -423,84 +399,50 @@ const guides=[
  ["Modalità di isolamento","Impostazioni → Privacy e sicurezza → Modalità di isolamento","Valuta questa protezione se temi attacchi mirati."],
  ["WhatsApp","WhatsApp → Impostazioni → Dispositivi collegati","Rimuovi le sessioni non riconosciute e attiva la verifica in due passaggi."]
 ];
-
-guides.forEach(function(item){
- const div=document.createElement("div");
- div.className="result";
- const title=document.createElement("strong");
- title.textContent=item[0];
- const p=document.createElement("p");
- p.textContent=item[1]+"\n"+item[2];
- const button=document.createElement("button");
- button.className="secondary";
+guides.forEach(item=>{
+ const div=document.createElement("div");div.className="result";
+ const title=document.createElement("strong");title.textContent=item[0];
+ const p=document.createElement("p");p.textContent=item[1]+"\n"+item[2];
+ const button=document.createElement("button");button.className="secondary";
  button.textContent="MOSTRA ISTRUZIONI";
- button.addEventListener("click",function(){
-  alert(item[0]+"\n\n"+item[1]+"\n\n"+item[2]+"\n\nLa verifica va completata manualmente.");
- });
- div.append(title,p,button);
- $("guides").append(div);
+ button.addEventListener("click",()=>alert(item[0]+"\n\n"+item[1]+"\n\n"+item[2]+"\n\nLa verifica va completata manualmente."));
+ div.append(title,p,button);$("guides").append(div);
 });
 
 /* ESPORTAZIONE CSV */
 function download(blob,name){
  const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
- a.href=url;a.download=name;
+ const a=document.createElement("a");a.href=url;a.download=name;
  document.body.append(a);a.click();a.remove();
- setTimeout(function(){URL.revokeObjectURL(url);},1500);
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
-
-$("exportCsv").addEventListener("click",function(){
+$("exportCsv").addEventListener("click",()=>{
  if(!log.length){alert("Nessun dato da esportare.");return;}
  const rows=[["Data","Categoria","Stato","Dettaglio"]];
- log.forEach(function(x){rows.push([x.date,x.category,x.status,x.detail]);});
- const csv=rows.map(function(row){
-  return row.map(function(value){
-   return '"'+String(value).replace(/"/g,'""')+'"';
-  }).join(",");
- }).join("\r\n");
+ log.forEach(x=>rows.push([x.date,x.category,x.status,x.detail]));
+ const csv=rows.map(row=>row.map(value=>'"'+String(value).replace(/"/g,'""')+'"').join(",")).join("\r\n");
  download(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}),"sentinel-report.csv");
 });
 
 /* ESPORTAZIONE PDF */
 function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,function(c){
-  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
- });
+ return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-
-$("exportPdf").addEventListener("click",function(){
+$("exportPdf").addEventListener("click",()=>{
  const win=window.open("","_blank");
  if(!win){alert("Consenti i popup in Safari per creare il PDF.");return;}
- const entries=log.map(function(x){
-  return "<article><b>"+escapeHTML(x.category)+" — "+escapeHTML(x.status)+
-  "</b><p>"+escapeHTML(new Date(x.date).toLocaleString("it-IT"))+
-  "</p><p>"+escapeHTML(x.detail)+"</p></article>";
- }).join("");
-
- win.document.write(
- "<!DOCTYPE html><html><head><meta charset='utf-8'><title>SENTINEL Report</title>"+
- "<style>body{font:14px Arial;padding:25px;color:#17243a}h1{color:#1769dc}article{border-bottom:1px solid #ddd;padding:10px 0}p{overflow-wrap:anywhere}</style>"+
- "</head><body><h1>SENTINEL SECURITY</h1><h2>Security activity report</h2>"+
- "<p>Rapporto diagnostico locale. Non certifica l'assenza di malware.</p>"+
- (entries||"<p>Nessuna attività registrata.</p>")+
- "</body></html>"
- );
- win.document.close();
- win.focus();
- setTimeout(function(){win.print();},500);
+ const entries=log.map(x=>"<article><b>"+escapeHTML(x.category)+" — "+escapeHTML(x.status)+"</b><p>"+escapeHTML(new Date(x.date).toLocaleString("it-IT"))+"</p><p>"+escapeHTML(x.detail)+"</p></article>").join("");
+ win.document.write("<!DOCTYPE html><html><head><meta charset='utf-8'><title>SENTINEL Report</title><style>body{font:14px Arial;padding:25px;color:#17243a}h1{color:#1769dc}article{border-bottom:1px solid #ddd;padding:10px 0}p{overflow-wrap:anywhere}</style></head><body><h1>SENTINEL SECURITY</h1><h2>Security activity report</h2><p>Rapporto diagnostico locale. Non certifica l'assenza di malware.</p>"+(entries||"<p>Nessuna attività registrata.</p>")+"</body></html>");
+ win.document.close();win.focus();setTimeout(()=>win.print(),500);
 });
 
 /* CANCELLAZIONE REGISTRO */
-$("clearLog").addEventListener("click",function(){
+$("clearLog").addEventListener("click",()=>{
  if(!confirm("Vuoi cancellare la cronologia locale?"))return;
- log=[];
- saveLog();
- renderReports();
+ log=[];fileFindings=[];saveLog();renderReports();
 });
 
-updateMetrics();
-renderReports();
+updateMetrics();renderReports();
 })();
 </script>
 </body>

@@ -26,6 +26,7 @@
       style="width:100%;min-height:100px;padding:12px;border-radius:8px"></textarea>
     <button id="manualSave">Salva evento</button>
     <button id="manualExport">Esporta report CSV</button>
+    <button id="manualPDF">Genera report PDF</button>
     <h3>Storico degli eventi</h3>
     <div id="manualHistory">Nessun evento registrato.</div>
     <button id="manualClear">Cancella eventi manuali</button>

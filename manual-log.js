@@ -8,9 +8,8 @@
       return [];
     }
   };
-
-  const panel = document.createElement("section");
-  panel.className = "panel";
+  const panel = document.createElement("div");
+  panel.className = "card";
   panel.innerHTML = `
     <h2>📝 Registro manuale di sicurezza</h2>
     <label>Tipo di evento</label>

@@ -14,6 +14,7 @@
 button{font:inherit;cursor:pointer;touch-action:manipulation}.primary{width:100%;border:0;border-radius:11px;padding:15px;margin:7px 0;color:white;font-weight:800;background:linear-gradient(100deg,#1769dc,#338fff)}.secondary{width:100%;border:1px solid #2a4568;border-radius:10px;padding:12px;margin:5px 0;color:#dceaff;background:#142943;font-size:12px}.updateButton{background:linear-gradient(100deg,#087d58,#24b982);color:white;border:0}.updateButton[hidden]{display:none}button:disabled{opacity:.5}
 input[type="tel"],input[type="text"]{width:100%;background:#091525;color:white;border:1px solid #2a4263;border-radius:9px;padding:12px;margin:8px 0}input[type="file"]{width:100%;margin:12px 0;color:var(--muted);font-size:12px}
 .nav{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:12px 0}.nav button{background:#101e32;border:1px solid #263c59;color:#a8bdd8;padding:11px 2px;border-radius:9px;font-size:9px}.nav button.active{border-color:var(--blue);color:white;background:#17345a}.section{display:none}.section.active{display:block}.result{padding:12px 0;border-bottom:1px solid #21344e}.resulthead{display:flex;justify-content:space-between;gap:8px}.result strong{font-size:12px}.result p{font-size:11px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}.state{font-size:10px;font-weight:bold;white-space:nowrap}.green{color:var(--green)}.yellow{color:var(--yellow)}.red{color:var(--red)}.progress{height:5px;background:#091525;border-radius:8px;overflow:hidden;margin:12px 0}.progress div{height:100%;width:0;background:var(--cyan);transition:width .2s}label{font-size:11px;color:var(--muted);line-height:1.5}label.consent{display:flex;align-items:flex-start;gap:9px;margin:10px 0}label.consent input{margin-top:2px}label.pref{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #263d5d}label.pref input{margin-top:2px;accent-color:#398cff}.alert{display:none;background:#481b2a;border:1px solid var(--red);color:#ffe5e9;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;line-height:1.5}.okbox{background:#102c2a;border:1px solid #286b58;color:#c6ffe9;padding:12px;border-radius:10px;font-size:12px;line-height:1.5}
+.insight{background:#0b1729;border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0}.insight strong{font-size:13px}.insight p{font-size:11px;color:var(--muted);margin:7px 0 0;line-height:1.5}.insightStatus{font-size:11px;font-weight:bold;margin-top:8px}.insightList{padding-left:18px;color:var(--muted);font-size:11px;line-height:1.7}.empty{color:var(--muted);font-size:11px;padding:10px 0}
 footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1.6}@media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
@@ -30,10 +31,51 @@ footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1
 </nav>
 
 <section class="section active" id="dashboard">
-<div class="panel"><div class="panelhead"><h2>STATO DEL SISTEMA</h2><span class="tag">DEVICE STATUS</span></div><div class="grid">
-<div class="metric"><small>Controlli</small><strong id="metricChecks">0</strong><span>Eseguiti</span></div><div class="metric"><small>File</small><strong id="metricFiles">0</strong><span>Analizzati</span></div><div class="metric"><small>Indicatori</small><strong id="metricFlags">0</strong><span>Da verificare</span></div><div class="metric"><small>Ultima attività</small><strong id="metricTime">—</strong><span>Ora locale</span></div></div></div>
+<div class="panel">
+<div class="panelhead"><h2>STATO DEL SISTEMA</h2><span class="tag">DEVICE STATUS</span></div>
+<div class="grid">
+<div class="metric"><small>Controlli</small><strong id="metricChecks">0</strong><span>Eseguiti</span></div>
+<div class="metric"><small>File</small><strong id="metricFiles">0</strong><span>Analizzati</span></div>
+<div class="metric"><small>Indicatori</small><strong id="metricFlags">0</strong><span>Da verificare</span></div>
+<div class="metric"><small>Ultima attività</small><strong id="metricTime">—</strong><span>Ora locale</span></div>
+</div>
+</div>
+
+<div class="panel">
+<div class="panelhead"><h2>SECURITY STATUS</h2><span class="tag">RIEPILOGO</span></div>
+<div class="insight">
+<strong id="securityHeadline">In attesa di controlli</strong>
+<div id="securityState" class="insightStatus yellow">STATO NON VALUTABILE</div>
+<p id="securityExplanation">Esegui una diagnostica o analizza un file per aggiornare questo riepilogo.</p>
+</div>
+<p class="note">Questo stato riassume esclusivamente i dati registrati da SENTINEL. Non misura la sicurezza complessiva dell'iPhone e non può escludere spyware o attacchi avanzati.</p>
+</div>
+
+<div class="panel">
+<div class="panelhead"><h2>VERIFICHE DA COMPLETARE</h2><span class="tag">ATTENZIONE</span></div>
+<div id="pendingChecks" class="empty">Nessuna verifica registrata.</div>
+<button class="secondary" id="openReports">APRI REPORT COMPLETO</button>
+</div>
+
+<div class="panel">
+<div class="panelhead"><h2>ATTIVITÀ RECENTI</h2><span class="tag">ULTIMI EVENTI</span></div>
+<div id="recentActivity" class="empty">Nessuna attività registrata.</div>
+</div>
+
+<div class="panel">
+<div class="panelhead"><h2>PROSSIMI PASSI CONSIGLIATI</h2><span class="tag">SECURITY TIPS</span></div>
+<ul class="insightList" id="securityTips">
+<li>Mantieni iOS aggiornato.</li>
+<li>Controlla periodicamente i dispositivi collegati a WhatsApp.</li>
+<li>Verifica profili e VPN installati sull'iPhone.</li>
+<li>Non aprire allegati o link inattesi.</li>
+</ul>
+</div>
+
 <div class="panel"><div class="panelhead"><h2>QUICK SECURITY CHECK</h2><span class="tag">LOCAL TEST</span></div><p class="note">Test delle funzioni disponibili nel browser. Non è una scansione completa di iOS.</p><button class="primary" id="runScan">▶ AVVIA DIAGNOSTICA</button><div class="progress"><div id="progressBar"></div></div><div id="scanStatus" class="note">In attesa di avvio.</div><div id="quickResults"></div></div>
+
 <div class="panel"><div class="panelhead"><h2>PHONE NUMBER INTELLIGENCE</h2><span class="tag">GOOGLE SEARCH</span></div><label for="phone">Numero telefonico da verificare</label><input id="phone" type="tel" placeholder="+39 ..." autocomplete="tel"><button class="secondary" id="savePhone">SALVA NUMERO SOLO IN LOCALE</button><p class="note">Il numero salvato resta nella memoria del browser. Non viene incluso nei report.</p><label class="consent"><input type="checkbox" id="phoneConsent"><span>Acconsento a trasmettere questo numero a Google come termine di ricerca.</span></label><button class="primary" id="searchPhone">CERCA IL NUMERO SU GOOGLE</button><p class="note">La ricerca apre Google in Safari. SENTINEL non legge automaticamente i risultati.</p></div>
+
 <div class="panel"><div class="panelhead"><h2>GOOGLE THREAT INTELLIGENCE</h2><span class="tag">CONSENT REQUIRED</span></div><label for="domain">Dominio o sito da controllare</label><input id="domain" type="text" placeholder="esempio.com"><label class="consent"><input type="checkbox" id="domainConsent"><span>Acconsento a inviare a Google il dominio inserito come termine di ricerca.</span></label><button class="secondary" id="searchDomain">CERCA DOMINIO SU GOOGLE</button><p class="note">La ricerca pubblica non è un servizio antivirus certificato.</p></div>
 </section>
 
@@ -74,7 +116,7 @@ footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1
 "use strict";
 const $=id=>document.getElementById(id);
 const LOG_KEY="sentinelSOCLog",PHONE_KEY="sentinelPrivatePhone",PREF_KEY="sentinelNotificationPrefs";
-const APP_VERSION="1.2.0";
+const APP_VERSION="1.3.0";
 const VERSION_URL="./version.json";
 const APP_URL="https://raffaellagranato89-create.github.io/ZeroClick-Security-Lab/";
 let log=[],lastHash="",availableVersion="";
@@ -86,10 +128,11 @@ $("metricFiles").textContent=log.filter(x=>x.category==="File").length;
 $("metricFlags").textContent=log.filter(x=>x.status==="DA VERIFICARE").length;
 $("metricTime").textContent=log.length?new Date(log[log.length-1].date).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}):"—";
 }
-function save(){try{localStorage.setItem(LOG_KEY,JSON.stringify(log.slice(-500)));}catch(e){alert("Memoria locale non disponibile. Esporta il rapporto.");}metrics();}
+function save(){try{localStorage.setItem(LOG_KEY,JSON.stringify(log.slice(-500)));}catch(e){alert("Memoria locale non disponibile. Esporta il rapporto.");}metrics();updateDashboard();}
 function render(){
 const box=$("reportList");box.replaceChildren();
-if(!log.length){box.textContent="Nessuna attività registrata.";return;}
+if(!log.length){box.textContent="Nessuna attività registrata.";}
+else{
 log.slice().reverse().forEach(x=>{
 const d=document.createElement("div");d.className="result";
 const h=document.createElement("div");h.className="resulthead";
@@ -98,16 +141,63 @@ const s=document.createElement("span");s.className="state "+(x.status==="DA VERI
 const p=document.createElement("p");p.textContent=new Date(x.date).toLocaleString("it-IT")+" · "+x.detail;
 h.append(t,s);d.append(h,p);box.append(d);
 });
-updateAlerts();
+}
+updateAlerts();updateDashboard();
 }
 function record(category,status,detail){
 log.push({date:new Date().toISOString(),category,status,detail});save();render();
 }
-document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>{
-document.querySelectorAll("[data-page]").forEach(x=>x.classList.remove("active"));
-document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
-b.classList.add("active");$(b.dataset.page).classList.add("active");
-}));
+function openPage(page){
+document.querySelectorAll("[data-page]").forEach(x=>x.classList.toggle("active",x.dataset.page===page));
+document.querySelectorAll(".section").forEach(x=>x.classList.toggle("active",x.id===page));
+}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>openPage(b.dataset.page)));
+$("openReports").addEventListener("click",()=>openPage("reports"));
+
+function updateDashboard(){
+const flagged=log.filter(x=>x.status==="DA VERIFICARE");
+const headline=$("securityHeadline"),state=$("securityState"),explanation=$("securityExplanation");
+if(!log.length){
+headline.textContent="In attesa di controlli";
+state.textContent="STATO NON VALUTABILE";state.className="insightStatus yellow";
+explanation.textContent="Non sono ancora presenti controlli nello storico. Avvia una diagnostica per iniziare.";
+}else if(flagged.length){
+headline.textContent="Sono presenti elementi da verificare";
+state.textContent=flagged.length+" ELEMENTI";state.className="insightStatus yellow";
+explanation.textContent="Lo storico contiene "+flagged.length+" risultati contrassegnati come DA VERIFICARE. Apri il report e valuta ogni voce: non significa automaticamente che sia presente malware.";
+}else{
+headline.textContent="Nessun indicatore registrato nello storico";
+state.textContent="NESSUN AVVISO REGISTRATO";state.className="insightStatus green";
+explanation.textContent="I controlli registrati non hanno prodotto indicatori da verificare. Questo non certifica la sicurezza completa del dispositivo.";
+}
+const pending=$("pendingChecks");pending.replaceChildren();
+if(!flagged.length){
+const p=document.createElement("p");p.className="empty";p.textContent=log.length?"Non risultano elementi contrassegnati come DA VERIFICARE. Ricorda che i limiti di accesso a iOS restano invariati.":"Esegui un controllo per visualizzare eventuali verifiche da completare.";pending.append(p);
+}else{
+flagged.slice(-5).reverse().forEach(x=>{
+const d=document.createElement("div");d.className="result";
+const h=document.createElement("div");h.className="resulthead";
+const t=document.createElement("strong");t.textContent=x.category;
+const s=document.createElement("span");s.className="state yellow";s.textContent="DA VERIFICARE";
+const p=document.createElement("p");p.textContent=x.detail;
+h.append(t,s);d.append(h,p);pending.append(d);
+});
+if(flagged.length>5){const p=document.createElement("p");p.className="note";p.textContent="Sono presenti altri "+(flagged.length-5)+" elementi nel report completo.";pending.append(p);}
+}
+const recent=$("recentActivity");recent.replaceChildren();
+if(!log.length){recent.textContent="Nessuna attività registrata.";}
+else{
+log.slice(-5).reverse().forEach(x=>{
+const d=document.createElement("div");d.className="result";
+const h=document.createElement("div");h.className="resulthead";
+const t=document.createElement("strong");t.textContent=x.category;
+const s=document.createElement("span");s.className="state "+(x.status==="DA VERIFICARE"?"yellow":"green");s.textContent=x.status;
+const p=document.createElement("p");p.textContent=new Date(x.date).toLocaleString("it-IT")+" · "+x.detail;
+h.append(t,s);d.append(h,p);recent.append(d);
+});
+}
+}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>{}));
 
 $("phone").value=localStorage.getItem(PHONE_KEY)||"";
 $("savePhone").addEventListener("click",()=>{

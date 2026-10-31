@@ -7,132 +7,123 @@
 <meta name="theme-color" content="#080f1e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>SENTINEL SECURITY | SOC</title>
+<title>SENTINEL SECURITY SOC</title>
 <style>
 :root{
- --bg:#080f1e;--surface:#101c30;--surface2:#14243b;
- --line:#233a59;--blue:#398cff;--cyan:#54d7ff;
- --text:#edf4ff;--muted:#91a5c2;--green:#4cdda0;
- --yellow:#ffc45c;--red:#ff687c;
+--bg:#080f1e;--panel:#111e32;--panel2:#0b1729;
+--line:#263d5d;--blue:#398cff;--cyan:#54d7ff;
+--text:#edf4ff;--muted:#91a5c2;
+--green:#4cdda0;--yellow:#ffc45c;--red:#ff687c
 }
 *{box-sizing:border-box}
 body{
- margin:0;background:radial-gradient(ellipse at 50% -20%,#17345b 0%,var(--bg) 55%);
- color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
- padding:env(safe-area-inset-top) 15px env(safe-area-inset-bottom);
+margin:0;padding:env(safe-area-inset-top) 15px env(safe-area-inset-bottom);
+background:radial-gradient(ellipse at 50% -20%,#17345b,var(--bg) 60%);
+color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
-button,input{font:inherit}
-button{cursor:pointer}
-.app{max-width:780px;margin:auto;padding-bottom:35px}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:20px 2px 15px}
+.app{max-width:760px;margin:auto;padding-bottom:30px}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 2px}
 .brand{display:flex;align-items:center;gap:11px}
-.mark{
- width:43px;height:43px;border:1px solid #438dff;border-radius:13px;
- display:grid;place-items:center;color:#65caff;font-size:23px;
- background:linear-gradient(145deg,#183d6c,#101c30);
- box-shadow:0 0 24px #267cff30;
+.logo{
+width:44px;height:44px;border:1px solid var(--blue);border-radius:13px;
+display:grid;place-items:center;color:var(--cyan);font-size:24px;
+background:#142b49
 }
-.brand strong{display:block;font-size:16px;letter-spacing:1.5px}
-.brand small,.muted{color:var(--muted)}
-.brand small{font-size:10px;letter-spacing:2px}
-.live{font-size:10px;color:var(--green);letter-spacing:1px}
-.live:before{content:"";display:inline-block;width:7px;height:7px;
- border-radius:50%;background:var(--green);margin-right:6px}
-.hero{padding:22px 4px 18px}
-.eyebrow{font-size:10px;letter-spacing:2px;color:var(--cyan);font-weight:700}
-h1{font-size:27px;line-height:1.15;margin:8px 0}
-.hero p{font-size:13px;color:var(--muted);line-height:1.5;margin:8px 0}
+.brand strong{display:block;letter-spacing:1.5px}
+.brand small{font-size:9px;color:var(--muted);letter-spacing:2px}
+.live{font-size:10px;color:var(--green)}
+.live:before{content:"●";margin-right:6px}
+.hero{padding:16px 3px}
+.eyebrow{color:var(--cyan);font-size:10px;letter-spacing:2px;font-weight:bold}
+h1{font-size:27px;margin:9px 0}
+h2{font-size:14px;margin:0}
+p{line-height:1.5}
+.muted,.note{color:var(--muted);font-size:11px;line-height:1.55}
 .panel{
- background:linear-gradient(145deg,#14243b,#0e192b);
- border:1px solid var(--line);border-radius:17px;padding:17px;
- margin:13px 0;box-shadow:0 12px 30px #0002;
+background:linear-gradient(145deg,#14243b,#0e192b);
+border:1px solid var(--line);border-radius:16px;
+padding:16px;margin:13px 0
 }
-.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
-h2{font-size:14px;margin:0;letter-spacing:.3px}
-.tag{font-size:9px;letter-spacing:1px;padding:6px 8px;border-radius:7px;
- color:var(--cyan);background:#1b3b60;border:1px solid #28588b}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.metric{background:#0b1728;border:1px solid #1c304c;border-radius:12px;padding:13px}
+.panelhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.tag{font-size:9px;color:var(--cyan);background:#1b3b60;padding:6px 8px;border-radius:7px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.metric{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:12px}
 .metric small{display:block;color:var(--muted);font-size:10px}
 .metric strong{display:block;font-size:19px;margin-top:7px}
 .metric span{font-size:10px;color:var(--muted)}
-.blue{color:var(--cyan)}.green{color:var(--green)}
-.yellow{color:var(--yellow)}.red{color:var(--red)}
-button.primary{
- width:100%;border:0;border-radius:11px;padding:15px;
- color:white;font-weight:800;letter-spacing:.7px;
- background:linear-gradient(100deg,#1769dc,#338fff);
- box-shadow:0 7px 22px #1675ec38;margin:7px 0;
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.primary{
+width:100%;border:0;border-radius:11px;padding:15px;margin:7px 0;
+color:white;font-weight:800;letter-spacing:.5px;
+background:linear-gradient(100deg,#1769dc,#338fff)
 }
-button.secondary{
- width:100%;border:1px solid #2a4568;border-radius:10px;padding:12px;
- color:#dceaff;background:#142943;margin:5px 0;font-size:12px;
+.secondary{
+width:100%;border:1px solid #2a4568;border-radius:10px;
+padding:12px;margin:5px 0;color:#dceaff;background:#142943;font-size:12px
 }
-button:disabled{opacity:.5;cursor:wait}
-input[type="text"],input[type="tel"]{
- width:100%;background:#091525;color:white;border:1px solid #2a4263;
- border-radius:9px;padding:12px;margin:8px 0;
+button:disabled{opacity:.5}
+input[type="tel"]{
+width:100%;background:#091525;color:white;border:1px solid #2a4263;
+border-radius:9px;padding:12px;margin:8px 0
 }
-input[type="file"]{width:100%;font-size:12px;color:var(--muted);margin:12px 0}
-.note{font-size:11px;color:var(--muted);line-height:1.55}
-.result{padding:12px 0;border-bottom:1px solid #21344e}
-.result:last-child{border:0}
-.result strong{font-size:12px}
-.result p{font-size:11px;line-height:1.5;color:var(--muted);margin:5px 0 0;overflow-wrap:anywhere}
-.result-head{display:flex;justify-content:space-between;gap:10px}
-.state{font-size:10px;font-weight:700;white-space:nowrap}
-.progress{height:5px;background:#091525;border-radius:9px;overflow:hidden;margin:13px 0}
-.progress div{height:100%;width:0;background:linear-gradient(90deg,#1675ec,#54d7ff);transition:width .2s}
+input[type="file"]{width:100%;margin:12px 0;color:var(--muted);font-size:12px}
 .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}
 .nav button{background:#101e32;border:1px solid #263c59;color:#a8bdd8;
- padding:10px 3px;border-radius:9px;font-size:10px}
+padding:12px 2px;border-radius:9px;font-size:10px}
 .nav button.active{border-color:var(--blue);color:white;background:#17345a}
-.section{display:none}.section.active{display:block}
-.filebox{border:1px dashed #3d75b3;border-radius:12px;padding:12px;background:#0b1728}
-hr{border:0;border-top:1px solid var(--line);margin:14px 0}
-footer{text-align:center;color:#7187a5;font-size:10px;line-height:1.6;padding:20px}
-@media(min-width:600px){body{padding-left:24px;padding-right:24px}.hero{padding-top:32px}.grid{grid-template-columns:repeat(4,1fr)}}
+.section{display:none}
+.section.active{display:block}
+.result{padding:12px 0;border-bottom:1px solid #21344e}
+.result:last-child{border:0}
+.resulthead{display:flex;justify-content:space-between;gap:8px}
+.result strong{font-size:12px}
+.result p{font-size:11px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
+.state{font-size:10px;font-weight:bold;white-space:nowrap}
+.green{color:var(--green)}.yellow{color:var(--yellow)}.red{color:var(--red)}
+.progress{height:5px;background:#091525;border-radius:8px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;width:0;background:var(--cyan);transition:width .2s}
+footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1.6}
+@media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
 <div class="app">
 
-<header class="topbar">
+<header>
  <div class="brand">
-  <div class="mark">⬡</div>
-  <div><strong>SENTINEL</strong><small>SECURITY OPERATIONS</small></div>
+  <div class="logo">⬡</div>
+  <div><strong>SENTINEL</strong><small>SECURITY OPERATIONS CENTER</small></div>
  </div>
  <div class="live">LOCAL MODE</div>
 </header>
 
-<section class="hero">
- <div class="eyebrow">PERSONAL SECURITY CENTER / SOC</div>
+<div class="hero">
+ <div class="eyebrow">PERSONAL CYBERSECURITY PLATFORM</div>
  <h1>Security overview</h1>
- <p>Centro di diagnostica e analisi locale. I risultati mostrano esclusivamente verifiche realmente eseguite.</p>
-</section>
-
-<div class="nav">
- <button class="active" data-tab="dashboard">OVERVIEW</button>
- <button data-tab="scanner">SCANNER</button>
- <button data-tab="diagnostics">DIAGNOSTICA</button>
- <button data-tab="reports">REPORT</button>
+ <p class="muted">Diagnostica locale e analisi dei file autorizzati.</p>
 </div>
 
-<main>
+<nav class="nav">
+ <button class="active" data-page="dashboard">OVERVIEW</button>
+ <button data-page="scanner">SCANNER</button>
+ <button data-page="diagnostics">DIAGNOSTICA</button>
+ <button data-page="reports">REPORT</button>
+</nav>
+
 <section class="section active" id="dashboard">
  <div class="panel">
-  <div class="panel-head"><h2>STATO DEL SISTEMA</h2><span class="tag">DEVICE STATUS</span></div>
+  <div class="panelhead"><h2>STATO DEL SISTEMA</h2><span class="tag">DEVICE STATUS</span></div>
   <div class="grid">
-   <div class="metric"><small>Controlli eseguiti</small><strong id="metricChecks">0</strong><span>Sessione locale</span></div>
-   <div class="metric"><small>File analizzati</small><strong id="metricFiles">0</strong><span>Selezionati dall'utente</span></div>
-   <div class="metric"><small>Indicatori rilevati</small><strong id="metricFlags">0</strong><span>Da verificare</span></div>
+   <div class="metric"><small>Controlli</small><strong id="metricChecks">0</strong><span>Eseguiti</span></div>
+   <div class="metric"><small>File</small><strong id="metricFiles">0</strong><span>Analizzati</span></div>
+   <div class="metric"><small>Indicatori</small><strong id="metricFlags">0</strong><span>Da verificare</span></div>
    <div class="metric"><small>Ultima attività</small><strong id="metricTime">—</strong><span>Ora locale</span></div>
   </div>
  </div>
 
  <div class="panel">
-  <div class="panel-head"><h2>QUICK SECURITY CHECK</h2><span class="tag">LOCAL TEST</span></div>
-  <p class="note">Verifica connessione, memoria del browser e disponibilità delle funzioni crittografiche. Non ispeziona i processi o la memoria privata di iOS.</p>
+  <div class="panelhead"><h2>QUICK SECURITY CHECK</h2><span class="tag">LOCAL TEST</span></div>
+  <p class="note">Test effettivi delle funzioni disponibili nel browser. Non è una scansione completa di iOS.</p>
   <button class="primary" id="runScan">▶ AVVIA DIAGNOSTICA</button>
   <div class="progress"><div id="progressBar"></div></div>
   <div id="scanStatus" class="note">In attesa di avvio.</div>
@@ -140,45 +131,42 @@ footer{text-align:center;color:#7187a5;font-size:10px;line-height:1.6;padding:20
  </div>
 
  <div class="panel">
-  <div class="panel-head"><h2>PRIVACY DEL DISPOSITIVO</h2><span class="tag">LOCAL STORAGE</span></div>
-  <label class="note" for="phone">Numero personale (facoltativo)</label>
+  <div class="panelhead"><h2>PRIVACY DEL DISPOSITIVO</h2><span class="tag">LOCAL STORAGE</span></div>
+  <label class="note" for="phone">Numero personale facoltativo</label>
   <input id="phone" type="tel" placeholder="+39 ..." autocomplete="tel">
   <button class="secondary" id="savePhone">SALVA NUMERO IN LOCALE</button>
-  <p class="note">Il numero non viene usato per ricerche automatiche né inviato a servizi esterni.</p>
+  <p class="note">Il numero non viene inviato a servizi esterni.</p>
  </div>
 </section>
 
 <section class="section" id="scanner">
  <div class="panel">
-  <div class="panel-head"><h2>FILE FORENSIC ANALYSIS</h2><span class="tag">USER CONSENT</span></div>
-  <p class="note">Seleziona i file che autorizzi ad analizzare. L'analisi viene eseguita nel browser, senza caricare i file su un server.</p>
-  <div class="filebox">
-   <input id="fileInput" type="file" multiple>
-   <button class="primary" id="analyzeFiles">ANALIZZA FILE SELEZIONATI</button>
-  </div>
+  <div class="panelhead"><h2>FILE FORENSIC ANALYSIS</h2><span class="tag">USER CONSENT</span></div>
+  <p class="note">Seleziona i file che autorizzi ad analizzare. Il file viene elaborato nel browser.</p>
+  <input id="fileInput" type="file" multiple>
+  <button class="primary" id="analyzeFiles">ANALIZZA FILE SELEZIONATI</button>
   <div id="fileResults"></div>
-  <p class="note">SHA-256 identifica il file ma non dimostra che sia sicuro. I controlli euristici possono produrre falsi positivi e falsi negativi. Gli archivi ZIP vengono riconosciuti, ma non estratti in questa versione.</p>
+  <p class="note">SHA-256 identifica un file, ma non certifica che sia sicuro. Gli archivi ZIP vengono riconosciuti ma non estratti. Gli indicatori possono produrre falsi positivi.</p>
  </div>
 </section>
 
 <section class="section" id="diagnostics">
  <div class="panel">
-  <div class="panel-head"><h2>iOS SECURITY CHECKLIST</h2><span class="tag">GUIDED</span></div>
-  <p class="note">Queste verifiche richiedono la tua partecipazione nelle Impostazioni iPhone. SENTINEL non può leggerne automaticamente lo stato.</p>
+  <div class="panelhead"><h2>IPHONE SECURITY CHECKLIST</h2><span class="tag">GUIDED</span></div>
   <div id="guides"></div>
  </div>
  <div class="panel">
-  <div class="panel-head"><h2>SYSTEM ACCESS BOUNDARIES</h2><span class="tag">TRANSPARENCY</span></div>
-  <div class="result"><div class="result-head"><strong>Processi interni iOS</strong><span class="state yellow">NON ACCESSIBILI</span></div><p>Una web app non può enumerare o ispezionare i processi del sistema operativo.</p></div>
-  <div class="result"><div class="result-head"><strong>Memoria privata iPhone</strong><span class="state yellow">NON ACCESSIBILE</span></div><p>È possibile analizzare solo i file che selezioni tramite il selettore autorizzato.</p></div>
-  <div class="result"><div class="result-head"><strong>Spyware e attacchi zero-click</strong><span class="state yellow">NON DETERMINABILE</span></div><p>Questa applicazione non può certificare l'assenza di spyware o compromissioni avanzate.</p></div>
-  <div class="result"><div class="result-head"><strong>WhatsApp privato</strong><span class="state yellow">NON ACCESSIBILE</span></div><p>Le sessioni e i dati privati si verificano direttamente nell'app WhatsApp.</p></div>
+  <div class="panelhead"><h2>LIMITI DI ACCESSO</h2><span class="tag">TRANSPARENCY</span></div>
+  <div class="result"><div class="resulthead"><strong>Processi interni iOS</strong><span class="state yellow">NON ACCESSIBILI</span></div><p>Una web app non può ispezionare i processi di sistema.</p></div>
+  <div class="result"><div class="resulthead"><strong>Memoria privata iPhone</strong><span class="state yellow">NON ACCESSIBILE</span></div><p>Puoi autorizzare l'analisi dei singoli file selezionati.</p></div>
+  <div class="result"><div class="resulthead"><strong>Spyware e zero-click</strong><span class="state yellow">NON DETERMINABILE</span></div><p>Non è possibile certificare l'assenza di compromissioni avanzate.</p></div>
+  <div class="result"><div class="resulthead"><strong>WhatsApp privato</strong><span class="state yellow">NON ACCESSIBILE</span></div><p>Le sessioni si verificano direttamente nell'app WhatsApp.</p></div>
  </div>
 </section>
 
 <section class="section" id="reports">
  <div class="panel">
-  <div class="panel-head"><h2>SECURITY EVENT LOG</h2><span class="tag">LOCAL HISTORY</span></div>
+  <div class="panelhead"><h2>SECURITY EVENT LOG</h2><span class="tag">LOCAL HISTORY</span></div>
   <div id="reportList"></div>
   <hr>
   <button class="secondary" id="exportCsv">ESPORTA CSV</button>
@@ -186,208 +174,333 @@ footer{text-align:center;color:#7187a5;font-size:10px;line-height:1.6;padding:20
   <button class="secondary" id="clearLog">CANCELLA CRONOLOGIA</button>
  </div>
 </section>
-</main>
 
 <footer>
- SENTINEL SECURITY · PERSONAL SOC<br>
- Analisi locale · Nessun invio automatico di dati<br>
- Strumento diagnostico, non sostituisce le verifiche di sicurezza Apple.
+SENTINEL SECURITY · PERSONAL SOC<br>
+Analisi locale · Nessun invio automatico di dati<br>
+Strumento diagnostico, non sostituisce le verifiche Apple.
 </footer>
 </div>
 
 <script>
+(function(){
 "use strict";
-(()=>{
-const $=id=>document.getElementById(id);
-const LOG_KEY="sentinelSOCLog";
-const PHONE_KEY="sentinelPrivatePhone";
-let log=[];
-try{
- const saved=JSON.parse(localStorage.getItem(LOG_KEY)||"[]");
- if(Array.isArray(saved))log=saved;
-}catch(e){log=[]}
+
+const $ = function(id){return document.getElementById(id);};
+const LOG_KEY = "sentinelSOCLog";
+const PHONE_KEY = "sentinelPrivatePhone";
+let log = [];
+
+try {
+ const old = JSON.parse(localStorage.getItem(LOG_KEY) || "[]");
+ if(Array.isArray(old)) log = old;
+} catch(error) { log = []; }
+
+function updateMetrics(){
+ $("metricChecks").textContent = log.filter(x=>x.category==="Diagnostica").length;
+ $("metricFiles").textContent = log.filter(x=>x.category==="File").length;
+ $("metricFlags").textContent = log.filter(x=>x.status==="DA VERIFICARE").length;
+ $("metricTime").textContent = log.length ?
+  new Date(log[log.length-1].date).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}) : "—";
+}
 
 function saveLog(){
- try{localStorage.setItem(LOG_KEY,JSON.stringify(log))}
- catch(e){alert("Spazio locale non disponibile: esporta il rapporto.");}
+ try { localStorage.setItem(LOG_KEY,JSON.stringify(log)); }
+ catch(error) { alert("Memoria locale non disponibile. Esporta il rapporto."); }
  updateMetrics();
 }
+
 function record(category,status,detail){
- log.push({date:new Date().toISOString(),category,status,detail});
- saveLog();renderReports();
+ log.push({date:new Date().toISOString(),category:category,status:status,detail:detail});
+ saveLog();
+ renderReports();
 }
-function updateMetrics(){
- $("metricChecks").textContent=log.filter(x=>x.category==="Diagnostica").length;
- $("metricFiles").textContent=log.filter(x=>x.category==="File").length;
- $("metricFlags").textContent=log.filter(x=>x.status==="DA VERIFICARE").length;
- $("metricTime").textContent=log.length?new Date(log[log.length-1].date).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}):"—";
-}
+
 function renderReports(){
- const box=$("reportList");box.replaceChildren();
+ const box=$("reportList");
+ box.replaceChildren();
  if(!log.length){box.textContent="Nessuna attività registrata.";return;}
- [...log].reverse().forEach(x=>{
-  const div=document.createElement("div");div.className="result";
-  const head=document.createElement("div");head.className="result-head";
-  const title=document.createElement("strong");title.textContent=x.category;
-  const state=document.createElement("span");state.className="state "+(x.status==="DA VERIFICARE"?"yellow":"blue");state.textContent=x.status;
-  const p=document.createElement("p");p.textContent=new Date(x.date).toLocaleString("it-IT")+" · "+x.detail;
-  head.append(title,state);div.append(head,p);box.append(div);
+ log.slice().reverse().forEach(function(item){
+  const div=document.createElement("div");
+  div.className="result";
+  const head=document.createElement("div");
+  head.className="resulthead";
+  const title=document.createElement("strong");
+  title.textContent=item.category;
+  const state=document.createElement("span");
+  state.className="state "+(item.status==="DA VERIFICARE"?"yellow":"green");
+  state.textContent=item.status;
+  const p=document.createElement("p");
+  p.textContent=new Date(item.date).toLocaleString("it-IT")+" · "+item.detail;
+  head.append(title,state);
+  div.append(head,p);
+  box.append(div);
  });
 }
-function addResult(name,status,detail){
- const div=document.createElement("div");div.className="result";
- const head=document.createElement("div");head.className="result-head";
- const title=document.createElement("strong");title.textContent=name;
- const state=document.createElement("span");state.className="state "+(status==="DA VERIFICARE"?"yellow":"green");state.textContent=status;
- const p=document.createElement("p");p.textContent=detail;
- head.append(title,state);div.append(head,p);$("quickResults").append(div);
- record("Diagnostica",status,name+": "+detail);
-}
-document.querySelectorAll("[data-tab]").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b===btn));
-  document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===btn.dataset.tab));
+
+/* NAVIGAZIONE */
+document.querySelectorAll("[data-page]").forEach(function(button){
+ button.addEventListener("click",function(){
+  document.querySelectorAll("[data-page]").forEach(function(b){b.classList.remove("active");});
+  document.querySelectorAll(".section").forEach(function(s){s.classList.remove("active");});
+  button.classList.add("active");
+  $(button.dataset.page).classList.add("active");
  });
 });
+
+/* NUMERO PRIVATO */
 $("phone").value=localStorage.getItem(PHONE_KEY)||"";
-$("savePhone").onclick=()=>{
- try{localStorage.setItem(PHONE_KEY,$("phone").value.trim());alert("Numero salvato nella memoria locale del browser.");}
- catch(e){alert("Impossibile salvare il numero in locale.");}
-};
-$("runScan").onclick=async()=>{
- const btn=$("runScan");btn.disabled=true;$("quickResults").replaceChildren();
- $("progressBar").style.width="0%";$("scanStatus").textContent="Esecuzione test locali...";
+$("savePhone").addEventListener("click",function(){
+ try{
+  localStorage.setItem(PHONE_KEY,$("phone").value.trim());
+  alert("Numero salvato localmente.");
+ }catch(error){alert("Impossibile salvare il numero.");}
+});
+
+/* DIAGNOSTICA */
+function addResult(name,status,detail){
+ const div=document.createElement("div");
+ div.className="result";
+ const head=document.createElement("div");
+ head.className="resulthead";
+ const title=document.createElement("strong");
+ title.textContent=name;
+ const state=document.createElement("span");
+ state.className="state "+(status==="DA VERIFICARE"?"yellow":"green");
+ state.textContent=status;
+ const p=document.createElement("p");
+ p.textContent=detail;
+ head.append(title,state);
+ div.append(head,p);
+ $("quickResults").append(div);
+ record("Diagnostica",status,name+": "+detail);
+}
+
+$("runScan").addEventListener("click",async function(){
+ const button=$("runScan");
+ button.disabled=true;
+ $("quickResults").replaceChildren();
+ $("progressBar").style.width="0%";
+ $("scanStatus").textContent="Esecuzione dei test locali...";
+
  const tests=[
-  ["Contesto HTTPS",()=>{
+  ["Connessione HTTPS",function(){
    const ok=location.protocol==="https:"||location.hostname==="localhost";
-   return [ok?"VERIFICATO":"DA VERIFICARE",ok?"La pagina è servita tramite HTTPS.":"La pagina non usa HTTPS."];
+   return [ok?"VERIFICATO":"DA VERIFICARE",
+   ok?"Pagina caricata tramite HTTPS.":"La pagina non usa HTTPS."];
   }],
-  ["Memoria locale",()=>{
-   try{const k="sentinel-test-"+Date.now();localStorage.setItem(k,"ok");const ok=localStorage.getItem(k)==="ok";localStorage.removeItem(k);return [ok?"VERIFICATO":"DA VERIFICARE",ok?"Scrittura e lettura locale riuscite.":"Test della memoria locale non riuscito."];}
-   catch(e){return ["DA VERIFICARE","Accesso alla memoria locale negato."];}
+  ["Memoria browser",function(){
+   try{
+    const key="sentinel-test-"+Date.now();
+    localStorage.setItem(key,"ok");
+    const ok=localStorage.getItem(key)==="ok";
+    localStorage.removeItem(key);
+    return [ok?"VERIFICATO":"DA VERIFICARE",
+    ok?"Scrittura e lettura locale riuscite.":"Test memoria non riuscito."];
+   }catch(error){return ["DA VERIFICARE","Accesso alla memoria negato."];}
   }],
-  ["Web Crypto API",()=>{
+  ["API crittografiche",function(){
    const ok=!!(window.crypto&&crypto.subtle&&crypto.subtle.digest);
-   return [ok?"VERIFICATO":"DA VERIFICARE",ok?"API crittografiche disponibili nel browser.":"API crittografiche non disponibili in questo contesto."];
+   return [ok?"VERIFICATO":"DA VERIFICARE",
+   ok?"SHA-256 disponibile nel browser.":"SHA-256 non disponibile."];
   }],
-  ["Selettore file",()=>{
-   const ok=!!(window.File&&window.FileReader&&window.Blob);
-   return [ok?"VERIFICATO":"DA VERIFICARE",ok?"API browser per file disponibili; accesso solo su selezione esplicita.":"API file non completamente disponibili."];
+  ["API analisi file",function(){
+   const ok=!!(window.File&&window.Blob&&window.FileReader);
+   return [ok?"VERIFICATO":"DA VERIFICARE",
+   ok?"API per file disponibili, con selezione autorizzata.":"API file non disponibili."];
   }],
-  ["Integrità del dispositivo iOS",()=>{
-   return ["DA VERIFICARE","Una web app non può verificare l'integrità completa di iOS."];
+  ["Processi interni iOS",function(){
+   return ["DA VERIFICARE","Non accessibili a una web app."];
   }],
-  ["Processi e memoria di sistema",()=>{
-   return ["DA VERIFICARE","Non accessibili a una web app su iOS."];
+  ["Memoria privata iPhone",function(){
+   return ["DA VERIFICARE","Non accessibile integralmente a una web app."];
   }]
  ];
+
  for(let i=0;i<tests.length;i++){
   let result;
-  try{result=tests[i][1]()}catch(e){result=["DA VERIFICARE","Test non completato: "+e.message]}
+  try{result=tests[i][1]();}
+  catch(error){result=["DA VERIFICARE","Test non completato: "+error.message];}
   addResult(tests[i][0],result[0],result[1]);
   $("progressBar").style.width=((i+1)/tests.length*100)+"%";
-  await new Promise(resolve=>setTimeout(resolve,100));
+  await new Promise(function(resolve){setTimeout(resolve,100);});
  }
- $("scanStatus").textContent="Test terminati. Consulta i singoli risultati: non rappresentano una scansione antivirus.";
- btn.disabled=false;
-};
-function hex(bytes){return Array.from(bytes).map(b=>b.toString(16).padStart(2,"0")).join("")}
-function findTextIndicators(text){
+ $("scanStatus").textContent="Test terminati. Leggi ogni risultato singolarmente.";
+ button.disabled=false;
+});
+
+/* ANALISI FILE */
+function sha256(buffer){
+ return crypto.subtle.digest("SHA-256",buffer).then(function(hash){
+  return Array.from(new Uint8Array(hash)).map(function(b){
+   return b.toString(16).padStart(2,"0");
+  }).join("");
+ });
+}
+
+function findIndicators(text){
  const patterns=[
   {label:"Uso di eval()",re:/\beval\s*\(/i},
-  {label:"Codice PowerShell",re:/powershell(?:\.exe)?/i},
-  {label:"Comando shell",re:/\b(?:cmd\.exe|/bin\/sh|bash\s+-c)\b/i},
-  {label:"JavaScript offuscato possibile",re:/\\x[0-9a-f]{2}\\x[0-9a-f]{2}/i},
-  {label:"URL con schema non cifrato",re:/http:\/\/[^\s"'<>]+/i}
+  {label:"Riferimento a PowerShell",re:/powershell(?:\.exe)?/i},
+  {label:"Comando shell",re:/\b(?:cmd\.exe|\/bin\/sh|bash\s+-c)\b/i},
+  {label:"Possibile JavaScript offuscato",re:/\\x[0-9a-f]{2}\\x[0-9a-f]{2}/i},
+  {label:"URL HTTP non cifrato",re:/http:\/\/[^\s"'<>]+/i}
  ];
- return patterns.filter(p=>p.re.test(text)).map(p=>p.label);
+ return patterns.filter(function(pattern){return pattern.re.test(text);})
+  .map(function(pattern){return pattern.label;});
 }
-$("analyzeFiles").onclick=async()=>{
+
+$("analyzeFiles").addEventListener("click",async function(){
  const files=Array.from($("fileInput").files);
- if(!files.length){alert("Seleziona prima almeno un file.");return;}
- const box=$("fileResults");box.replaceChildren();
+ if(!files.length){alert("Seleziona prima uno o più file.");return;}
+ const box=$("fileResults");
+ box.replaceChildren();
+
  for(const file of files){
-  const card=document.createElement("div");card.className="result";
-  const title=document.createElement("strong");title.textContent=file.name;
-  const info=document.createElement("p");info.textContent="Dimensione: "+file.size+" byte · MIME: "+(file.type||"non dichiarato");
-  card.append(title,info);box.append(card);
-  let hash="Non calcolato",indicators=[],kind="Formato non riconosciuto";
+  const card=document.createElement("div");
+  card.className="result";
+  const title=document.createElement("strong");
+  title.textContent=file.name;
+  const info=document.createElement("p");
+  info.textContent="Dimensione: "+file.size+" byte · Tipo: "+(file.type||"non dichiarato");
+  card.append(title,info);
+  box.append(card);
+
+  let kind="Formato non riconosciuto";
+  let hash="Non calcolato";
+  let indicators=[];
+
   try{
    const head=new Uint8Array(await file.slice(0,16).arrayBuffer());
-   if(head[0]===0x50&&head[1]===0x4b)kind="Archivio ZIP riconosciuto; contenuto non estratto";
+   if(head[0]===0x50&&head[1]===0x4b)kind="Archivio ZIP (contenuto non estratto)";
    else if(head[0]===0x25&&head[1]===0x50&&head[2]===0x44&&head[3]===0x46)kind="Documento PDF";
    else if(head[0]===0x89&&head[1]===0x50&&head[2]===0x4e&&head[3]===0x47)kind="Immagine PNG";
    else if(head[0]===0xff&&head[1]===0xd8&&head[2]===0xff)kind="Immagine JPEG";
-   else if(head[0]===0x4d&&head[1]===0x5a)kind="Eseguibile Windows PE (MZ)";
+   else if(head[0]===0x4d&&head[1]===0x5a)kind="Eseguibile Windows PE";
    else if(head[0]===0x7f&&head[1]===0x45&&head[2]===0x4c&&head[3]===0x46)kind="Eseguibile ELF";
-   if(crypto.subtle){
-    const digest=await crypto.subtle.digest("SHA-256",await file.arrayBuffer());
-    hash=hex(new Uint8Array(digest));
+
+   if(crypto.subtle&&file.size<=50*1024*1024){
+    hash=await sha256(await file.arrayBuffer());
+   }else if(file.size>50*1024*1024){
+    hash="File oltre 50 MB: impronta non calcolata";
    }
+
    const ext=(file.name.split(".").pop()||"").toLowerCase();
-   if(["exe","dll","bat","cmd","ps1","vbs","scr","apk","sh"].includes(ext))indicators.push("Estensione eseguibile o script");
-   if(kind.includes("Eseguibile"))indicators.push("Firma di formato eseguibile");
-   const textTypes=["txt","html","htm","js","xml","svg","json","csv","md","css"];
-   if(textTypes.includes(ext)&&file.size<=2*1024*1024){
-    const text=await file.text();
-    indicators.push(...findTextIndicators(text));
+   if(["exe","dll","bat","cmd","ps1","vbs","scr","apk","sh"].includes(ext)){
+    indicators.push("Estensione eseguibile o script");
    }
-  }catch(e){indicators.push("Analisi incompleta: "+e.message);}
-  const unique=[...new Set(indicators)];
-  const status=unique.length?"DA VERIFICARE":"NESSUN INDICATORE RILEVATO";
-  const detail=document.createElement("p");
-  detail.textContent="Formato: "+kind+"\nSHA-256: "+hash+"\n"+
-   (unique.length?"Indicatori: "+unique.join("; "):"Nessun indicatore euristico rilevato.");
-  card.append(detail);
-  record("File",unique.length?"DA VERIFICARE":"ANALISI ESEGUITA",
-   file.name+" · "+kind+" · "+(unique.join("; ")||"Nessun indicatore euristico rilevato")+" · SHA-256 "+hash);
-  if(unique.length){
-   const warning=document.createElement("p");warning.className="yellow";
-   warning.textContent="Attenzione: un indicatore non dimostra che il file sia malevolo.";
-   card.append(warning);
+   if(kind.includes("Eseguibile"))indicators.push("Firma di formato eseguibile");
+
+   if(["txt","html","htm","js","xml","svg","json","csv","md","css"].includes(ext)&&file.size<=2*1024*1024){
+    indicators=indicators.concat(findIndicators(await file.text()));
+   }
+  }catch(error){
+   indicators.push("Analisi incompleta: "+error.message);
   }
-  const statusLine=document.createElement("p");statusLine.className="note";statusLine.textContent="Esito: "+status;card.append(statusLine);
+
+  indicators=[...new Set(indicators)];
+  const status=indicators.length?"DA VERIFICARE":"NESSUN INDICATORE RILEVATO";
+  const detail=document.createElement("p");
+  detail.textContent="Formato: "+kind+"\nSHA-256: "+hash+
+   "\nIndicatori: "+(indicators.join("; ")||"Nessuno rilevato dai controlli eseguiti.");
+  card.append(detail);
+
+  const note=document.createElement("p");
+  note.className="note";
+  note.textContent="Esito: "+status+". Un indicatore non prova che il file sia malevolo.";
+  card.append(note);
+
+  record("File",indicators.length?"DA VERIFICARE":"ANALISI ESEGUITA",
+   file.name+" · "+kind+" · "+(indicators.join("; ")||"Nessun indicatore euristico rilevato")+" · SHA-256: "+hash);
  }
-};
-const guideData=[
- ["Aggiornamenti iOS","Impostazioni → Generali → Aggiornamento software","Verifica la presenza di aggiornamenti e installa quelli disponibili."],
- ["Controllo di sicurezza Apple","Impostazioni → Privacy e sicurezza → Controllo di sicurezza","Rivedi le condivisioni e gli accessi, soprattutto se temi accessi non autorizzati."],
- ["Profili e VPN","Impostazioni → Generali → VPN e gestione dispositivo","Controlla profili e VPN che non riconosci. Non rimuovere profili gestiti da lavoro o scuola senza verifica."],
- ["Modalità di isolamento","Impostazioni → Privacy e sicurezza → Modalità di isolamento","Valuta questa protezione se temi attacchi mirati o sei a rischio elevato."],
- ["WhatsApp","WhatsApp → Impostazioni → Dispositivi collegati","Esci dalle sessioni che non riconosci e attiva la verifica in due passaggi."]
-];
-guideData.forEach(([name,path,detail])=>{
- const div=document.createElement("div");div.className="result";
- const title=document.createElement("strong");title.textContent=name;
- const p=document.createElement("p");p.textContent=path+"\n"+detail;
- const btn=document.createElement("button");btn.className="secondary";btn.textContent="APRI GUIDA";
- btn.onclick=()=>alert(name+"\n\n"+path+"\n\n"+detail+"\n\nSENTINEL non può verificare automaticamente l'esito.");
- div.append(title,p,btn);$("guides").append(div);
 });
+
+/* GUIDE */
+const guides=[
+ ["Aggiornamenti iOS","Impostazioni → Generali → Aggiornamento software","Verifica e installa gli aggiornamenti disponibili."],
+ ["Controllo di sicurezza Apple","Impostazioni → Privacy e sicurezza → Controllo di sicurezza","Rivedi le condivisioni e gli accessi."],
+ ["Profili e VPN","Impostazioni → Generali → VPN e gestione dispositivo","Controlla profili e VPN non riconosciuti."],
+ ["Modalità di isolamento","Impostazioni → Privacy e sicurezza → Modalità di isolamento","Valuta questa protezione se temi attacchi mirati."],
+ ["WhatsApp","WhatsApp → Impostazioni → Dispositivi collegati","Rimuovi le sessioni non riconosciute e attiva la verifica in due passaggi."]
+];
+
+guides.forEach(function(item){
+ const div=document.createElement("div");
+ div.className="result";
+ const title=document.createElement("strong");
+ title.textContent=item[0];
+ const p=document.createElement("p");
+ p.textContent=item[1]+"\n"+item[2];
+ const button=document.createElement("button");
+ button.className="secondary";
+ button.textContent="MOSTRA ISTRUZIONI";
+ button.addEventListener("click",function(){
+  alert(item[0]+"\n\n"+item[1]+"\n\n"+item[2]+"\n\nLa verifica va completata manualmente.");
+ });
+ div.append(title,p,button);
+ $("guides").append(div);
+});
+
+/* ESPORTAZIONE CSV */
 function download(blob,name){
- const url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download=name;document.body.append(a);a.click();a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1500);
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=name;
+ document.body.append(a);a.click();a.remove();
+ setTimeout(function(){URL.revokeObjectURL(url);},1500);
 }
-$("exportCsv").onclick=()=>{
- if(!log.length){alert("Non ci sono dati da esportare.");return;}
- const rows=[["Data","Categoria","Stato","Dettaglio"],...log.map(x=>[x.date,x.category,x.status,x.detail])];
- const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");
- download(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}),"sentinel-soc-report.csv");
-};
-$("exportPdf").onclick=()=>{
- const w=window.open("","_blank");
- if(!w){alert("Consenti i popup in Safari per stampare il rapporto.");return;}
- const escape=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
- const entries=log.map(x=>"<article><b>"+escape(x.category)+" — "+escape(x.status)+"</b><p>"+escape(new Date(x.date).toLocaleString("it-IT"))+"</p><p>"+escape(x.detail)+"</p></article>").join("");
- w.document.write("<!doctype html><html><head><meta charset='utf-8'><title>SENTINEL SOC Report</title><style>body{font:14px Arial;padding:25px;color:#17243a}h1{color:#1769dc}article{border-bottom:1px solid #ddd;padding:10px 0}p{overflow-wrap:anywhere}</style></head><body><h1>SENTINEL SECURITY</h1><h2>Security activity report</h2><p>Rapporto generato localmente. I risultati sono diagnostici e non certificano l'assenza di malware.</p>"+(entries||"<p>Nessuna attività registrata.</p>")+"</body></html>");
- w.document.close();w.focus();setTimeout(()=>w.print(),500);
-};
-$("clearLog").onclick=()=>{
+
+$("exportCsv").addEventListener("click",function(){
+ if(!log.length){alert("Nessun dato da esportare.");return;}
+ const rows=[["Data","Categoria","Stato","Dettaglio"]];
+ log.forEach(function(x){rows.push([x.date,x.category,x.status,x.detail]);});
+ const csv=rows.map(function(row){
+  return row.map(function(value){
+   return '"'+String(value).replace(/"/g,'""')+'"';
+  }).join(",");
+ }).join("\r\n");
+ download(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}),"sentinel-report.csv");
+});
+
+/* ESPORTAZIONE PDF */
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+ });
+}
+
+$("exportPdf").addEventListener("click",function(){
+ const win=window.open("","_blank");
+ if(!win){alert("Consenti i popup in Safari per creare il PDF.");return;}
+ const entries=log.map(function(x){
+  return "<article><b>"+escapeHTML(x.category)+" — "+escapeHTML(x.status)+
+  "</b><p>"+escapeHTML(new Date(x.date).toLocaleString("it-IT"))+
+  "</p><p>"+escapeHTML(x.detail)+"</p></article>";
+ }).join("");
+
+ win.document.write(
+ "<!DOCTYPE html><html><head><meta charset='utf-8'><title>SENTINEL Report</title>"+
+ "<style>body{font:14px Arial;padding:25px;color:#17243a}h1{color:#1769dc}article{border-bottom:1px solid #ddd;padding:10px 0}p{overflow-wrap:anywhere}</style>"+
+ "</head><body><h1>SENTINEL SECURITY</h1><h2>Security activity report</h2>"+
+ "<p>Rapporto diagnostico locale. Non certifica l'assenza di malware.</p>"+
+ (entries||"<p>Nessuna attività registrata.</p>")+
+ "</body></html>"
+ );
+ win.document.close();
+ win.focus();
+ setTimeout(function(){win.print();},500);
+});
+
+/* CANCELLAZIONE REGISTRO */
+$("clearLog").addEventListener("click",function(){
  if(!confirm("Vuoi cancellare la cronologia locale?"))return;
- log=[];saveLog();renderReports();
-};
-updateMetrics();renderReports();
+ log=[];
+ saveLog();
+ renderReports();
+});
+
+updateMetrics();
+renderReports();
 })();
 </script>
 </body>

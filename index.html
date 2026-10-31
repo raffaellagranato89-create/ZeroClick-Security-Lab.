@@ -5,8 +5,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080f1e">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>SENTINEL SECURITY SOC</title>
 <style>
 :root{--bg:#080f1e;--panel:#111e32;--line:#263d5d;--blue:#398cff;--cyan:#54d7ff;--text:#edf4ff;--muted:#91a5c2;--green:#4cdda0;--yellow:#ffc45c;--red:#ff687c}
@@ -22,7 +20,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 .live:before{content:"●";margin-right:6px}
 .hero{padding:16px 3px}
 .eyebrow{color:var(--cyan);font-size:10px;letter-spacing:2px;font-weight:bold}
-h1{font-size:27px;margin:9px 0}h2{font-size:14px;margin:0}
+h1{font-size:27px;margin:9px 0}
+h2{font-size:14px;margin:0}
 p{line-height:1.5}
 .muted,.note{color:var(--muted);font-size:11px;line-height:1.55}
 .panel{background:linear-gradient(145deg,#14243b,#0e192b);border:1px solid var(--line);border-radius:16px;padding:16px;margin:13px 0}
@@ -36,146 +35,160 @@ p{line-height:1.5}
 button{font:inherit;cursor:pointer;touch-action:manipulation}
 .primary{width:100%;border:0;border-radius:11px;padding:15px;margin:7px 0;color:white;font-weight:800;letter-spacing:.5px;background:linear-gradient(100deg,#1769dc,#338fff)}
 .secondary{width:100%;border:1px solid #2a4568;border-radius:10px;padding:12px;margin:5px 0;color:#dceaff;background:#142943;font-size:12px}
-button:disabled{opacity:.4;cursor:not-allowed}
+button:disabled{opacity:.5}
 input[type="tel"],input[type="text"]{width:100%;background:#091525;color:white;border:1px solid #2a4263;border-radius:9px;padding:12px;margin:8px 0}
 input[type="file"]{width:100%;margin:12px 0;color:var(--muted);font-size:12px}
-input[type="checkbox"],input[type="radio"]{accent-color:#398cff}
-.choice{display:flex;gap:9px;align-items:flex-start;padding:10px;background:#0b1729;border:1px solid var(--line);border-radius:9px;margin:8px 0;font-size:12px;line-height:1.5}
 .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}
 .nav button{background:#101e32;border:1px solid #263c59;color:#a8bdd8;padding:12px 2px;border-radius:9px;font-size:10px}
 .nav button.active{border-color:var(--blue);color:white;background:#17345a}
-.section{display:none}.section.active{display:block}
+.section{display:none}
+.section.active{display:block}
 .result{padding:12px 0;border-bottom:1px solid #21344e}
 .result:last-child{border:0}
 .resulthead{display:flex;justify-content:space-between;gap:8px}
 .result strong{font-size:12px}
 .result p{font-size:11px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
 .state{font-size:10px;font-weight:bold;white-space:nowrap}
-.green{color:var(--green)}.yellow{color:var(--yellow)}.red{color:var(--red)}
+.green{color:var(--green)}
+.yellow{color:var(--yellow)}
+.red{color:var(--red)}
 .progress{height:5px;background:#091525;border-radius:8px;overflow:hidden;margin:12px 0}
 .progress div{height:100%;width:0;background:var(--cyan);transition:width .2s}
+label{font-size:11px;color:var(--muted);line-height:1.5}
+label.consent{display:flex;align-items:flex-start;gap:9px;margin:10px 0}
+label.consent input{margin-top:2px}
 footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1.6}
-.notice{border:1px solid #66512a;background:#302817;border-radius:10px;padding:11px;color:#ffda91;font-size:11px;line-height:1.5;margin:10px 0}
 @media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
- <div class="brand">
-  <div class="logo">⬡</div>
-  <div><strong>SENTINEL</strong><small>SECURITY OPERATIONS CENTER</small></div>
- </div>
- <div class="live">LOCAL MODE</div>
+<div class="brand">
+<div class="logo">⬡</div>
+<div><strong>SENTINEL</strong><small>SECURITY OPERATIONS CENTER</small></div>
+</div>
+<div class="live">LOCAL MODE</div>
 </header>
 
 <div class="hero">
- <div class="eyebrow">PERSONAL CYBERSECURITY PLATFORM</div>
- <h1>Security overview</h1>
- <p class="muted">Diagnostica locale e analisi dei file autorizzati.</p>
+<div class="eyebrow">PERSONAL CYBERSECURITY PLATFORM</div>
+<h1>Security overview</h1>
+<p class="muted">Diagnostica locale, analisi dei file e ricerche pubbliche con consenso esplicito.</p>
 </div>
 
 <nav class="nav">
- <button class="active" data-page="dashboard">OVERVIEW</button>
- <button data-page="scanner">SCANNER</button>
- <button data-page="diagnostics">DIAGNOSTICA</button>
- <button data-page="reports">REPORT</button>
+<button class="active" data-page="dashboard">OVERVIEW</button>
+<button data-page="scanner">SCANNER</button>
+<button data-page="diagnostics">DIAGNOSTICA</button>
+<button data-page="reports">REPORT</button>
 </nav>
 
 <section class="section active" id="dashboard">
- <div class="panel">
-  <div class="panelhead"><h2>STATO DEL SISTEMA</h2><span class="tag">DEVICE STATUS</span></div>
-  <div class="grid">
-   <div class="metric"><small>Controlli</small><strong id="metricChecks">0</strong><span>Eseguiti</span></div>
-   <div class="metric"><small>File</small><strong id="metricFiles">0</strong><span>Analizzati</span></div>
-   <div class="metric"><small>Indicatori</small><strong id="metricFlags">0</strong><span>Da verificare</span></div>
-   <div class="metric"><small>Ultima attività</small><strong id="metricTime">—</strong><span>Ora locale</span></div>
-  </div>
- </div>
- <div class="panel">
-  <div class="panelhead"><h2>QUICK SECURITY CHECK</h2><span class="tag">LOCAL TEST</span></div>
-  <p class="note">Test delle funzioni disponibili nel browser. Non è una scansione completa di iOS.</p>
-  <button class="primary" id="runScan">▶ AVVIA DIAGNOSTICA</button>
-  <div class="progress"><div id="progressBar"></div></div>
-  <div id="scanStatus" class="note">In attesa di avvio.</div>
-  <div id="quickResults"></div>
- </div>
- <div class="panel">
-  <div class="panelhead"><h2>PRIVACY DEL DISPOSITIVO</h2><span class="tag">LOCAL STORAGE</span></div>
-  <label class="note" for="phone">Numero personale facoltativo</label>
-  <input id="phone" type="tel" placeholder="+39 ..." autocomplete="tel">
-  <button class="secondary" id="savePhone">SALVA NUMERO IN LOCALE</button>
-  <p class="note">Il numero non viene inserito nei rapporti e non viene inviato.</p>
- </div>
+<div class="panel">
+<div class="panelhead"><h2>STATO DEL SISTEMA</h2><span class="tag">DEVICE STATUS</span></div>
+<div class="grid">
+<div class="metric"><small>Controlli</small><strong id="metricChecks">0</strong><span>Eseguiti</span></div>
+<div class="metric"><small>File</small><strong id="metricFiles">0</strong><span>Analizzati</span></div>
+<div class="metric"><small>Indicatori</small><strong id="metricFlags">0</strong><span>Da verificare</span></div>
+<div class="metric"><small>Ultima attività</small><strong id="metricTime">—</strong><span>Ora locale</span></div>
+</div>
+</div>
+
+<div class="panel">
+<div class="panelhead"><h2>QUICK SECURITY CHECK</h2><span class="tag">LOCAL TEST</span></div>
+<p class="note">Test delle funzioni disponibili nel browser. Non è una scansione completa di iOS.</p>
+<button class="primary" id="runScan">▶ AVVIA DIAGNOSTICA</button>
+<div class="progress"><div id="progressBar"></div></div>
+<div id="scanStatus" class="note">In attesa di avvio.</div>
+<div id="quickResults"></div>
+</div>
+
+<div class="panel">
+<div class="panelhead"><h2>PHONE NUMBER INTELLIGENCE</h2><span class="tag">GOOGLE SEARCH</span></div>
+<label for="phone">Numero telefonico da verificare</label>
+<input id="phone" type="tel" placeholder="+39 ..." autocomplete="tel">
+<button class="secondary" id="savePhone">SALVA NUMERO SOLO IN LOCALE</button>
+<p class="note">Il numero salvato resta nella memoria del browser. Non viene incluso nei report.</p>
+<label class="consent">
+<input type="checkbox" id="phoneConsent">
+<span>Acconsento a trasmettere questo numero a Google come termine di ricerca. Google potrà riceverlo e trattarlo secondo le proprie condizioni e impostazioni privacy.</span>
+</label>
+<button class="primary" id="searchPhone">CERCA IL NUMERO SU GOOGLE</button>
+<p class="note">La ricerca apre Google in Safari. SENTINEL non legge automaticamente i risultati e non può garantire che tutte le esposizioni siano trovate. Evita numeri di altre persone senza autorizzazione.</p>
+</div>
+
+<div class="panel">
+<div class="panelhead"><h2>GOOGLE THREAT INTELLIGENCE</h2><span class="tag">CONSENT REQUIRED</span></div>
+<label for="domain">Dominio o sito da controllare</label>
+<input id="domain" type="text" placeholder="esempio.com">
+<label class="consent">
+<input type="checkbox" id="domainConsent">
+<span>Acconsento a inviare a Google il dominio inserito come termine di ricerca. Non inserire URL con token, password o dati privati.</span>
+</label>
+<button class="secondary" id="searchDomain">CERCA DOMINIO SU GOOGLE</button>
+<p class="note">La ricerca pubblica non è un servizio antivirus né un database certificato di malware.</p>
+</div>
 </section>
 
 <section class="section" id="scanner">
- <div class="panel">
-  <div class="panelhead"><h2>FILE FORENSIC ANALYSIS</h2><span class="tag">LOCAL SCAN</span></div>
-  <p class="note">Seleziona i file che autorizzi ad analizzare. L'elaborazione avviene nel browser.</p>
-  <input id="fileInput" type="file" multiple>
-  <button class="primary" id="analyzeFiles">ANALIZZA FILE SELEZIONATI</button>
-  <div id="fileResults"></div>
-  <p class="note">SHA-256 identifica un file ma non certifica che sia sicuro. Gli archivi ZIP vengono riconosciuti ma non estratti. Gli indicatori possono produrre falsi positivi.</p>
- </div>
- <div class="panel">
-  <div class="panelhead"><h2>CONDIVISIONE CON CHATGPT</h2><span class="tag">CONSENSO</span></div>
-  <p class="note">Scegli come procedere con il rapporto prodotto da SENTINEL.</p>
-
-  <label class="choice">
-   <input type="radio" name="shareMode" value="manual" checked>
-   <span><b>Modalità manuale</b><br>Prepara un rapporto scaricabile da allegare manualmente a questa chat.</span>
-  </label>
-
-  <label class="choice">
-   <input type="radio" name="shareMode" value="automatic">
-   <span><b>Modalità automatica</b><br>Predisposta per un futuro collegamento a un server protetto OpenAI.</span>
-  </label>
-
-  <div class="notice">
-   La modalità automatica non è ancora collegata: per usare le API OpenAI servono un servizio compatibile e una chiave API. Non è incluso nell'abbonamento ChatGPT e può comportare costi.
-  </div>
-
-  <label class="choice">
-   <input type="checkbox" id="chatgptConsent">
-   <span><b>Acconsento</b> alla condivisione con OpenAI del rapporto che sto preparando, per l'analisi tramite ChatGPT. Ho verificato che non contenga informazioni che non desidero condividere.</span>
-  </label>
-
-  <button class="primary" id="prepareReport">PREPARA RAPPORTO PER CHATGPT</button>
-  <div id="shareStatus" class="note" aria-live="polite">Nessun rapporto condiviso.</div>
-  <p class="note">La spunta viene azzerata dopo ogni operazione. I file originali non vengono caricati automaticamente: il rapporto contiene i risultati tecnici e non il contenuto dei file.</p>
- </div>
+<div class="panel">
+<div class="panelhead"><h2>FILE FORENSIC ANALYSIS</h2><span class="tag">LOCAL ONLY</span></div>
+<p class="note">Seleziona i file che autorizzi ad analizzare. I file vengono elaborati nel browser e non caricati online.</p>
+<input id="fileInput" type="file" multiple>
+<button class="primary" id="analyzeFiles">ANALIZZA FILE SELEZIONATI</button>
+<div id="fileResults"></div>
+<p class="note">SHA-256 identifica un file ma non certifica che sia sicuro. Gli archivi ZIP vengono riconosciuti ma non estratti. Gli indicatori possono produrre falsi positivi.</p>
+<div class="panelhead"><h2>RICERCA HASH SU GOOGLE</h2></div>
+<label class="consent">
+<input type="checkbox" id="hashConsent">
+<span>Acconsento a inviare a Google l'hash SHA-256 del file come termine di ricerca. Il file originale non viene inviato.</span>
+</label>
+<button class="secondary" id="searchHash" disabled>RICERCA HASH SU GOOGLE</button>
+</div>
 </section>
 
 <section class="section" id="diagnostics">
- <div class="panel">
-  <div class="panelhead"><h2>IPHONE SECURITY CHECKLIST</h2><span class="tag">GUIDED</span></div>
-  <div id="guides"></div>
- </div>
- <div class="panel">
-  <div class="panelhead"><h2>LIMITI DI ACCESSO</h2><span class="tag">TRANSPARENCY</span></div>
-  <div class="result"><div class="resulthead"><strong>Processi interni iOS</strong><span class="state yellow">NON ACCESSIBILI</span></div><p>Una web app non può ispezionare i processi di sistema.</p></div>
-  <div class="result"><div class="resulthead"><strong>Memoria privata iPhone</strong><span class="state yellow">NON ACCESSIBILE</span></div><p>Puoi autorizzare l'analisi dei singoli file selezionati.</p></div>
-  <div class="result"><div class="resulthead"><strong>Spyware e zero-click</strong><span class="state yellow">NON DETERMINABILE</span></div><p>Non è possibile certificare l'assenza di compromissioni avanzate.</p></div>
-  <div class="result"><div class="resulthead"><strong>WhatsApp privato</strong><span class="state yellow">NON ACCESSIBILE</span></div><p>Le sessioni si verificano direttamente nell'app WhatsApp.</p></div>
- </div>
+<div class="panel">
+<div class="panelhead"><h2>IPHONE SECURITY CHECKLIST</h2><span class="tag">GUIDED</span></div>
+<div id="guides"></div>
+</div>
+<div class="panel">
+<div class="panelhead"><h2>LIMITI DI ACCESSO</h2><span class="tag">TRANSPARENCY</span></div>
+<div class="result">
+<div class="resulthead"><strong>Processi interni iOS</strong><span class="state yellow">NON ACCESSIBILI</span></div>
+<p>Una web app non può ispezionare i processi di sistema.</p>
+</div>
+<div class="result">
+<div class="resulthead"><strong>Memoria privata iPhone</strong><span class="state yellow">NON ACCESSIBILE</span></div>
+<p>Puoi autorizzare l'analisi dei singoli file selezionati.</p>
+</div>
+<div class="result">
+<div class="resulthead"><strong>Spyware e zero-click</strong><span class="state yellow">NON DETERMINABILE</span></div>
+<p>Non è possibile certificare l'assenza di compromissioni avanzate.</p>
+</div>
+<div class="result">
+<div class="resulthead"><strong>WhatsApp privato</strong><span class="state yellow">NON ACCESSIBILE</span></div>
+<p>Le sessioni si verificano direttamente nell'app WhatsApp.</p>
+</div>
+</div>
 </section>
 
 <section class="section" id="reports">
- <div class="panel">
-  <div class="panelhead"><h2>SECURITY EVENT LOG</h2><span class="tag">LOCAL HISTORY</span></div>
-  <div id="reportList"></div>
-  <hr>
-  <button class="secondary" id="exportCsv">ESPORTA CSV</button>
-  <button class="secondary" id="exportPdf">STAMPA / SALVA PDF</button>
-  <button class="secondary" id="clearLog">CANCELLA CRONOLOGIA</button>
- </div>
+<div class="panel">
+<div class="panelhead"><h2>SECURITY EVENT LOG</h2><span class="tag">LOCAL HISTORY</span></div>
+<div id="reportList"></div>
+<hr>
+<button class="secondary" id="exportCsv">ESPORTA CSV</button>
+<button class="secondary" id="exportPdf">STAMPA / SALVA PDF</button>
+<button class="secondary" id="clearLog">CANCELLA CRONOLOGIA</button>
+</div>
 </section>
 
 <footer>
- SENTINEL SECURITY · PERSONAL SOC<br>
- Analisi locale · Nessun invio automatico di dati<br>
- Strumento diagnostico, non sostituisce le verifiche Apple.
+SENTINEL SECURITY · PERSONAL SOC<br>
+Analisi locale · Nessun invio automatico di dati<br>
+Strumento diagnostico, non sostituisce le verifiche Apple.
 </footer>
 </div>
 
@@ -185,264 +198,313 @@ footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1
 const $=id=>document.getElementById(id);
 const LOG_KEY="sentinelSOCLog";
 const PHONE_KEY="sentinelPrivatePhone";
-let log=[];
-let fileFindings=[];
+let log=[],lastHash="";
 
 try{
- const old=JSON.parse(localStorage.getItem(LOG_KEY)||"[]");
- if(Array.isArray(old))log=old;
-}catch(e){log=[];}
+const old=JSON.parse(localStorage.getItem(LOG_KEY)||"[]");
+if(Array.isArray(old))log=old;
+}catch(e){}
 
-function updateMetrics(){
- $("metricChecks").textContent=log.filter(x=>x.category==="Diagnostica").length;
- $("metricFiles").textContent=log.filter(x=>x.category==="File").length;
- $("metricFlags").textContent=log.filter(x=>x.status==="DA VERIFICARE").length;
- $("metricTime").textContent=log.length?new Date(log[log.length-1].date).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}):"—";
+function metrics(){
+$("metricChecks").textContent=log.filter(x=>x.category==="Diagnostica").length;
+$("metricFiles").textContent=log.filter(x=>x.category==="File").length;
+$("metricFlags").textContent=log.filter(x=>x.status==="DA VERIFICARE").length;
+$("metricTime").textContent=log.length?new Date(log[log.length-1].date).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}):"—";
 }
-function saveLog(){
- try{localStorage.setItem(LOG_KEY,JSON.stringify(log));}
- catch(e){alert("Memoria locale non disponibile. Esporta il rapporto.");}
- updateMetrics();
+
+function save(){
+try{localStorage.setItem(LOG_KEY,JSON.stringify(log));}
+catch(e){alert("Memoria locale non disponibile. Esporta il rapporto.");}
+metrics();
 }
+
 function record(category,status,detail){
- log.push({date:new Date().toISOString(),category,status,detail});
- saveLog();renderReports();
-}
-function renderReports(){
- const box=$("reportList");box.replaceChildren();
- if(!log.length){box.textContent="Nessuna attività registrata.";return;}
- log.slice().reverse().forEach(item=>{
-  const div=document.createElement("div");div.className="result";
-  const head=document.createElement("div");head.className="resulthead";
-  const title=document.createElement("strong");title.textContent=item.category;
-  const state=document.createElement("span");
-  state.className="state "+(item.status==="DA VERIFICARE"?"yellow":"green");
-  state.textContent=item.status;
-  const p=document.createElement("p");
-  p.textContent=new Date(item.date).toLocaleString("it-IT")+" · "+item.detail;
-  head.append(title,state);div.append(head,p);box.append(div);
- });
+log.push({date:new Date().toISOString(),category,status,detail});
+if(log.length>500)log=log.slice(-500);
+save();
+render();
 }
 
-/* NAVIGAZIONE */
-document.querySelectorAll("[data-page]").forEach(button=>{
- button.addEventListener("click",()=>{
-  document.querySelectorAll("[data-page]").forEach(b=>b.classList.remove("active"));
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-  button.classList.add("active");
-  $(button.dataset.page).classList.add("active");
- });
+function render(){
+const box=$("reportList");
+box.replaceChildren();
+if(!log.length){box.textContent="Nessuna attività registrata.";return;}
+log.slice().reverse().forEach(x=>{
+const d=document.createElement("div");
+d.className="result";
+const h=document.createElement("div");
+h.className="resulthead";
+const t=document.createElement("strong");
+t.textContent=x.category;
+const s=document.createElement("span");
+s.className="state "+(x.status==="DA VERIFICARE"?"yellow":"green");
+s.textContent=x.status;
+const p=document.createElement("p");
+p.textContent=new Date(x.date).toLocaleString("it-IT")+" · "+x.detail;
+h.append(t,s);
+d.append(h,p);
+box.append(d);
 });
+}
 
-/* NUMERO PRIVATO */
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>{
+document.querySelectorAll("[data-page]").forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+b.classList.add("active");
+$(b.dataset.page).classList.add("active");
+}));
+
 $("phone").value=localStorage.getItem(PHONE_KEY)||"";
+
 $("savePhone").addEventListener("click",()=>{
- try{
-  localStorage.setItem(PHONE_KEY,$("phone").value.trim());
-  alert("Numero salvato localmente.");
- }catch(e){alert("Impossibile salvare il numero.");}
+const n=$("phone").value.trim();
+if(n&&!/^[+0-9().\s-]{6,25}$/.test(n)){
+alert("Controlla il formato del numero.");
+return;
+}
+try{
+localStorage.setItem(PHONE_KEY,n);
+alert("Numero salvato solo sul dispositivo.");
+}catch(e){alert("Impossibile salvare il numero.");}
 });
 
-/* DIAGNOSTICA */
+function googleSearch(query,category){
+const url="https://www.google.com/search?q="+encodeURIComponent(query);
+record(category,"RICERCA AVVIATA","Ricerca aperta su Google; i risultati vanno valutati manualmente.");
+window.open(url,"_blank","noopener");
+}
+
+$("searchPhone").addEventListener("click",()=>{
+const n=$("phone").value.trim();
+if(!n){alert("Inserisci un numero.");return;}
+if(!/^[+0-9().\s-]{6,25}$/.test(n)){
+alert("Formato numero non valido.");return;
+}
+if(!$("phoneConsent").checked){
+alert("Devi prestare il consenso prima della ricerca.");return;
+}
+if(!confirm("Il numero verrà inviato a Google come termine di ricerca. Vuoi continuare?"))return;
+$("phoneConsent").checked=false;
+googleSearch('"'+n+'"',"Ricerca numero");
+});
+
+$("searchDomain").addEventListener("click",()=>{
+let d=$("domain").value.trim().toLowerCase();
+if(!d){alert("Inserisci un dominio.");return;}
+d=d.replace(/^https?:\/\//,"").split(/[/?#]/)[0];
+if(!/^(?=.{1,253}$)[a-z0-9.-]+\.[a-z]{2,}$/i.test(d)){
+alert("Inserisci un dominio valido, senza percorso o credenziali.");return;
+}
+if(!$("domainConsent").checked){
+alert("Devi prestare il consenso prima della ricerca.");return;
+}
+if(!confirm("Il dominio "+d+" verrà inviato a Google. Continuare?"))return;
+$("domainConsent").checked=false;
+googleSearch(d+" sicurezza malware segnalazioni","Ricerca dominio");
+});
+
 function addResult(name,status,detail){
- const div=document.createElement("div");div.className="result";
- const head=document.createElement("div");head.className="resulthead";
- const title=document.createElement("strong");title.textContent=name;
- const state=document.createElement("span");
- state.className="state "+(status==="DA VERIFICARE"?"yellow":"green");
- state.textContent=status;
- const p=document.createElement("p");p.textContent=detail;
- head.append(title,state);div.append(head,p);
- $("quickResults").append(div);
- record("Diagnostica",status,name+": "+detail);
+const d=document.createElement("div");
+d.className="result";
+const h=document.createElement("div");
+h.className="resulthead";
+const t=document.createElement("strong");
+t.textContent=name;
+const s=document.createElement("span");
+s.className="state "+(status==="DA VERIFICARE"?"yellow":"green");
+s.textContent=status;
+const p=document.createElement("p");
+p.textContent=detail;
+h.append(t,s);
+d.append(h,p);
+$("quickResults").append(d);
+record("Diagnostica",status,name+": "+detail);
 }
+
 $("runScan").addEventListener("click",async()=>{
- const button=$("runScan");button.disabled=true;
- $("quickResults").replaceChildren();$("progressBar").style.width="0%";
- $("scanStatus").textContent="Esecuzione dei test locali...";
- const tests=[
-  ["Connessione HTTPS",()=>{
-   const ok=location.protocol==="https:"||location.hostname==="localhost";
-   return [ok?"VERIFICATO":"DA VERIFICARE",ok?"Pagina caricata tramite HTTPS.":"La pagina non usa HTTPS."];
-  }],
-  ["Memoria browser",()=>{
-   try{
-    const k="sentinel-test-"+Date.now();localStorage.setItem(k,"ok");
-    const ok=localStorage.getItem(k)==="ok";localStorage.removeItem(k);
-    return [ok?"VERIFICATO":"DA VERIFICARE",ok?"Scrittura e lettura locale riuscite.":"Test memoria non riuscito."];
-   }catch(e){return ["DA VERIFICARE","Accesso alla memoria negato."];}
-  }],
-  ["API crittografiche",()=>{
-   const ok=!!(window.crypto&&crypto.subtle&&crypto.subtle.digest);
-   return [ok?"VERIFICATO":"DA VERIFICARE",ok?"SHA-256 disponibile nel browser.":"SHA-256 non disponibile."];
-  }],
-  ["API analisi file",()=>{
-   const ok=!!(window.File&&window.Blob&&window.FileReader);
-   return [ok?"VERIFICATO":"DA VERIFICARE",ok?"API per file disponibili.":"API file non disponibili."];
-  }],
-  ["Processi interni iOS",()=>["DA VERIFICARE","Non accessibili a una web app."]],
-  ["Memoria privata iPhone",()=>["DA VERIFICARE","Non accessibile integralmente a una web app."]]
- ];
- for(let i=0;i<tests.length;i++){
-  let result;
-  try{result=tests[i][1]();}catch(e){result=["DA VERIFICARE","Test non completato: "+e.message];}
-  addResult(tests[i][0],result[0],result[1]);
-  $("progressBar").style.width=((i+1)/tests.length*100)+"%";
-  await new Promise(resolve=>setTimeout(resolve,100));
- }
- $("scanStatus").textContent="Test terminati. Leggi ogni risultato singolarmente.";
- button.disabled=false;
-});
-
-/* ANALISI FILE */
-function sha256(buffer){
- return crypto.subtle.digest("SHA-256",buffer).then(hash=>
-  Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("")
- );
-}
-function findIndicators(text){
- const patterns=[
-  {label:"Uso di eval()",re:/\beval\s*\(/i},
-  {label:"Riferimento a PowerShell",re:/powershell(?:\.exe)?/i},
-  {label:"Comando shell",re:/\b(?:cmd\.exe|\/bin\/sh|bash\s+-c)\b/i},
-  {label:"Possibile JavaScript offuscato",re:/\\x[0-9a-f]{2}\\x[0-9a-f]{2}/i},
-  {label:"URL HTTP non cifrato",re:/http:\/\/[^\s"'<>]+/i}
- ];
- return patterns.filter(p=>p.re.test(text)).map(p=>p.label);
-}
-$("analyzeFiles").addEventListener("click",async()=>{
- const files=Array.from($("fileInput").files);
- if(!files.length){alert("Seleziona prima uno o più file.");return;}
- const button=$("analyzeFiles");button.disabled=true;
- const box=$("fileResults");box.replaceChildren();fileFindings=[];
- for(const file of files){
-  const card=document.createElement("div");card.className="result";
-  const title=document.createElement("strong");title.textContent=file.name;
-  const info=document.createElement("p");
-  info.textContent="Dimensione: "+file.size+" byte · Tipo: "+(file.type||"non dichiarato");
-  card.append(title,info);box.append(card);
-  let kind="Formato non riconosciuto",hash="Non calcolato",indicators=[];
-  try{
-   const head=new Uint8Array(await file.slice(0,16).arrayBuffer());
-   if(head[0]===0x50&&head[1]===0x4b)kind="Archivio ZIP (non estratto)";
-   else if(head[0]===0x25&&head[1]===0x50&&head[2]===0x44&&head[3]===0x46)kind="Documento PDF";
-   else if(head[0]===0x89&&head[1]===0x50&&head[2]===0x4e&&head[3]===0x47)kind="Immagine PNG";
-   else if(head[0]===0xff&&head[1]===0xd8&&head[2]===0xff)kind="Immagine JPEG";
-   else if(head[0]===0x4d&&head[1]===0x5a)kind="Eseguibile Windows PE";
-   else if(head[0]===0x7f&&head[1]===0x45&&head[2]===0x4c&&head[3]===0x46)kind="Eseguibile ELF";
-   if(crypto.subtle&&file.size<=50*1024*1024)hash=await sha256(await file.arrayBuffer());
-   else if(file.size>50*1024*1024)hash="Oltre 50 MB: non calcolato";
-   const ext=(file.name.split(".").pop()||"").toLowerCase();
-   if(["exe","dll","bat","cmd","ps1","vbs","scr","apk","sh"].includes(ext))indicators.push("Estensione eseguibile o script");
-   if(kind.includes("Eseguibile"))indicators.push("Firma di formato eseguibile");
-   if(["txt","html","htm","js","xml","svg","json","csv","md","css"].includes(ext)&&file.size<=2*1024*1024){
-    indicators=indicators.concat(findIndicators(await file.text()));
-   }
-  }catch(e){indicators.push("Analisi incompleta: "+e.message);}
-  indicators=[...new Set(indicators)];
-  const status=indicators.length?"DA VERIFICARE":"NESSUN INDICATORE RILEVATO";
-  const detail=document.createElement("p");
-  detail.textContent="Formato: "+kind+"\nSHA-256: "+hash+"\nIndicatori: "+(indicators.join("; ")||"Nessuno rilevato dai controlli eseguiti.");
-  card.append(detail);
-  const note=document.createElement("p");note.className="note";
-  note.textContent="Esito: "+status+". Un indicatore non prova che il file sia malevolo.";
-  card.append(note);
-  const finding={name:file.name,size:file.size,type:file.type||"non dichiarato",format:kind,sha256:hash,indicators,status};
-  fileFindings.push(finding);
-  record("File",indicators.length?"DA VERIFICARE":"ANALISI ESEGUITA",
-   file.name+" · "+kind+" · "+(indicators.join("; ")||"Nessun indicatore euristico rilevato")+" · SHA-256: "+hash);
- }
- button.disabled=false;
-});
-
-/* CONSENSO E PREPARAZIONE RAPPORTO */
-$("prepareReport").addEventListener("click",()=>{
- const consent=$("chatgptConsent");
- const mode=document.querySelector('input[name="shareMode"]:checked').value;
- const status=$("shareStatus");
- if(!consent.checked){
-  status.textContent="Operazione bloccata: devi selezionare la casella di consenso.";
-  alert("Per procedere devi prima autorizzare esplicitamente la condivisione.");
-  return;
- }
- if(mode==="automatic"){
-  status.textContent="Modalità automatica non attiva: manca un server protetto e una configurazione API. Nessun dato è stato inviato.";
-  consent.checked=false;
-  alert("Nessun invio effettuato. La modalità automatica richiede un server e una API OpenAI, che può avere costi.");
-  return;
- }
- const report={
-  product:"SENTINEL SECURITY SOC",
-  generatedAt:new Date().toISOString(),
-  sharingMode:"manuale",
-  consent:"Concesso dall'utente per la preparazione di questo rapporto",
-  disclaimer:"Rapporto diagnostico indicativo. Non certifica l'assenza di malware o spyware.",
-  fileAnalysis:fileFindings,
-  activityLog:log
- };
- const blob=new Blob([JSON.stringify(report,null,2)],{type:"application/json"});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
- a.href=url;a.download="sentinel-security-report.json";
- document.body.append(a);a.click();a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),2000);
- consent.checked=false;
- status.textContent="Rapporto preparato sul dispositivo. Nessun invio automatico effettuato. Puoi allegare il file scaricato a questa chat.";
- record("Condivisione","RAPPORTO PREPARATO","Rapporto JSON generato localmente; nessun file caricato online.");
-});
-
-/* GUIDE */
-const guides=[
- ["Aggiornamenti iOS","Impostazioni → Generali → Aggiornamento software","Verifica e installa gli aggiornamenti disponibili."],
- ["Controllo di sicurezza Apple","Impostazioni → Privacy e sicurezza → Controllo di sicurezza","Rivedi le condivisioni e gli accessi."],
- ["Profili e VPN","Impostazioni → Generali → VPN e gestione dispositivo","Controlla profili e VPN non riconosciuti."],
- ["Modalità di isolamento","Impostazioni → Privacy e sicurezza → Modalità di isolamento","Valuta questa protezione se temi attacchi mirati."],
- ["WhatsApp","WhatsApp → Impostazioni → Dispositivi collegati","Rimuovi le sessioni non riconosciute e attiva la verifica in due passaggi."]
+const b=$("runScan");
+b.disabled=true;
+$("quickResults").replaceChildren();
+$("progressBar").style.width="0%";
+$("scanStatus").textContent="Esecuzione test locali...";
+const tests=[
+["Connessione HTTPS",()=>[location.protocol==="https:"?"VERIFICATO":"DA VERIFICARE",location.protocol==="https:"?"Pagina caricata tramite HTTPS.":"La pagina non usa HTTPS."]],
+["Memoria browser",()=>{
+try{
+const k="sentinel-test";
+localStorage.setItem(k,"ok");
+const ok=localStorage.getItem(k)==="ok";
+localStorage.removeItem(k);
+return[ok?"VERIFICATO":"DA VERIFICARE",ok?"Lettura e scrittura locale riuscite.":"Test memoria non riuscito."];
+}catch(e){return["DA VERIFICARE","Accesso memoria negato."];}
+}],
+["API crittografiche",()=>[crypto.subtle?"VERIFICATO":"DA VERIFICARE",crypto.subtle?"SHA-256 disponibile.":"SHA-256 non disponibile."]],
+["API file",()=>[window.File&&window.FileReader?"VERIFICATO":"DA VERIFICARE","API file del browser."]],
+["Processi iOS",()=>["DA VERIFICARE","Non accessibili a una web app."]],
+["Memoria privata iPhone",()=>["DA VERIFICARE","Non accessibile integralmente a una web app."]]
 ];
-guides.forEach(item=>{
- const div=document.createElement("div");div.className="result";
- const title=document.createElement("strong");title.textContent=item[0];
- const p=document.createElement("p");p.textContent=item[1]+"\n"+item[2];
- const button=document.createElement("button");button.className="secondary";
- button.textContent="MOSTRA ISTRUZIONI";
- button.addEventListener("click",()=>alert(item[0]+"\n\n"+item[1]+"\n\n"+item[2]+"\n\nLa verifica va completata manualmente."));
- div.append(title,p,button);$("guides").append(div);
+for(let i=0;i<tests.length;i++){
+let r;
+try{r=tests[i][1]();}catch(e){r=["DA VERIFICARE",e.message];}
+addResult(tests[i][0],r[0],r[1]);
+$("progressBar").style.width=((i+1)/tests.length*100)+"%";
+await new Promise(r=>setTimeout(r,80));
+}
+$("scanStatus").textContent="Test terminati. Leggi i risultati.";
+b.disabled=false;
 });
 
-/* ESPORTAZIONE CSV */
+function sha256(buf){
+return crypto.subtle.digest("SHA-256",buf).then(h=>Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,"0")).join(""));
+}
+
+function indicators(text){
+const p=[
+["Uso di eval()",/\beval\s*\(/i],
+["Riferimento PowerShell",/powershell(?:\.exe)?/i],
+["Comando shell",/\b(?:cmd\.exe|\/bin\/sh|bash\s+-c)\b/i],
+["Possibile JavaScript offuscato",/\\x[0-9a-f]{2}\\x[0-9a-f]{2}/i],
+["URL HTTP non cifrato",/http:\/\/[^\s"'<>]+/i]
+];
+return p.filter(x=>x[1].test(text)).map(x=>x[0]);
+}
+
+$("analyzeFiles").addEventListener("click",async()=>{
+const files=Array.from($("fileInput").files);
+if(!files.length){alert("Seleziona prima uno o più file.");return;}
+const box=$("fileResults");
+box.replaceChildren();
+lastHash="";
+$("searchHash").disabled=true;
+
+for(const f of files){
+const card=document.createElement("div");
+card.className="result";
+const title=document.createElement("strong");
+title.textContent=f.name;
+const info=document.createElement("p");
+info.textContent="Dimensione: "+f.size+" byte · Tipo: "+(f.type||"non dichiarato");
+card.append(title,info);
+box.append(card);
+
+let kind="Formato non riconosciuto";
+let hash="Non calcolato";
+let flags=[];
+
+try{
+const head=new Uint8Array(await f.slice(0,16).arrayBuffer());
+if(head[0]===80&&head[1]===75)kind="Archivio ZIP (non estratto)";
+else if(head[0]===37&&head[1]===80&&head[2]===68&&head[3]===70)kind="Documento PDF";
+else if(head[0]===137&&head[1]===80&&head[2]===78&&head[3]===71)kind="Immagine PNG";
+else if(head[0]===255&&head[1]===216&&head[2]===255)kind="Immagine JPEG";
+else if(head[0]===77&&head[1]===90)kind="Eseguibile Windows PE";
+else if(head[0]===127&&head[1]===69&&head[2]===76&&head[3]===70)kind="Eseguibile ELF";
+
+if(crypto.subtle&&f.size<=50*1024*1024)hash=await sha256(await f.arrayBuffer());
+else if(f.size>50*1024*1024)hash="Oltre 50 MB: non calcolato";
+
+const ext=(f.name.split(".").pop()||"").toLowerCase();
+if(["exe","dll","bat","cmd","ps1","vbs","scr","apk","sh"].includes(ext))flags.push("Estensione eseguibile/script");
+if(kind.includes("Eseguibile"))flags.push("Firma formato eseguibile");
+
+if(["txt","html","htm","js","xml","svg","json","csv","md","css"].includes(ext)&&f.size<=2*1024*1024){
+flags=flags.concat(indicators(await f.text()));
+}
+}catch(e){flags.push("Analisi incompleta: "+e.message);}
+
+flags=[...new Set(flags)];
+const p=document.createElement("p");
+p.textContent="Formato: "+kind+"\nSHA-256: "+hash+"\nIndicatori: "+(flags.join("; ")||"Nessuno rilevato");
+card.append(p);
+
+const note=document.createElement("p");
+note.className="note";
+note.textContent="Esito: "+(flags.length?"DA VERIFICARE":"NESSUN INDICATORE RILEVATO")+". Non è una certificazione antivirus.";
+card.append(note);
+
+record("File",flags.length?"DA VERIFICARE":"ANALISI ESEGUITA",
+f.name+" · "+kind+" · "+(flags.join("; ")||"Nessun indicatore euristico")+" · SHA-256: "+hash);
+
+if(hash!=="Non calcolato"&&!hash.includes("Oltre"))lastHash=hash;
+}
+if(lastHash)$("searchHash").disabled=false;
+});
+
+$("searchHash").addEventListener("click",()=>{
+if(!lastHash)return;
+if(!$("hashConsent").checked){
+alert("Presta il consenso prima della ricerca.");return;
+}
+if(!confirm("Solo l'hash SHA-256, non il file, verrà inviato a Google. Continuare?"))return;
+$("hashConsent").checked=false;
+googleSearch('"'+lastHash+'"',"Ricerca hash");
+});
+
+const guides=[
+["Aggiornamenti iOS","Impostazioni → Generali → Aggiornamento software","Verifica e installa gli aggiornamenti disponibili."],
+["Controllo sicurezza Apple","Impostazioni → Privacy e sicurezza → Controllo di sicurezza","Rivedi condivisioni e accessi."],
+["Profili e VPN","Impostazioni → Generali → VPN e gestione dispositivo","Controlla profili e VPN non riconosciuti."],
+["Modalità di isolamento","Impostazioni → Privacy e sicurezza → Modalità di isolamento","Valuta questa protezione in caso di rischio mirato."],
+["WhatsApp","WhatsApp → Impostazioni → Dispositivi collegati","Rimuovi sessioni non riconosciute e attiva la verifica in due passaggi."]
+];
+
+guides.forEach(x=>{
+const d=document.createElement("div");
+d.className="result";
+const t=document.createElement("strong");
+t.textContent=x[0];
+const p=document.createElement("p");
+p.textContent=x[1]+"\n"+x[2];
+const b=document.createElement("button");
+b.className="secondary";
+b.textContent="MOSTRA ISTRUZIONI";
+b.onclick=()=>alert(x[0]+"\n\n"+x[1]+"\n\n"+x[2]+"\n\nVerifica manuale.");
+d.append(t,p,b);
+$("guides").append(d);
+});
+
 function download(blob,name){
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");a.href=url;a.download=name;
- document.body.append(a);a.click();a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1500);
+const u=URL.createObjectURL(blob);
+const a=document.createElement("a");
+a.href=u;
+a.download=name;
+document.body.append(a);
+a.click();
+a.remove();
+setTimeout(()=>URL.revokeObjectURL(u),1500);
 }
-$("exportCsv").addEventListener("click",()=>{
- if(!log.length){alert("Nessun dato da esportare.");return;}
- const rows=[["Data","Categoria","Stato","Dettaglio"]];
- log.forEach(x=>rows.push([x.date,x.category,x.status,x.detail]));
- const csv=rows.map(row=>row.map(value=>'"'+String(value).replace(/"/g,'""')+'"').join(",")).join("\r\n");
- download(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}),"sentinel-report.csv");
-});
 
-/* ESPORTAZIONE PDF */
-function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+$("exportCsv").onclick=()=>{
+if(!log.length){alert("Nessun dato da esportare.");return;}
+const rows=[["Data","Categoria","Stato","Dettaglio"],...log.map(x=>[x.date,x.category,x.status,x.detail])];
+const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");
+download(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}),"sentinel-report.csv");
+};
+
+function esc(s){
+return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-$("exportPdf").addEventListener("click",()=>{
- const win=window.open("","_blank");
- if(!win){alert("Consenti i popup in Safari per creare il PDF.");return;}
- const entries=log.map(x=>"<article><b>"+escapeHTML(x.category)+" — "+escapeHTML(x.status)+"</b><p>"+escapeHTML(new Date(x.date).toLocaleString("it-IT"))+"</p><p>"+escapeHTML(x.detail)+"</p></article>").join("");
- win.document.write("<!DOCTYPE html><html><head><meta charset='utf-8'><title>SENTINEL Report</title><style>body{font:14px Arial;padding:25px;color:#17243a}h1{color:#1769dc}article{border-bottom:1px solid #ddd;padding:10px 0}p{overflow-wrap:anywhere}</style></head><body><h1>SENTINEL SECURITY</h1><h2>Security activity report</h2><p>Rapporto diagnostico locale. Non certifica l'assenza di malware.</p>"+(entries||"<p>Nessuna attività registrata.</p>")+"</body></html>");
- win.document.close();win.focus();setTimeout(()=>win.print(),500);
-});
 
-/* CANCELLAZIONE REGISTRO */
-$("clearLog").addEventListener("click",()=>{
- if(!confirm("Vuoi cancellare la cronologia locale?"))return;
- log=[];fileFindings=[];saveLog();renderReports();
-});
+$("exportPdf").onclick=()=>{
+const w=window.open("","_blank");
+if(!w){alert("Consenti i popup in Safari.");return;}
+const entries=log.map(x=>"<article><b>"+esc(x.category)+" — "+esc(x.status)+"</b><p>"+esc(new Date(x.date).toLocaleString("it-IT"))+"</p><p>"+esc(x.detail)+"</p></article>").join("");
+w.document.write("<!doctype html><html><head><meta charset='utf-8'><title>SENTINEL Report</title><style>body{font:14px Arial;padding:25px;color:#17243a}article{border-bottom:1px solid #ddd;padding:10px 0}p{overflow-wrap:anywhere}</style></head><body><h1>SENTINEL SECURITY</h1><p>Rapporto diagnostico locale; non certifica l'assenza di malware.</p>"+(entries||"Nessuna attività registrata")+"</body></html>");
+w.document.close();
+w.focus();
+setTimeout(()=>w.print(),500);
+};
 
-updateMetrics();renderReports();
+$("clearLog").onclick=()=>{
+if(confirm("Vuoi cancellare la cronologia locale?")){
+log=[];
+save();
+render();
+}
+};
+
+metrics();
+render();
 })();
 </script>
 </body>

@@ -120,6 +120,74 @@
   });
 
   panel.querySelector("#manualClear").addEventListener("click", () => {
+    panel.querySelector("#manualPDF").addEventListener("click", () => {
+  const events = read();
+
+  if (!events.length) {
+    alert("Non ci sono eventi da inserire nel report.");
+    return;
+  }
+
+  const safe = value => String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+
+  const rows = events.map(event => `
+    <tr>
+      <td>${safe(event.date)}</td>
+      <td>${safe(event.type)}</td>
+      <td>${safe(event.risk)}</td>
+      <td>${safe(event.detail)}</td>
+    </tr>
+  `).join("");
+
+  const report = window.open("", "_blank");
+
+  if (!report) {
+    alert("Consenti l'apertura della nuova finestra per creare il PDF.");
+    return;
+  }
+
+  report.document.write(`
+    <!DOCTYPE html>
+    <html lang="it">
+    <head>
+      <meta charset="UTF-8">
+      <title>Report sicurezza</title>
+      <style>
+        body { font-family: Arial; padding: 24px; color: #222; }
+        h1 { color: #087e8b; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #e8f3f5; }
+        @media print { button { display: none; } }
+      </style>
+    </head>
+    <body>
+      <h1>Zero-Click Security Lab</h1>
+      <h2>Report eventi di sicurezza</h2>
+      <p>Generato il: ${safe(new Date().toLocaleString("it-IT"))}</p>
+      <p>Totale eventi: ${events.length}</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th><th>Tipo</th><th>Rischio</th><th>Descrizione</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <p>Report basato sugli eventi inseriti manualmente dall'utente.</p>
+      <button onclick="window.print()">Stampa / Salva PDF</button>
+    </body>
+    </html>
+  `);
+
+  report.document.close();
+});
     if (confirm("Vuoi cancellare tutti gli eventi manuali?")) {
       localStorage.removeItem(KEY);
       render();

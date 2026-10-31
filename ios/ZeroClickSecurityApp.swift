@@ -429,9 +429,18 @@ struct FileScannerView: View {
         }
 
         do {
+            let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
+            let size = (attributes[.size] as? NSNumber)?.int64Value ?? 0
+            let maximumSize: Int64 = 50 * 1024 * 1024
+            guard size <= maximumSize else {
+                errorMessage = "File troppo grande per l'analisi locale. Il limite attuale è 50 MB."
+                return
+            }
             let data = try Data(contentsOf: url, options: [.mappedIfSafe])
-            let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
-            let size = (attributes?[.size] as? NSNumber)?.int64Value ?? Int64(data.count)
+            guard !data.isEmpty else {
+                errorMessage = "Il file è vuoto e non può essere analizzato."
+                return
+            }
             let digest = SHA256.hash(data: data)
                 .map { String(format: "%02x", $0) }
                 .joined()
@@ -484,6 +493,15 @@ struct FileScannerView: View {
             if bytes.count < 3 || bytes[0] != 0xFF || bytes[1] != 0xD8 || bytes[2] != 0xFF {
                 return "L'estensione è JPEG, ma la firma iniziale non corrisponde a JPEG."
             }
+        }
+        if ext == "gif" && !data.starts(with: Data("GIF87a".utf8)) && !data.starts(with: Data("GIF89a".utf8)) {
+            return "L'estensione è GIF, ma la firma iniziale non corrisponde a GIF."
+        }
+        if ext == "zip" && !(bytes.count >= 4 && bytes[0] == 0x50 && bytes[1] == 0x4B && [0x03, 0x05, 0x07].contains(bytes[2]) && [0x04, 0x06, 0x08].contains(bytes[3])) {
+            return "L'estensione è ZIP, ma la firma iniziale non corrisponde a ZIP."
+        }
+        if ext == "mp4" && !(data.count >= 8 && String(data: data[4..<8], encoding: .ascii) == "ftyp") {
+            return "L'estensione è MP4, ma l'intestazione del file non corrisponde al formato MP4."
         }
         return nil
     }
@@ -554,8 +572,18 @@ struct FileScannerView: View {
                     }
                 }
 
+                Section {
+                    Button(role: .destructive) {
+                        records.removeAll()
+                        saveRecords()
+                    } label: {
+                        Label("Cancella cronologia analisi", systemImage: "trash")
+                    }
+                    .disabled(records.isEmpty)
+                }
+
                 Section("Limiti importanti") {
-                    Text("Questo strumento NON è un antivirus e non può garantire che un file sia sicuro. Un hash identifica il contenuto ma non stabilisce se sia dannoso. iOS non consente a un'app normale di intercettare automaticamente tutti i download di Safari o di altre app, né di eseguire scansioni complete in background.")
+                    Text("Il limite di lettura è 50 MB per contenere l'uso della memoria. Il controllo confronta alcune firme note e calcola SHA-256, ma NON è un antivirus: un file può avere una firma corretta ed essere comunque dannoso. iOS non consente a un'app normale di intercettare automaticamente tutti i download o di eseguire scansioni complete in background.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

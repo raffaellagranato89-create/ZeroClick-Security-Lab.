@@ -11,7 +11,7 @@
 *{box-sizing:border-box}body{margin:0;padding:env(safe-area-inset-top) 15px env(safe-area-inset-bottom);background:radial-gradient(ellipse at 50% -20%,#17345b,var(--bg) 60%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 .app{max-width:760px;margin:auto;padding-bottom:30px}header{display:flex;align-items:center;justify-content:space-between;padding:20px 2px}.brand{display:flex;align-items:center;gap:11px}.logo{width:44px;height:44px;border:1px solid var(--blue);border-radius:13px;display:grid;place-items:center;color:var(--cyan);font-size:24px;background:#142b49}.brand strong{display:block;letter-spacing:1.5px}.brand small{font-size:9px;color:var(--muted);letter-spacing:2px}.live{font-size:10px;color:var(--green)}
 .hero{padding:16px 3px}.eyebrow{color:var(--cyan);font-size:10px;letter-spacing:2px;font-weight:bold}h1{font-size:27px;margin:9px 0}h2{font-size:14px;margin:0}p{line-height:1.5}.muted,.note{color:var(--muted);font-size:11px;line-height:1.55}.panel{background:linear-gradient(145deg,#14243b,#0e192b);border:1px solid var(--line);border-radius:16px;padding:16px;margin:13px 0}.panelhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.tag{font-size:9px;color:var(--cyan);background:#1b3b60;padding:6px 8px;border-radius:7px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric{background:#0b1729;border:1px solid var(--line);border-radius:11px;padding:12px}.metric small{display:block;color:var(--muted);font-size:10px}.metric strong{display:block;font-size:19px;margin-top:7px}.metric span{font-size:10px;color:var(--muted)}
-button{font:inherit;cursor:pointer;touch-action:manipulation}.primary{width:100%;border:0;border-radius:11px;padding:15px;margin:7px 0;color:white;font-weight:800;background:linear-gradient(100deg,#1769dc,#338fff)}.secondary{width:100%;border:1px solid #2a4568;border-radius:10px;padding:12px;margin:5px 0;color:#dceaff;background:#142943;font-size:12px}button:disabled{opacity:.5}
+button{font:inherit;cursor:pointer;touch-action:manipulation}.primary{width:100%;border:0;border-radius:11px;padding:15px;margin:7px 0;color:white;font-weight:800;background:linear-gradient(100deg,#1769dc,#338fff)}.secondary{width:100%;border:1px solid #2a4568;border-radius:10px;padding:12px;margin:5px 0;color:#dceaff;background:#142943;font-size:12px}.updateButton{background:linear-gradient(100deg,#087d58,#24b982);color:white;border:0}.updateButton[hidden]{display:none}button:disabled{opacity:.5}
 input[type="tel"],input[type="text"]{width:100%;background:#091525;color:white;border:1px solid #2a4263;border-radius:9px;padding:12px;margin:8px 0}input[type="file"]{width:100%;margin:12px 0;color:var(--muted);font-size:12px}
 .nav{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:12px 0}.nav button{background:#101e32;border:1px solid #263c59;color:#a8bdd8;padding:11px 2px;border-radius:9px;font-size:9px}.nav button.active{border-color:var(--blue);color:white;background:#17345a}.section{display:none}.section.active{display:block}.result{padding:12px 0;border-bottom:1px solid #21344e}.resulthead{display:flex;justify-content:space-between;gap:8px}.result strong{font-size:12px}.result p{font-size:11px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}.state{font-size:10px;font-weight:bold;white-space:nowrap}.green{color:var(--green)}.yellow{color:var(--yellow)}.red{color:var(--red)}.progress{height:5px;background:#091525;border-radius:8px;overflow:hidden;margin:12px 0}.progress div{height:100%;width:0;background:var(--cyan);transition:width .2s}label{font-size:11px;color:var(--muted);line-height:1.5}label.consent{display:flex;align-items:flex-start;gap:9px;margin:10px 0}label.consent input{margin-top:2px}label.pref{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #263d5d}label.pref input{margin-top:2px;accent-color:#398cff}.alert{display:none;background:#481b2a;border:1px solid var(--red);color:#ffe5e9;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;line-height:1.5}.okbox{background:#102c2a;border:1px solid #286b58;color:#c6ffe9;padding:12px;border-radius:10px;font-size:12px;line-height:1.5}
 footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1.6}@media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
@@ -60,9 +60,10 @@ footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1
 <label class="pref"><input type="checkbox" id="prefWeekly"> <span><strong>Promemoria settimanale</strong><br>Mostra un promemoria ogni sette giorni quando apri l'app.</span></label>
 <button class="primary" id="savePrefs">SALVA PREFERENZE</button>
 <button class="secondary" id="checkUpdates">CONTROLLA AGGIORNAMENTI ORA</button>
+<button class="primary updateButton" id="updateNow" hidden>⬆ AGGIORNA ORA</button>
 <div id="updateStatus" class="note">Controllo aggiornamenti non ancora eseguito.</div>
 <div id="notificationStatus" class="note"></div>
-<p class="note">Gli avvisi sono mostrati all'apertura dell'app. GitHub Pages non può inviare notifiche push né eseguire controlli quando Safari è chiuso.</p>
+<p class="note">Gli avvisi sono mostrati quando apri SENTINEL. GitHub Pages non può inviare notifiche push né eseguire controlli quando Safari è chiuso. L'aggiornamento richiede la conferma dell'utente.</p>
 </div></section>
 
 <footer>SENTINEL SECURITY · PERSONAL SOC<br>Analisi locale · Nessun invio automatico di dati<br>Strumento diagnostico, non sostituisce le verifiche Apple.</footer>
@@ -73,10 +74,12 @@ footer{text-align:center;color:#7187a5;font-size:10px;padding:20px;line-height:1
 "use strict";
 const $=id=>document.getElementById(id);
 const LOG_KEY="sentinelSOCLog",PHONE_KEY="sentinelPrivatePhone",PREF_KEY="sentinelNotificationPrefs";
-const APP_VERSION="1.1.0";
+const APP_VERSION="1.2.0";
 const VERSION_URL="./version.json";
-let log=[],lastHash="";
+const APP_URL="https://raffaellagranato89-create.github.io/ZeroClick-Security-Lab/";
+let log=[],lastHash="",availableVersion="";
 try{const old=JSON.parse(localStorage.getItem(LOG_KEY)||"[]");if(Array.isArray(old))log=old;}catch(e){}
+
 function metrics(){
 $("metricChecks").textContent=log.filter(x=>x.category==="Diagnostica").length;
 $("metricFiles").textContent=log.filter(x=>x.category==="File").length;
@@ -105,6 +108,7 @@ document.querySelectorAll("[data-page]").forEach(x=>x.classList.remove("active")
 document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
 b.classList.add("active");$(b.dataset.page).classList.add("active");
 }));
+
 $("phone").value=localStorage.getItem(PHONE_KEY)||"";
 $("savePhone").addEventListener("click",()=>{
 const n=$("phone").value.trim();
@@ -133,6 +137,7 @@ if(!$("domainConsent").checked){alert("Devi prestare il consenso prima della ric
 if(!confirm("Il dominio "+d+" verrà inviato a Google. Continuare?"))return;
 $("domainConsent").checked=false;googleSearch(d+" sicurezza malware segnalazioni","Ricerca dominio");
 });
+
 function addResult(name,status,detail){
 const d=document.createElement("div");d.className="result";
 const h=document.createElement("div");h.className="resulthead";
@@ -158,6 +163,7 @@ addResult(tests[i][0],r[0],r[1]);$("progressBar").style.width=((i+1)/tests.lengt
 }
 $("scanStatus").textContent="Test terminati. Leggi i risultati.";b.disabled=false;
 });
+
 function sha256(buf){return crypto.subtle.digest("SHA-256",buf).then(h=>Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,"0")).join(""));}
 function indicators(text){
 const p=[["Uso di eval()",/\beval\s*\(/i],["Riferimento PowerShell",/powershell(?:\.exe)?/i],["Comando shell",/\b(?:cmd\.exe|\/bin\/sh|bash\s+-c)\b/i],["Possibile JavaScript offuscato",/\\x[0-9a-f]{2}\\x[0-9a-f]{2}/i],["URL HTTP non cifrato",/http:\/\/[^\s"'<>]+/i]];
@@ -202,6 +208,7 @@ if(!$("hashConsent").checked){alert("Presta il consenso prima della ricerca.");r
 if(!confirm("Solo l'hash SHA-256, non il file, verrà inviato a Google. Continuare?"))return;
 $("hashConsent").checked=false;googleSearch('"'+lastHash+'"',"Ricerca hash");
 });
+
 const guides=[
 ["Aggiornamenti iOS","Impostazioni → Generali → Aggiornamento software","Verifica e installa gli aggiornamenti disponibili."],
 ["Controllo sicurezza Apple","Impostazioni → Privacy e sicurezza → Controllo di sicurezza","Rivedi condivisioni e accessi."],
@@ -216,6 +223,7 @@ const p=document.createElement("p");p.textContent=x[1]+"\n"+x[2];
 const b=document.createElement("button");b.className="secondary";b.textContent="MOSTRA ISTRUZIONI";b.onclick=()=>alert(x[0]+"\n\n"+x[1]+"\n\n"+x[2]+"\n\nVerifica manuale.");
 d.append(t,p,b);$("guides").append(d);
 });
+
 function download(blob,name){
 const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);
 }
@@ -245,11 +253,12 @@ const prefIds={app:"prefApp",ios:"prefIOS",checks:"prefChecks",indicators:"prefI
 function loadPrefs(){Object.keys(prefIds).forEach(k=>$(prefIds[k]).checked=!!prefs[k]);}
 function savePrefs(){
 Object.keys(prefIds).forEach(k=>prefs[k]=$(prefIds[k]).checked);
-localStorage.setItem(PREF_KEY,JSON.stringify(prefs));
-$("notificationStatus").textContent="Preferenze salvate sul dispositivo.";
+try{localStorage.setItem(PREF_KEY,JSON.stringify(prefs));$("notificationStatus").textContent="Preferenze salvate sul dispositivo.";}
+catch(e){$("notificationStatus").textContent="Impossibile salvare le preferenze nel browser.";}
 updateAlerts();
 }
 $("savePrefs").addEventListener("click",savePrefs);
+
 function updateAlerts(){
 const alertBox=$("globalAlert");
 const flagged=log.filter(x=>x.status==="DA VERIFICARE").length;
@@ -268,16 +277,31 @@ localStorage.setItem("sentinelLastWeekly",String(now));
 }
 }
 function versionCompare(a,b){
-const x=String(a).split(".").map(Number),y=String(b).split(".").map(Number);
+function parse(v){
+if(typeof v!=="string"||! /^\d+(?:\.\d+){0,3}$/.test(v))return null;
+return v.split(".").map(n=>Number(n));
+}
+const x=parse(a),y=parse(b);
+if(!x||!y)throw new Error("Formato versione non valido.");
 for(let i=0;i<Math.max(x.length,y.length);i++){
-const n=x[i]||0,m=y[i]||0;
-if(n>m)return 1;if(n<m)return -1;
+const n=x[i]??0,m=y[i]??0;
+if(n>m)return 1;
+if(n<m)return -1;
 }
 return 0;
+}
+function showUpdateAvailable(version){
+availableVersion=version;
+$("updateNow").hidden=false;
+}
+function hideUpdateButton(){
+availableVersion="";
+$("updateNow").hidden=true;
 }
 async function checkUpdates(){
 const out=$("updateStatus");
 out.textContent="Controllo della versione online in corso...";
+hideUpdateButton();
 try{
 const response=await fetch(VERSION_URL+"?t="+Date.now(),{cache:"no-store"});
 if(!response.ok)throw new Error("File versione non trovato ("+response.status+").");
@@ -285,12 +309,9 @@ const data=await response.json();
 if(!data.version||typeof data.version!=="string")throw new Error("Versione online non valida.");
 const cmp=versionCompare(data.version,APP_VERSION);
 if(cmp>0){
-out.innerHTML="";
-const msg=document.createElement("div");msg.className="alert";msg.style.display="block";
-msg.textContent="È disponibile una nuova versione di SENTINEL: "+data.version+". La versione attuale è "+APP_VERSION+". Apri il repository GitHub per aggiornare l'app.";
-const link=document.createElement("a");link.href="https://github.com/raffaellagranato89-create/ZeroClick-Security-Lab";link.target="_blank";link.rel="noopener";link.textContent="Apri repository GitHub";link.style.color="#fff";
-msg.append(document.createElement("br"),link);out.append(msg);
-if(prefs.app)alert("È disponibile SENTINEL "+data.version+". Apri GitHub per aggiornare.");
+showUpdateAvailable(data.version);
+out.textContent="Nuova versione disponibile: "+data.version+". Versione attuale: "+APP_VERSION+". Premi AGGIORNA ORA per caricarla.";
+if(prefs.app)alert("È disponibile SENTINEL "+data.version+". Puoi aggiornare dalla scheda NOTIFICHE.");
 }else{
 out.textContent="SENTINEL è aggiornato. Versione installata: "+APP_VERSION+" · Versione online: "+data.version;
 }
@@ -299,7 +320,19 @@ out.textContent="Controllo non riuscito: "+e.message+" Verifica che version.json
 }
 }
 $("checkUpdates").addEventListener("click",checkUpdates);
-loadPrefs();weeklyReminder();updateAlerts();metrics();render();
+
+$("updateNow").addEventListener("click",()=>{
+if(!availableVersion){alert("Non è disponibile un aggiornamento da installare. Esegui prima il controllo.");return;}
+if(!confirm("È disponibile SENTINEL "+availableVersion+". Vuoi aprire la versione aggiornata pubblicata su GitHub Pages?"))return;
+const target=APP_URL+"?v="+encodeURIComponent(availableVersion)+"&t="+Date.now();
+window.location.replace(target);
+});
+
+loadPrefs();
+weeklyReminder();
+updateAlerts();
+metrics();
+render();
 if(prefs.app)checkUpdates();
 })();
 </script>

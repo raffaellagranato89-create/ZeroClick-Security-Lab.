@@ -396,136 +396,155 @@ struct iPhoneSecurityView: View {
 
 // MARK: - Analisi locale dei link
 
+private struct ExternalLinkResult: Decodable {
+    struct Source: Decodable {
+        let status: String
+        let message: String?
+        let malicious: Int?
+        let suspicious: Int?
+        let undetected: Int?
+    }
+    let verdict: String
+    let googleSafeBrowsing: Source
+    let virusTotal: Source
+    let checkedAt: String?
+}
+
 struct LinkScannerView: View {
+    @AppStorage("sentinel.linkCheckEndpoint") private var endpoint = ""
     @State private var linkText = ""
-    @State private var findings: [String] = []
-    @State private var risk = ""
-    @State private var riskColor: Color = .secondary
-    @State private var analyzed = false
+    @State private var isChecking = false
+    @State private var result: ExternalLinkResult?
+    @State private var errorMessage: String?
 
-    private let shorteners: Set<String> = [
-        "bit.ly", "tinyurl.com", "t.co", "goo.gl", "ow.ly",
-        "is.gd", "buff.ly", "rebrand.ly", "cutt.ly"
-    ]
-
-    private func analyzeLink() {
-        findings = []
-        analyzed = true
-        risk = ""
-        riskColor = .secondary
-
+    private func checkOnline() async {
         let raw = linkText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !raw.isEmpty else {
-            risk = "Inserisci un link da controllare."
+        guard let parsed = URL(string: raw.contains("://") ? raw : "https://" + raw),
+              let scheme = parsed.scheme?.lowercased(),
+              ["http", "https"].contains(scheme),
+              parsed.host != nil else {
+            errorMessage = "Inserisci un indirizzo HTTP o HTTPS valido."
+            return
+        }
+        guard let serviceURL = URL(string: endpoint.trimmingCharacters(in: .whitespacesAndNewlines)),
+              serviceURL.scheme == "https",
+              serviceURL.host != nil else {
+            errorMessage = "Configura prima l'indirizzo HTTPS del servizio di verifica."
             return
         }
 
-        let candidate = raw.contains("://") ? raw : "https://" + raw
-        guard let components = URLComponents(string: candidate),
-              let hostRaw = components.host,
-              !hostRaw.isEmpty,
-              hostRaw.contains(".") else {
-            risk = "Link non valido o incompleto."
-            riskColor = .orange
-            findings.append("Controlla che il link sia stato copiato per intero.")
-            return
-        }
+        isChecking = true
+        result = nil
+        errorMessage = nil
+        defer { isChecking = false }
 
-        let host = hostRaw.lowercased().trimmingCharacters(in: CharacterSet(charactersIn: "."))
-        let labels = host.split(separator: ".").map(String.init)
+        do {
+            var request = URLRequest(url: serviceURL)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.timeoutInterval = 45
+            request.httpBody = try JSONSerialization.data(withJSONObject: ["url": parsed.absoluteString])
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
+                throw URLError(.badServerResponse)
+            }
+            result = try JSONDecoder().decode(ExternalLinkResult.self, from: data)
+        } catch {
+            errorMessage = "Verifica online non riuscita. Controlla il servizio e la connessione, poi riprova."
+        }
+    }
 
-        if components.scheme?.lowercased() == "http" {
-            findings.append("Connessione HTTP non cifrata: i dati potrebbero non essere protetti durante il transito.")
+    private func sourceView(_ title: String, _ source: ExternalLinkResult.Source) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text(title).font(.headline)
+            Text(source.status.uppercased())
+                .font(.subheadline.bold())
+                .foregroundStyle(source.status == "checked" ? .cyan : .orange)
+            if let malicious = source.malicious {
+                Text("Rilevamenti malevoli: \\(malicious)")
+                    .font(.footnote)
+            }
+            if let suspicious = source.suspicious {
+                Text("Rilevamenti sospetti: \\(suspicious)")
+                    .font(.footnote)
+            }
+            if let undetected = source.undetected {
+                Text("Non rilevati: \\(undetected)")
+                    .font(.footnote)
+            }
+            if let message = source.message {
+                Text(message).font(.footnote).foregroundStyle(.secondary)
+            }
         }
-        if components.user != nil || components.password != nil {
-            findings.append("Il link contiene credenziali prima del nome del sito: tecnica spesso usata per confondere.")
-        }
-        if shorteners.contains(host) {
-            findings.append("Servizio di abbreviazione: la destinazione reale è nascosta.")
-        }
-        if host.contains("xn--") {
-            findings.append("Dominio internazionalizzato (Punycode): verifica con attenzione possibili caratteri simili.")
-        }
-        if host.filter({ $0.isNumber }).count >= 7 && !host.contains(":") {
-            findings.append("Il dominio contiene molti numeri: verifica che non sia un indirizzo IP o un host anomalo.")
-        }
-        if labels.count >= 5 {
-            findings.append("Il dominio contiene molti sottodomini: controlla qual è il dominio principale.")
-        }
-        if host.contains("-") && labels.count > 2 {
-            findings.append("Trattini e sottodomini combinati possono essere usati per imitare siti conosciuti.")
-        }
-        if components.scheme?.lowercased() != "https" && components.scheme?.lowercased() != "http" {
-            findings.append("Protocollo insolito: non aprire il collegamento se non ne conosci la provenienza.")
-        }
-        if let port = components.port, port != 80 && port != 443 {
-            findings.append("Il link usa una porta non standard (\\(port)).")
-        }
-
-        if findings.count >= 3 {
-            risk = "RISCHIO ELEVATO: il link presenta diversi indicatori sospetti."
-            riskColor = .red
-        } else if !findings.isEmpty {
-            risk = "ATTENZIONE: sono presenti indicatori da verificare."
-            riskColor = .orange
-        } else {
-            risk = "NESSUN INDICATORE SEMPLICE RILEVATO."
-            riskColor = .green
-            findings.append("La struttura del link non mostra gli indicatori controllati. Non significa che il sito sia sicuro.")
-        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(Color.white.opacity(0.07))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    Image(systemName: "link.badge.plus")
-                        .font(.system(size: 48))
+                VStack(alignment: .leading, spacing: 16) {
+                    Image(systemName: "network.badge.shield.half.filled")
+                        .font(.system(size: 46))
                         .foregroundStyle(.cyan)
                         .frame(maxWidth: .infinity)
-
-                    Text("Controllo link e phishing")
+                    Text("Verifica online anti-phishing")
                         .font(.title2.bold())
                         .frame(maxWidth: .infinity)
-
-                    Text("Incolla un indirizzo web sospetto. Il controllo esamina la struttura del link senza aprirlo e senza inviarlo a server esterni.")
+                    Text("Il link viene inviato ai servizi esterni configurati per confrontarlo con i loro database di minacce. Non viene aperto sul dispositivo.")
+                        .font(.footnote)
                         .foregroundStyle(.secondary)
 
-                    TextField("https://esempio.it/...", text: $linkText, axis: .vertical)
+                    Text("Indirizzo del servizio sicuro (HTTPS)")
+                        .font(.headline)
+                    TextField("https://tuo-worker.example.workers.dev/check", text: $endpoint)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                         .keyboardType(.URL)
                         .padding()
                         .background(Color.white.opacity(0.08))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
 
-                    Button(action: analyzeLink) {
-                        Label("Analizza link", systemImage: "shield.lefthalf.filled")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(.cyan)
-                            .foregroundStyle(.black)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                    }
-
-                    if analyzed {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(risk)
-                                .font(.headline)
-                                .foregroundStyle(riskColor)
-                            ForEach(findings, id: \\.self) { item in
-                                Label(item, systemImage: "exclamationmark.triangle")
-                                    .font(.footnote)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
+                    Text("Link da verificare")
+                        .font(.headline)
+                    TextField("https://esempio.it", text: $linkText, axis: .vertical)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .keyboardType(.URL)
                         .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color.white.opacity(0.07))
+                        .background(Color.white.opacity(0.08))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+
+                    Button {
+                        Task { await checkOnline() }
+                    } label: {
+                        HStack {
+                            if isChecking { ProgressView().tint(.black) }
+                            Label(isChecking ? "Verifica in corso..." : "Verifica con i database esterni",
+                                  systemImage: "shield.lefthalf.filled")
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(.cyan)
+                        .foregroundStyle(.black)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
+                    .disabled(isChecking)
 
-                    Text("Importante: questo è un controllo euristico locale, non consulta database di siti malevoli e non certifica la sicurezza della pagina. Non inserire password o dati personali su siti sospetti.")
+                    if let errorMessage {
+                        Text(errorMessage).foregroundStyle(.orange).font(.footnote)
+                    }
+                    if let result {
+                        Text(result.verdict)
+                            .font(.headline)
+                            .foregroundStyle(result.verdict.lowercased().contains("malicious") || result.verdict.lowercased().contains("unsafe") ? .red : .cyan)
+                        sourceView("Google Safe Browsing", result.googleSafeBrowsing)
+                        sourceView("VirusTotal", result.virusTotal)
+                    }
+
+                    Text("Privacy e limiti: il link completo viene trasmesso ai fornitori esterni quando premi Verifica. Evita link contenenti token privati o informazioni personali. I risultati possono essere incompleti o avere falsi positivi; nessun esito garantisce sicurezza.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
